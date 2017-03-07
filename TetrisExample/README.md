@@ -1,3 +1,6 @@
+
+Download and run Tetris.jar to play the game.
+
 Controls:
 
 Player 1:

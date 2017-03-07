@@ -1,4 +1,3 @@
-
 Controls:
 
 Player 1:

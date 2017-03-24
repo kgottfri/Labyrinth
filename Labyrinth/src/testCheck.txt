@@ -1,0 +1,5 @@
+Please add your name to this file so I know that you were able to properly run the game.java file through the netbeans project
+I created on gitlab.  If there are any issues please let me know and I'll sort them out.  
+
+Success:
+Kevin

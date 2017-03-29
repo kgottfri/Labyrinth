@@ -43,7 +43,7 @@ public class Deck
 	        {
 	            for(int i=1; i<=13; i++)
 	            {
-	               deck[ct] = new Card(p, i);
+	               deck[ct] = new Card((char) i);
                   ct = ct +1;
 	            }
 	        }     

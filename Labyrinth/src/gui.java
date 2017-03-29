@@ -6,13 +6,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class gui extends Application{
-	private board labyrinthBoard;
+	private Board labyrinthBoard;
 	private Player player1;
 	private Player player2;
 	
 	public void start(Stage primaryStage){
 		
-		labyrinthBoard=new board();
+		labyrinthBoard=new Board();
 		player1= new Player(1);
 		player2=new Player(2);
 		

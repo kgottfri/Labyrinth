@@ -11,7 +11,10 @@ import java.util.Random;
  */
 public class HumanPlayer extends Player {
     
-    public HumanPlayer(){
+    /**
+     *
+     */
+    public HumanPlayer(int typePlayer){
     }
     
     /**

@@ -36,16 +36,6 @@ public class Card {
 //      letter = c1.getValue();
 //   }
 
-    /**
-     * Constructor Creates a new card with given suit and letter.
-     *
-     * @param Card_suit The numeric letter of the suit.
-     * @param Card_letter The numeric letter of the letter.
-     */
-    public Card(int Card_suit, int Card_letter) {
-//		suit = Card_suit;
-        letter = Card_letter;
-    }
 
     /**
      * Returns the numeric letter of the card

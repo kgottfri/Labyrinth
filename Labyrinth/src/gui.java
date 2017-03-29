@@ -1,6 +1,9 @@
 import javafx.scene.layout.*;
-//test
+import javafx.scene.paint.Color;
+
+
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,15 +16,17 @@ public class gui extends Application{
 	public void start(Stage primaryStage){
 		
 		labyrinthBoard=new Board();
-		player1= new Player(1);
-		player2=new Player(2);
+		player1= new Player();
+		player2=new Player();
+		
+		player1.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
+		player2.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
+		//player1.setStyle("-fx-padding: 10px 10px 10px 10px");
 		
 		primaryStage.setTitle("Labyrinth");
 		Group root = new Group();
-		Scene scene = new Scene(root,1600,labyrinthBoard.getHeight());
-		//BorderPane player1Pane=new BorderPane();
+		Scene scene = new Scene(root,1620,labyrinthBoard.getHeight());
 		
-		//BorderPane player2Pane=new BorderPane();
 		
 		
 		
@@ -29,7 +34,8 @@ public class gui extends Application{
 		pane.setLeft(player1);
 		pane.setRight(player2);
 		pane.setCenter(labyrinthBoard);
-		//pane.setStyle("-fx-background-color: black");
+		pane.setPadding(new Insets(10,10,10,10));
+		pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		
 		root.getChildren().add(pane);
 		primaryStage.setScene(scene);

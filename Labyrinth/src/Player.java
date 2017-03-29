@@ -2,33 +2,48 @@
 
 import java.util.Collections;
 import java.util.LinkedList;
+import javafx.scene.layout.*;
 
 /**
  * Player superclass for both human and computer players
  * @author Fabian Gaspero-Beckstrom
  */
-public class Player {
+public class Player extends Pane{
     
-    protected LinkedList<Card> hand;
+    protected LinkedList<Card> treasuresHand;
     protected int score = 0;
-    protected int successful_request = 0;
-    protected int total_request = 0;
-    protected int cards_gotten = 0;
-    
+    protected int successfulRequest = 0;
+    protected int totalRequest = 0;
+    protected int treasuresGotten = 0;
+    public static final int Prows = 7;
+    public static final int Pcols = 1;
+    public static final int squareWidth=450;
+    public static final int squareHeight=100;
+	
+    public Player(int playerType){
+        this.setPrefHeight(Prows*squareHeight);
+	this.setPrefWidth(Pcols*squareWidth);
+        this.setStyle("-fx-background-color: Black");
+        treasuresHand = new LinkedList<Card>();
+    }
+	
+    public int getX_DIM(){
+        return Prows;
+    }
+    public int getY_DIM(){
+        return Pcols;
+    }
     /**
      * Constructor instantiates new LinkedList of Card objects as hand
      */
-    public Player() {
-        
-        hand = new LinkedList<Card>();
-    }
+   
     /**
      * The getHand method returns the LinkedList hand containing Card objects
      * which represent the players current hand
      * @return LinkedList The players hand
      */
-    public LinkedList<Card> getHand() {
-        return hand;
+    public LinkedList<Card> getTreasuresList() {
+        return treasuresHand;
     }
     /**
      * The addCard method ands a card object to the LinkedList hand
@@ -36,14 +51,14 @@ public class Player {
      */
     public void addCard(Card c) {
         if(c != null)
-            hand.add(c);
+            treasuresHand.add(c);
     }
      /**
      * The removeCard method removes a card object from the LinkedList hand
      * @param c The Card object to be removed from players hand
      */
     public void removeCard(Card c) {
-        hand.remove(c);
+        treasuresHand.remove(c);
     }
     /**
      * The askforCards method searches hand for a card specified by the opponent
@@ -53,12 +68,11 @@ public class Player {
     public Card[] askforCards(Card c){
         Card[] cards = new Card[3];
         int j = 0;
-        for(int i = hand.size()-1; i >= 0;i--){
-            if(hand.get(i).equals(c)){
-                hand.remove(i);
+        for(int i = treasuresHand.size()-1; i >= 0;i--){
+            if(treasuresHand.get(i).equals(c)){
+                treasuresHand.remove(i);
                 cards[j] = c;
                 j++;
-                cards_gotten++;
             }
         }
         return cards;
@@ -73,23 +87,11 @@ public class Player {
         boolean flag = false;
         int i = 1;
         LinkedList<Card> edit_hand = new LinkedList<>();
-        for (Card c : hand) {      
-            for (int j = i; j < hand.size();j++) {
-                if (c.equals(hand.get(j))) {count++;}
-            }
-            i++;
-            if (count == 3) {
-                flag = true;
-                edit_hand.add(c);
-                System.out.println("A set of " + c + "s were removed from the hand.");
-                score++;
-            }
-            count = 0;
-        }
+
         if(flag){
             for (Card c : edit_hand) {
                 for(int k = 0; k < 4;k++){
-                    hand.remove(c);
+                    treasuresHand.remove(c);
                 }  
             }
         }
@@ -99,14 +101,14 @@ public class Player {
      * The sort method sorts players hand
      */
     public void sort(){
-        Collections.sort(hand);
+//        Collections.sort(treasuresHand);
     }
     /**
      * The isHandEmpty method checks whether or not the players hand is empty
      * @return Either true or false
      */
     public boolean isHandEmpty() {
-        if (!hand.isEmpty()) { return false;} else {
+        if (!treasuresHand.isEmpty()) { return false;} else {
             return true;
         }
     
@@ -129,27 +131,9 @@ public class Player {
      * @return successful_request Number of successful requests made
      */
     public int getSuccessfulRequests(){
-        return successful_request;
+        return successfulRequest;
     }
-    /**
-     * The getTotalRequests method returns total number of requests by the player
-     * @return total_request Total number requests made
-     */
-    public int getTotalRequests(){
-        return total_request;
-    }
-    /**
-     * The getCardsGotten method returns number of cards received by player
-     * @return cards_gotten Number of cards received by player
-     */
-    public int getCardsGotten(){
-        return cards_gotten;
-    }
- 
-    
-
-
-    
+  
 }
     
     

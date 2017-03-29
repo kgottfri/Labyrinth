@@ -1,4 +1,4 @@
-// CS_205 Go Fish
+// CS_205 Labyrinth
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -7,11 +7,12 @@ import javafx.scene.paint.Color;
 
 /**
  * Player superclass for both human and computer players
- * @author Fabian Gaspero-Beckstrom
+ * @author Kevin Gottfried
  */
 public class Player extends Pane{
     
     protected LinkedList<Card> treasuresHand;
+    public boolean activePlayer = false;
     protected int score = 0;
     protected int successfulRequest = 0;
     protected int totalRequest = 0;
@@ -23,7 +24,8 @@ public class Player extends Pane{
     public Color color;
     
     public Player(){
-        
+        this.setPrefHeight(Prows*squareHeight);
+	this.setPrefWidth(Pcols*squareWidth);
     }
     public Player(int playerType){
         
@@ -35,7 +37,6 @@ public class Player extends Pane{
         
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
-        this.setStyle("-fx-background-color: Black");
         treasuresHand = new LinkedList<Card>();
     }
 	

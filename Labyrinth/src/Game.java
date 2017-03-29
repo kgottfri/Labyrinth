@@ -40,14 +40,10 @@ public class Game {
 			currentTile = new Tile(false, true, true, true, true);
 			
 		}
-	
-			
-			
-			
+        }
+}
 
-			
-		}
 		
-	}
+	
 
 

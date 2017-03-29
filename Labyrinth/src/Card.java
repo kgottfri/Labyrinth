@@ -13,12 +13,11 @@ public class Card {
     private char letter;
 
     /**
-     * Constructor Creates a new card from a random integer. Assigns a suit and
-     * letter to the card.
+     * Constructor Creates a new card from a random integer. Assigns a letter to the card.
      */
     public Card() {
         Random num = new Random();
-        letter = (char) ((char) num.nextInt(25) + 65);
+        letter = (char) (num.nextInt(25) + 65);
     }
 
     /**
@@ -149,6 +148,16 @@ public class Card {
         } else {
             return -1;
         }
+    }
+    
+    public void print(){
+        System.out.println(letter);
+    }
+    
+    //test the card creating functionality
+    public static void main(String [] args){
+        Card h = new Card();
+        h.print();
     }
 
 }	

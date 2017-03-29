@@ -8,7 +8,7 @@ public class Deck
    /** 
    *  Number of cards in standard deck {@value #CARDS_IN_DECK}
    **/
-   public final static int CARDS_IN_DECK = 52;
+   public final static int CARDS_IN_DECK = 24;
 
    private int top;
    private int deckSize;
@@ -34,7 +34,7 @@ public class Deck
       deck = new Card[CARDS_IN_DECK];
       top = 0;
 	        int d = 0;
-	        deckSize = 52;
+	        deckSize = 24;
 	         
 	        // p stands for the suit
 	        // i for the card in each suit
@@ -104,5 +104,10 @@ public class Deck
 	   //System.out.println(deckSize);
 	   return deckSize;
 	}
+        
+    public static void main(String [] args){
+        Deck h = new Deck();
+        System.out.println(h.getSize());
+    }
 }
 

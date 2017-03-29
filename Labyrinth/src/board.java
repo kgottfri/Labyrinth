@@ -9,7 +9,7 @@ public class board extends Pane{
 		this.setPrefHeight(cols*squareSize);
 		this.setPrefWidth(rows*squareSize);
 	}
-	
+	//test
 	public int getX_DIM(){
 		return rows;
 	}

@@ -1,17 +1,25 @@
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
-
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class gui extends Application{
 	private board labyrinthBoard;
 	private player player1;
 	private player player2;
+	private LabGame game;
+	private Label statusLabel;
+	private Timeline animation;
+	private static final double MILLISEC = 200;
 	
 	public void start(Stage primaryStage){
 		
@@ -38,6 +46,10 @@ public class gui extends Application{
 		pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		
 		root.getChildren().add(pane);
+		game = new LabGame(this, labyrinthBoard);
+        setUpAnimation();
+
+        setUpKeyPresses();
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
@@ -55,10 +67,61 @@ public class gui extends Application{
 		
 		
 	}
-	
+	private void setUpAnimation() {
+        // Create a handler
+        EventHandler<ActionEvent> eventHandler = (ActionEvent e) -> {
+            
+            this.pause();
+            game.update();
+            this.resume();
+        };
+        // Create an animation for alternating text
+        animation = new Timeline(new KeyFrame(Duration.millis(MILLISEC), eventHandler));
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.play();
+        
+
+    }
+    private void pause() {
+        animation.pause();
+    }
+    
+    private void setUpKeyPresses() {
+        labyrinthBoard.setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case LEFT:
+                    game.left();
+                    break;
+                case RIGHT:
+                    game.right();
+                    break;
+                case DOWN:
+                    game.rotateLeft();
+                    break;
+                case UP:
+                    game.rotateRight();
+                    break;
+                case SPACE:
+                    game.drop();
+                    break;
+
+            }
+        });
+        labyrinthBoard.requestFocus(); // board is focused to receive key input
+
+    }
+
+    /**
+     * Resumes the animation.
+     */
+    private void resume() {
+        animation.play();
+    }
 		
 	public static void main(String[] args){
 		Application.launch(args);
+		
+		//LabSquare test = new LabPiece(board.rows/2,1,1,board);
 		//f.show();
 	}
 }

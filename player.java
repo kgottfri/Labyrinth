@@ -9,7 +9,6 @@ public class player extends Pane{
 	public player(){
 		this.setPrefHeight(Prows*squareHeight);
 		this.setPrefWidth(Pcols*squareWidth);
-		this.setStyle("-fx-background-color: Black");
 	}
 	
 	public int getX_DIM(){

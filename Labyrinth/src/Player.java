@@ -3,6 +3,7 @@
 import java.util.Collections;
 import java.util.LinkedList;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 /**
  * Player superclass for both human and computer players
@@ -19,8 +20,16 @@ public class Player extends Pane{
     public static final int Pcols = 1;
     public static final int squareWidth=450;
     public static final int squareHeight=100;
+    public Color color;
 	
     public Player(int playerType){
+        
+        if (playerType == 1){
+            this.color = Color.BLUE;
+        }
+        else
+            this.color = Color.GREEN;
+        
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
         this.setStyle("-fx-background-color: Black");

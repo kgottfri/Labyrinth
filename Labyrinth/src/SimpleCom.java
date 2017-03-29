@@ -13,7 +13,7 @@ public class SimpleCom extends Player{
 
     
     
-    public SimpleCom() {
+    public SimpleCom(int playerType) {
 
     }
     /**
@@ -26,7 +26,7 @@ public class SimpleCom extends Player{
      * @param p1 Opponent
      */
     public void takeTurn(Player p1){
-		if(hand.isEmpty())
+		if(treasuresHand.isEmpty())
 		{
 
 		}
@@ -34,13 +34,13 @@ public class SimpleCom extends Player{
 		{
 			
 			//ui.print(hand.toString());
-			String [] new_hand = new String[hand.size()];
+			String [] new_hand = new String[treasuresHand.size()];
 			Random num = new Random();
 			int card;
 			
-			int hand_size = hand.size();
+			int hand_size = treasuresHand.size();
 			card = num.nextInt(hand_size);
-			Card rand_card = hand.get(card);
+			Card rand_card = treasuresHand.get(card);
 			Card [] opp_hand = p1.askforCards(rand_card);
 			if(opp_hand[0] != null){
 				for(int i = 0; i < 3; i++){
@@ -48,14 +48,14 @@ public class SimpleCom extends Player{
 						addCard(opp_hand[i]);
 					}
 				}
-				successful_request++;
+				successfulRequest++;
 				
 			}
 			else{
 				
 			}
-			total_request++;
-			if(hand.size() > 1)
+			totalRequest++;
+			if(treasuresHand.size() > 1)
 				sort();
 			checkForSets();
 		}

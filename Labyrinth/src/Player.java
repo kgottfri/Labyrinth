@@ -21,7 +21,10 @@ public class Player extends Pane{
     public static final int squareWidth=450;
     public static final int squareHeight=100;
     public Color color;
-	
+    
+    public Player(){
+        
+    }
     public Player(int playerType){
         
         if (playerType == 1){

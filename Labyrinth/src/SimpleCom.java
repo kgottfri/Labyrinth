@@ -12,9 +12,9 @@ import java.util.*;
 public class SimpleCom extends Player{
 
     
-    
-    public SimpleCom(int playerType) {
-
+    public SimpleCom() {
+        
+        
     }
     /**
      * Constructor instantiates local UI object

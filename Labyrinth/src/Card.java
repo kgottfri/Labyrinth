@@ -10,54 +10,54 @@ public class Card {
     // intializes two variables for the card
 //	private int suit;
 
-    private int value;
+    private char letter;
 
     /**
      * Constructor Creates a new card from a random integer. Assigns a suit and
-     * value to the card.
+     * letter to the card.
      */
     public Card() {
         Random num = new Random();
-        value = num.nextInt(13) + 1;
+        letter = (char) ((char) num.nextInt(25) + 65);
     }
 
     /**
      * Constructor Creates a new card from a previously existing card Assigns
-     * the suit and value from previous suit and value.
+     * the suit and letter from previous suit and letter.
      *
-     * @param value
+     * @param letter
      */
-    public Card(int value) {
-        this.value = value;
+    public Card(char letter) {
+        this.letter = letter;
     }
 //   public Card(Card c1)
 //   {
 ////      suit = c1.getSuit();
-//      value = c1.getValue();
+//      letter = c1.getValue();
 //   }
 
     /**
-     * Constructor Creates a new card with given suit and value.
+     * Constructor Creates a new card with given suit and letter.
      *
-     * @param Card_suit The numeric value of the suit.
-     * @param Card_value The numeric value of the value.
+     * @param Card_suit The numeric letter of the suit.
+     * @param Card_letter The numeric letter of the letter.
      */
-    public Card(int Card_suit, int Card_value) {
+    public Card(int Card_suit, int Card_letter) {
 //		suit = Card_suit;
-        value = Card_value;
+        letter = Card_letter;
     }
 
     /**
-     * Returns the numeric value of the card
+     * Returns the numeric letter of the card
      *
-     * @return value The numeric value of the card.
+     * @return letter The numeric letter of the card.
      */
     public int getValue() {
-        return value;
+        return letter;
     }
 
     /**
-     * getSuit This method returns the numeric value of the suit
+     * getSuit This method returns the numeric letter of the suit
      *
      * @return suit The suit of the card.
      */
@@ -66,10 +66,10 @@ public class Card {
 //		return suit;
 //	}
     /**
-     * getSuitAsString This method returns the string value of the suit of a
+     * getSuitAsString This method returns the string letter of the suit of a
      * card
      *
-     * @return String value of suit
+     * @return String letter of suit
      */
 //   public String getSuitAsString()
 //   {
@@ -86,12 +86,12 @@ public class Card {
 //   }
 //   
     /**
-     * getValueAsString This method returns the string value of the cards value
+     * getValueAsString This method returns the string letter of the cards letter
      *
-     * @return String value of value
+     * @return String letter of letter
      */
     public String getValueAsString() {
-        switch (value) {
+        switch (letter) {
             case 2:
                 return "2";
             case 3:
@@ -133,24 +133,24 @@ public class Card {
 
     /**
      * GreaterThan This method determines if a card is greater than a 2nd card
-     * by comparing the values.
+     * by comparing the letters.
      *
      * @param cardOther The second card to be compared.
      * @return true if card 1 greater than card 2
      */
     public boolean GreaterThan(Card cardOther) {
-        return value > cardOther.getValue();
+        return letter > cardOther.getValue();
     }
 
     /**
      * equals This method determines if two cards are equal by comparing their
-     * values.
+     * letters.
      *
-     * @return true if values are equal.
+     * @return true if letters are equal.
      */
     public boolean equals(Object cardOther) {
 
-        return value == ((Card) cardOther).getValue();
+        return letter == ((Card) cardOther).getValue();
     }
 
     public int compare(Card c1, Card c2) {

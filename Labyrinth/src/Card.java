@@ -116,9 +116,9 @@ public class Card {
      * toString Overides the toString method. Return a String representation of
      * this card, such as "10 of Hearts" or "Queen of Spades".
      */
-    public String toString() {
-        return getValueAsString();
-    }
+//    public String toString() {
+//        return letter.toString();
+//    }
 
     /**
      * GreaterThan This method determines if a card is greater than a 2nd card
@@ -150,14 +150,14 @@ public class Card {
         }
     }
     
-    public void print(){
+    public void Print(){
         System.out.println(letter);
     }
     
     //test the card creating functionality
     public static void main(String [] args){
         Card h = new Card();
-        h.print();
+        h.Print();
     }
 
 }	

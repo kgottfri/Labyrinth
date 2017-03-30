@@ -18,7 +18,7 @@ public class Deck
    private int ct;
    
    /**
-    * Constructs a regular 52-card deck.  Initially, the cards
+    * Constructs a regular 24-card deck.  Initially, the cards
     * are in a sorted order.  The shuffle() method can be called to
     * randomize the order.  
     */
@@ -27,7 +27,7 @@ public class Deck
       freshDeck();
    }
    /**
-    * Create a new collection of 52 cards, in sorted order
+    * Create a new collection of 24 cards, in sorted order
     */
    public void freshDeck()
    {
@@ -39,14 +39,12 @@ public class Deck
 	        // p stands for the suit
 	        // i for the card in each suit
 	        // as cards are assigned, if one suit fills up, it moves on to the next one
-	        for(int p=3;p>=0;p--)
-	        {
-	            for(int i=1; i<=13; i++)
+	            for(int i=0; i<=23; i++)
 	            {
-	               deck[ct] = new Card((char) i);
+	               deck[ct] = new Card((char) (i + 65));
                   ct = ct +1;
 	            }
-	        }     
+	            
    
    }
    /** 
@@ -107,7 +105,11 @@ public class Deck
         
     public static void main(String [] args){
         Deck h = new Deck();
-        System.out.println(h.getSize());
+        h.shuffle();
+        while(!h.isEmpty()){
+           Card cur = h.dealCard();
+           cur.Print();
+        }
     }
 }
 

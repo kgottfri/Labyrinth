@@ -5,6 +5,8 @@
  *This is an instance of board - stores tile array, sets tiles initial positions
  *
  */
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 public class Board extends Pane{
@@ -45,7 +47,7 @@ public class Board extends Pane{
                                 else if (i == 6 && j ==6) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false); }
 
                                 //non-corner tiles
-                                else { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, true, true); }
+                                else { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, true); }
                                
                                 //increment X component
                                 upperLeftX += squareSize;
@@ -57,6 +59,19 @@ public class Board extends Pane{
                         upperLeftX = 0;
                         
 		}
+                
+                this.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent t) {
+                
+     
+            	tileAt(t.getX(), t.getY()).rotateRight(1);
+            	//currentShape = new Shape(canvas, currentType, currentColor, t.getX(), t.getY());
+            	
+            
+            }
+        });
 		
 		//SET IMMOVABLE TILES
 		
@@ -71,9 +86,27 @@ public class Board extends Pane{
 		
 	}
         
+        Tile tileAt(double x, double y) {
+            
+            int roundX = (int) Math.round(x);
+            int roundY = (int) Math.round(y);
+            int roundSquareSize = (int) Math.round(squareSize);
+            
+            System.out.println("x: " + roundX);
+            System.out.println("y: " + roundY);
+            System.out.println("squaresize: " + roundSquareSize);
+
+            System.out.println("Yindex: " + roundY % roundSquareSize);
+            System.out.println("Xindex: " + roundX % roundSquareSize);
+
+            
+            return tiles[(roundY - (roundY % roundSquareSize))/ roundSquareSize][(roundX - (roundX % roundSquareSize))/ roundSquareSize];
+        }
+        /*
 	LabSquare shapeAt(int x, int y){
 		return boardName[(y*rows)+x];
 	}
+        */
 
         public void checkRows() {
 

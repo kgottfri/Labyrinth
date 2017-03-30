@@ -25,6 +25,15 @@ public class Tile {
         
         private Rectangle[][] shapes = new Rectangle[3][3];
         
+        double step = Board.squareSize/3;
+
+        Color path;
+        Color background;
+        
+        int upperLeftX;
+        int upperLeftY;
+        Board board;
+        
         
 
 	
@@ -32,8 +41,8 @@ public class Tile {
 		
             
                         //set colors
-                        Color path = Color.DARKSLATEGREY;
-                        Color background = canMove ? Color.WHITE : Color.LIGHTGREY;
+                        path = Color.DARKSLATEGREY;
+                        background = canMove ? Color.WHITE : Color.LIGHTGREY;
                         
                         
                         //add rectangle to board
@@ -41,14 +50,34 @@ public class Tile {
                         //shape.setFill(Color.BLUE);
                         //shape.setStroke(Color.BLACK);
                         //board.getChildren().add(shape);
-                         System.out.println("tile");
-                        double step = Board.squareSize/3;
+                         //System.out.println("tile");
+                        
+			this.up = up;
+			this.right = right;
+			this.down = down;
+			this.left = left;
+			this.canMove = canMove;	
+
+                        this.upperLeftX = upperLeftX;
+                        this.upperLeftY = upperLeftY;
+                        this.board = board;
+                        
+                        updateColors();
+
+                        
+	}
+        
+        /**
+         * Set color - used every time somethign is changed
+         * 
+         */
+        private void updateColors() {
             
-                        for (int i = 0; i < shapes.length; i++) {
+                                    for (int i = 0; i < shapes.length; i++) {
                             for (int j = 0; j < shapes[i].length; j++) {
                                 shapes[i][j] = new Rectangle(upperLeftX + (j*step), upperLeftY + (i*step), step, step);
                                 shapes[i][j].setFill(background);
-                                System.out.println(i + " " + j + " added");
+                                //System.out.println(i + " " + j + " added");
                                 board.getChildren().add(shapes[i][j]);
                             }
                         }
@@ -79,16 +108,8 @@ public class Tile {
                         outer.setStroke(Color.BLACK);
                         outer.setStrokeWidth(3);
                         board.getChildren().add(outer);
-                        
-                        
-			this.up = up;
-			this.right = right;
-			this.down = down;
-			this.left = left;
-			this.canMove = canMove;	
-
-
-	}
+            
+        }
 	
 	/**
 	 * 
@@ -111,7 +132,8 @@ public class Tile {
 	
 	public void rotateRight(int numberOfTimes) {
 		
-		if (numberOfTimes > 0) {
+            if (canMove) {
+		if (numberOfTimes > 0 ) {
 			
 			//save old values
 			boolean tempUp = up;
@@ -129,9 +151,11 @@ public class Tile {
 			rotateRight(numberOfTimes - 1);
 			
 		}
+                
+                updateColors();
 			
 		
-		
+            }
 	}
 	
 	

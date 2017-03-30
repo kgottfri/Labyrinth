@@ -18,13 +18,13 @@ public class Game {
 		board = new Board();
 		
 		//should generate random type
-		currentTile = new Tile(false, true, false, true, true);
+		currentTile = new Tile(board, 20, 20, false, true, false, true, true);
 		
 		//create scanner
 		Scanner s = new Scanner(System.in);
 		
 		while (keepPlaying) {
-			board.printBoard();
+			//board.printBoard();
 			System.out.println("\n Current tile: " + currentTile.stringRepresentation());
 			
 			System.out.println("\nHow many times would you like to rotate tile right?");
@@ -34,10 +34,10 @@ public class Game {
 			
 			System.out.println("Where would you like to insert tile? (1, 3, or 5): ");
 			
-			board.insertTile(s.nextInt(), currentTile);
+			//board.insertTile(s.nextInt(), currentTile);
 			
 			//new current tile (should be random generator)
-			currentTile = new Tile(false, true, true, true, true);
+			//currentTile = new Tile(false, true, true, true, true);
 			
 		}
         }

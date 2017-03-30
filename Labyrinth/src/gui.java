@@ -46,14 +46,15 @@ public class gui extends Application{
 		pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		
 		root.getChildren().add(pane);
-		game = new LabGame(this, labyrinthBoard);
-        setUpAnimation();
+		//game = new LabGame(this, labyrinthBoard);
+        //setUpAnimation();
 
-        setUpKeyPresses();
+        //setUpKeyPresses();
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		
+		//add tile
+                //Tile testTile = new Tile(labyrinthBoard, 20, 20, false, true, false, true, true);
 		
 		
 //		Button slideTileDown=new Button();

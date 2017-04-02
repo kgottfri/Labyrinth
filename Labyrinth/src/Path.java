@@ -170,7 +170,6 @@ public class Path {
 
         while (!Q.isEmpty()){
             currentNode = Q.poll();
-            System.out.println(currentNode);
             if (!discovered[currentNode]){
                 discovered[currentNode] = true;
                 reachableNodes.add(currentNode);

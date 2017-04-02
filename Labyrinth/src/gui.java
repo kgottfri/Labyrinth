@@ -1,3 +1,9 @@
+import com.sun.xml.internal.ws.commons.xmlutil.Converter;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -22,6 +28,7 @@ public class gui extends Application{
 	private Player currentPlayer;
 	private ArrayList<Integer> reachableTiles;
 	private LabGame game;
+	private GameState state;
 	private Label statusLabel;
 	private Timeline animation;
 	private static final double MILLISEC = 200;
@@ -36,6 +43,9 @@ public class gui extends Application{
 		// Set initial player positions
         labyrinthBoard.addPlayer(player1, new int[]{0, 0});
         labyrinthBoard.addPlayer(player2, new int[]{6, 6});
+
+        // Initialize game state.
+        state = GameState.insertTile;
 
         // Find reachable tiles for each player
         reachableTiles = findReachableTilesFor(currentPlayer);
@@ -54,6 +64,30 @@ public class gui extends Application{
 		pane.setCenter(labyrinthBoard);
 		pane.setPadding(new Insets(10,10,10,10));
 		pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+		Label stateLabel = new Label(state.toString());
+		stateLabel.textProperty().bind(new SimpleStringProperty(state.toString()));
+		pane.setBottom(stateLabel);
+
+		Button btn_1_1 = new Button("Insert into 1,1");
+		pane.setTop(btn_1_1);
+		btn_1_1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (state == GameState.insertTile) {
+                    labyrinthBoard.insertTileTop(1);
+                    reachableTiles = findReachableTilesFor(currentPlayer);
+                    state = GameState.movePiece;
+                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                }
+                else if (state == GameState.movePiece){
+                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+                    state = GameState.insertTile;
+                    btn_1_1.setText("Insert into 1,1");
+                }
+            }
+        });
+
 		
 		root.getChildren().add(pane);
 
@@ -62,18 +96,36 @@ public class gui extends Application{
             @Override
             public void handle(MouseEvent t) {
 
-                int[] tileCoordinates = labyrinthBoard.getTileCoordinates(t.getX(), t.getY());
-                int tileIndex = Path.getTileIndex(tileCoordinates,labyrinthBoard.getX_DIM());
-                for (int reachableTile:reachableTiles){
-                    if (tileIndex == reachableTile){
+                boolean reachable = false;
+                if (state == GameState.movePiece) {
+                    int[] tileCoordinates = labyrinthBoard.getTileCoordinates(t.getX(), t.getY());
+                    int tileIndex = Path.getTileIndex(tileCoordinates, labyrinthBoard.getX_DIM());
+                    for (int reachableTile : reachableTiles) {
+                        if (tileIndex == reachableTile) {
+                            reachable = true;
+                        }
+                    }
+
+                    if (reachable){
                         labyrinthBoard.removePlayer(currentPlayer);
                         labyrinthBoard.addPlayer(currentPlayer, tileCoordinates);
+                        currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+                        state = GameState.insertTile;
+                        btn_1_1.setText("Insert into 1,1");
                     }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Player " + currentPlayer.player_number + " can't move to this tile.", ButtonType.OK);
+                        alert.showAndWait();
+                    }
+                    //reachableTiles = findReachableTilesFor(currentPlayer);
+
+                    //labyrinthBoard.tileAt(t.getX(), t.getY()).rotateRight(1);
+                    //currentShape = new Shape(canvas, currentType, currentColor, t.getX(), t.getY());
                 }
-                currentPlayer = currentPlayer.color == Color.BLUE ? player2:player1;
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                //labyrinthBoard.tileAt(t.getX(), t.getY()).rotateRight(1);
-                //currentShape = new Shape(canvas, currentType, currentColor, t.getX(), t.getY());
+                else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "You must insert a tile first.", ButtonType.OK);
+                    alert.showAndWait();
+                }
 
             }
         });

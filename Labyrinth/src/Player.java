@@ -22,13 +22,14 @@ public class Player extends Pane{
     public static final int squareWidth=450;
     public static final int squareHeight=100;
     public Color color;
+    public int player_number;
     
     public Player(){
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
     }
     public Player(int playerType){
-        
+        player_number = playerType;
         if (playerType == 1){
             this.color = Color.BLUE;
         }

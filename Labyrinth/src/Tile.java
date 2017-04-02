@@ -31,11 +31,11 @@ public class Tile {
     Color path;
     Color background;
         
-    int upperLeftX;
-    int upperLeftY;
+    double upperLeftX;
+    double upperLeftY;
     Board board;
 
-	Tile(Board board, int upperLeftX, int upperLeftY,boolean up, boolean right, boolean down, boolean left, boolean canMove) {
+	Tile(Board board, double upperLeftX, double upperLeftY,boolean up, boolean right, boolean down, boolean left, boolean canMove) {
 		
             
                         //set colors
@@ -64,13 +64,29 @@ public class Tile {
 
                         
 	}
-        
+
+    public Tile(Tile toClone){
+        this.up = toClone.up;
+        this.right = toClone.right;
+        this.down = toClone.down;
+        this.left = toClone.left;
+        this.canMove = toClone.canMove;
+        this.treasure = toClone.treasure;
+        this.playersOnTile = toClone.playersOnTile;
+        this.shapes = toClone.shapes;
+        this.step = toClone.step;
+        this.path = toClone.path;
+        this.background = toClone.background;
+        this.upperLeftX = toClone.upperLeftX;
+        this.upperLeftY = toClone.upperLeftY;
+        this.board = toClone.board;
+    }
         /**
          * Set color - used every time somethign is changed
          * 
          */
-        private void updateColors() {
-            
+        protected void updateColors() {
+
             for (int i = 0; i < shapes.length; i++) {
                 for (int j = 0; j < shapes[i].length; j++) {
                     shapes[i][j] = new Rectangle(upperLeftX + (j*step), upperLeftY + (i*step), step, step);
@@ -156,7 +172,7 @@ public class Tile {
         }
 	}
 
-	public void setPosition(int upperLeftX, int upperLeftY){
+	public void setPosition(double upperLeftX, double upperLeftY){
         this.upperLeftX = upperLeftX;
         this.upperLeftY = upperLeftY;
         updateColors();

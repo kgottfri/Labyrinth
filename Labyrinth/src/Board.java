@@ -246,19 +246,25 @@ public class Board extends Pane{
 	 * //@param index (can currently only be 1, 3, 5)
 	 * //@param tile to be inserted
 	 */
-    /*
-	public void insertTile(int index, Tile newTile) {
+
+	public void insertTileTop(int index) {
 	
 		//move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
 		//if we need to do soemthing with the table that is pushed off it could be returned by this method
-		for (int i = BOARD_HEIGHT - 1; i > 0; i--) {
-			tiles[i][index] = tiles[i - 1][index]; 
+
+        Tile tempLastTile = new Tile(tiles[rows-1][index]);
+
+		for (int i = rows - 1; i > 0; i--) {
+			tiles[i][index] = new Tile(tiles[i - 1][index]);
+            tiles[i][index].setPosition(tiles[i][index].upperLeftX, tiles[i][index].upperLeftY + squareSize);
 		}
 		
 		//insert new tile
-		tiles[0][index] = newTile;
+		tiles[0][index] = new Tile(extra_tile);
+        tiles[0][index].setPosition(tiles[1][index].upperLeftX, 0.0);
+		extra_tile = tempLastTile;
 	}
-        */
+
         
     public int getX_DIM(){
             return rows;

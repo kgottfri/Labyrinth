@@ -34,10 +34,7 @@ public class Tile {
     int upperLeftX;
     int upperLeftY;
     Board board;
-        
-        
 
-	
 	Tile(Board board, int upperLeftX, int upperLeftY,boolean up, boolean right, boolean down, boolean left, boolean canMove) {
 		
             

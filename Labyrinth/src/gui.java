@@ -1,3 +1,4 @@
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.animation.KeyFrame;
@@ -18,8 +19,8 @@ public class gui extends Application{
 	private Board labyrinthBoard;
 	private Player player1;
 	private Player player2;
-	private ArrayList<Integer> player1ReachableTiles;
-    private ArrayList<Integer> player2ReachableTiles;
+	private Player currentPlayer;
+	private ArrayList<Integer> reachableTiles;
 	private LabGame game;
 	private Label statusLabel;
 	private Timeline animation;
@@ -30,14 +31,14 @@ public class gui extends Application{
 		labyrinthBoard = new Board();
 		player1 = new Player(1);
 		player2 = new Player(2);
+        currentPlayer = player1;
 
 		// Set initial player positions
-        labyrinthBoard.addPlayer(player1, 0, 0);
-        labyrinthBoard.addPlayer(player2, 6, 6);
+        labyrinthBoard.addPlayer(player1, new int[]{0, 0});
+        labyrinthBoard.addPlayer(player2, new int[]{6, 6});
 
         // Find reachable tiles for each player
-        player1ReachableTiles = findReachableTilesFor(player1);
-        player2ReachableTiles = findReachableTilesFor(player2);
+        reachableTiles = findReachableTilesFor(currentPlayer);
 		
 		player1.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
 		player2.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
@@ -55,6 +56,27 @@ public class gui extends Application{
 		pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		
 		root.getChildren().add(pane);
+
+        pane.getCenter().setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent t) {
+
+                int[] tileCoordinates = labyrinthBoard.getTileCoordinates(t.getX(), t.getY());
+                int tileIndex = Path.getTileIndex(tileCoordinates,labyrinthBoard.getX_DIM());
+                for (int reachableTile:reachableTiles){
+                    if (tileIndex == reachableTile){
+                        labyrinthBoard.removePlayer(currentPlayer);
+                        labyrinthBoard.addPlayer(currentPlayer, tileCoordinates);
+                    }
+                }
+                currentPlayer = currentPlayer.color == Color.BLUE ? player2:player1;
+                reachableTiles = findReachableTilesFor(currentPlayer);
+                //labyrinthBoard.tileAt(t.getX(), t.getY()).rotateRight(1);
+                //currentShape = new Shape(canvas, currentType, currentColor, t.getX(), t.getY());
+
+            }
+        });
 		//game = new LabGame(this, labyrinthBoard);
         //setUpAnimation();
 

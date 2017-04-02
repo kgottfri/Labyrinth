@@ -91,26 +91,36 @@ public class Board extends Pane{
 		}
 		// The only tile left is the extra maze tile
 		extra_tile = tilePool.remove(0);
-                
-        this.setOnMouseClicked(new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent t) {
 
-            	tileAt(t.getX(), t.getY()).rotateRight(1);
-            	//currentShape = new Shape(canvas, currentType, currentColor, t.getX(), t.getY());
-
-            }
-        });
 
 	}
         
     Tile tileAt(double x, double y) {
-            
+
+            int roundX = (int) Math.round(x);
+            int roundY = (int) Math.round(y);
+            int roundSquareSize = (int) Math.round(squareSize);
+
+            System.out.println("x: " + roundX);
+            System.out.println("y: " + roundY);
+            System.out.println("squaresize: " + roundSquareSize);
+
+            System.out.println("Yindex: " + roundY % roundSquareSize);
+            System.out.println("Xindex: " + roundX % roundSquareSize);
+
+            System.out.println("XTile: " + (roundX - (roundX % roundSquareSize))/ roundSquareSize);
+            System.out.println("YTile: " + (roundY - (roundY % roundSquareSize))/ roundSquareSize);
+
+
+            return tiles[(roundY - (roundY % roundSquareSize))/ roundSquareSize][(roundX - (roundX % roundSquareSize))/ roundSquareSize];
+    }
+
+    public int[] getTileCoordinates(double x, double y) {
+
         int roundX = (int) Math.round(x);
         int roundY = (int) Math.round(y);
         int roundSquareSize = (int) Math.round(squareSize);
-            
+
         System.out.println("x: " + roundX);
         System.out.println("y: " + roundY);
         System.out.println("squaresize: " + roundSquareSize);
@@ -118,11 +128,11 @@ public class Board extends Pane{
         System.out.println("Yindex: " + roundY % roundSquareSize);
         System.out.println("Xindex: " + roundX % roundSquareSize);
 
-        System.out.println("XTile: " + (roundX - (roundX % roundSquareSize))/ roundSquareSize);
-        System.out.println("YTile: " + (roundY - (roundY % roundSquareSize))/ roundSquareSize);
+        System.out.println("XTile: " + (roundX - (roundX % roundSquareSize)) / roundSquareSize);
+        System.out.println("YTile: " + (roundY - (roundY % roundSquareSize)) / roundSquareSize);
 
-            
-        return tiles[(roundY - (roundY % roundSquareSize))/ roundSquareSize][(roundX - (roundX % roundSquareSize))/ roundSquareSize];
+
+        return new int[]{(roundY - (roundY % roundSquareSize)) / roundSquareSize, (roundX - (roundX % roundSquareSize)) / roundSquareSize};
     }
 
     public int[] getPlayerLocation(Player player){
@@ -142,15 +152,14 @@ public class Board extends Pane{
         }
         return location;
     }
-    private ArrayList<Integer> findReachableTilesFor(Player player) {
-        int[] playerLocation = this.getPlayerLocation(player);
-        ArrayList<Integer> reachableTiles = Path.getReachableTiles(this, playerLocation);
 
-        return reachableTiles;
+    public void addPlayer(Player player, int[] locTile){
+	    tiles[locTile[0]][locTile[1]].setPlayer(player);
     }
 
-    public void addPlayer(Player player, int XTile, int YTile){
-	    tiles[XTile][YTile].setPlayer(player);
+    public void removePlayer(Player player){
+        int[] tileCoordinates = getPlayerLocation(player);
+        tiles[tileCoordinates[0]][tileCoordinates[1]].removePlayer(player);
     }
         /*
 	LabSquare shapeAt(int x, int y){

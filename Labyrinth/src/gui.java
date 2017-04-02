@@ -12,10 +12,14 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class gui extends Application{
 	private Board labyrinthBoard;
 	private Player player1;
 	private Player player2;
+	private ArrayList<Integer> player1ReachableTiles;
+    private ArrayList<Integer> player2ReachableTiles;
 	private LabGame game;
 	private Label statusLabel;
 	private Timeline animation;
@@ -23,9 +27,17 @@ public class gui extends Application{
 	
 	public void start(Stage primaryStage){
 		
-		labyrinthBoard=new Board();
-		player1= new Player();
-		player2=new Player();
+		labyrinthBoard = new Board();
+		player1 = new Player(1);
+		player2 = new Player(2);
+
+		// Set initial player positions
+        labyrinthBoard.addPlayer(player1, 0, 0);
+        labyrinthBoard.addPlayer(player2, 6, 6);
+
+        // Find reachable tiles for each player
+        player1ReachableTiles = findReachableTilesFor(player1);
+        player2ReachableTiles = findReachableTilesFor(player2);
 		
 		player1.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
 		player2.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
@@ -34,9 +46,6 @@ public class gui extends Application{
 		primaryStage.setTitle("Labyrinth");
 		Group root = new Group();
 		Scene scene = new Scene(root,1620,labyrinthBoard.getHeight());
-		
-		
-		
 		
 		BorderPane pane=new BorderPane();
 		pane.setLeft(player1);
@@ -68,6 +77,14 @@ public class gui extends Application{
 		
 		
 	}
+
+	private ArrayList<Integer> findReachableTilesFor(Player player) {
+        int[] playerLocation = labyrinthBoard.getPlayerLocation(player);
+        ArrayList<Integer> reachableTiles = Path.getReachableTiles(labyrinthBoard, playerLocation);
+
+        return reachableTiles;
+    }
+
 	private void setUpAnimation() {
         // Create a handler
         EventHandler<ActionEvent> eventHandler = (ActionEvent e) -> {

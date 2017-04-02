@@ -22,17 +22,18 @@ public class Tile {
 	
 	//not implemented yet (Z = no treasure)
 	char treasure = 'Z';
+	ArrayList<Player> playersOnTile = new ArrayList<Player>();
         
-        private Rectangle[][] shapes = new Rectangle[3][3];
+    private Rectangle[][] shapes = new Rectangle[3][3];
         
-        double step = Board.squareSize/3;
+    double step = Board.squareSize/3;
 
-        Color path;
-        Color background;
+    Color path;
+    Color background;
         
-        int upperLeftX;
-        int upperLeftY;
-        Board board;
+    int upperLeftX;
+    int upperLeftY;
+    Board board;
         
         
 
@@ -73,41 +74,44 @@ public class Tile {
          */
         private void updateColors() {
             
-                                    for (int i = 0; i < shapes.length; i++) {
-                            for (int j = 0; j < shapes[i].length; j++) {
-                                shapes[i][j] = new Rectangle(upperLeftX + (j*step), upperLeftY + (i*step), step, step);
-                                shapes[i][j].setFill(background);
-                                //System.out.println(i + " " + j + " added");
-                                board.getChildren().add(shapes[i][j]);
-                            }
-                        }
+            for (int i = 0; i < shapes.length; i++) {
+                for (int j = 0; j < shapes[i].length; j++) {
+                    shapes[i][j] = new Rectangle(upperLeftX + (j*step), upperLeftY + (i*step), step, step);
+                    shapes[i][j].setFill(background);
+                    //System.out.println(i + " " + j + " added");
+                    board.getChildren().add(shapes[i][j]);
+                }
+            }
                         
-                        //adjust to reflect up/right/down/left
+            //adjust to reflect up/right/down/left
                         
-                        //middle: always set to blue
-                        shapes[1][1].setFill(path);
-                        
-                        if (up) { shapes[0][1].setFill(path); }
-                        if (right) { shapes[1][2].setFill(path); }
-                        if (down) { shapes[2][1].setFill(path); }
-                        if (left) { shapes[1][0].setFill(path); }
+            //middle: always set to blue
+            shapes[1][1].setFill(path);
 
-                         //set strokes to null
-                         for (int i = 0; i < shapes.length; i++) {
-                            for (int j = 0; j < shapes[i].length; j++) {
-                                shapes[i][j].setStroke(shapes[i][j].getFill());
+            // Temp - color center tile the color of the player
+            for (Player p:playersOnTile){
+                shapes[1][1].setFill(p.color);
+            }
 
-                                }
-                            }
-                        
-                        
-                        
-                        //outer border
-                        Rectangle outer = new Rectangle(upperLeftX, upperLeftY, Board.squareSize, Board.squareSize);
-                        outer.setFill(null);
-                        outer.setStroke(Color.BLACK);
-                        outer.setStrokeWidth(3);
-                        board.getChildren().add(outer);
+            if (up) { shapes[0][1].setFill(path); }
+            if (right) { shapes[1][2].setFill(path); }
+            if (down) { shapes[2][1].setFill(path); }
+            if (left) { shapes[1][0].setFill(path); }
+
+            //set strokes to null
+            for (int i = 0; i < shapes.length; i++) {
+                for (int j = 0; j < shapes[i].length; j++) {
+                    shapes[i][j].setStroke(shapes[i][j].getFill());
+
+                }
+            }
+
+            //outer border
+            Rectangle outer = new Rectangle(upperLeftX, upperLeftY, Board.squareSize, Board.squareSize);
+            outer.setFill(null);
+            outer.setStroke(Color.BLACK);
+            outer.setStrokeWidth(3);
+            board.getChildren().add(outer);
             
         }
 	
@@ -132,8 +136,8 @@ public class Tile {
 	
 	public void rotateRight(int numberOfTimes) {
 		
-            if (canMove) {
-		if (numberOfTimes > 0 ) {
+        if (canMove) {
+		    if (numberOfTimes > 0 ) {
 			
 			//save old values
 			boolean tempUp = up;
@@ -150,13 +154,36 @@ public class Tile {
 			//recursive call
 			rotateRight(numberOfTimes - 1);
 			
-		}
-                
-                updateColors();
-			
-		
-            }
+		    }
+            updateColors();
+        }
 	}
+
+	public void setPosition(int upperLeftX, int upperLeftY){
+        this.upperLeftX = upperLeftX;
+        this.upperLeftY = upperLeftY;
+        updateColors();
+    }
+
+    public void setPlayer(Player player){
+	    playersOnTile.add(player);
+        updateColors();
+    }
+
+    public void removePlayer(Player player){
+        playersOnTile.remove(player);
+        updateColors();
+    }
+
+    public boolean hasPlayer(Player player){
+        boolean playerFound = false;
+        for (Player p:playersOnTile){
+            if (p.color == player.color){
+                playerFound = true;
+            }
+        }
+        return playerFound;
+    }
 	
 	
 	

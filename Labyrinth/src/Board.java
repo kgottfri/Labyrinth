@@ -9,99 +9,149 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Board extends Pane{
 
-        public static final int rows = 7;
+    public static final int rows = 7;
 	public static final int cols = 7;
 	public static final int boardSize = 500;
-        public static final double squareSize = boardSize/rows;
+    public static final double squareSize = boardSize/rows;
         
-        public LabSquare[][] filledSquares = new LabSquare[cols + 1][rows + 1];
-        LabSquare[] boardName;
-        private int score;
+    public LabSquare[][] filledSquares = new LabSquare[cols + 1][rows + 1];
+    LabSquare[] boardName;
+    private int score;
 
 	//constants
-	static final int CORNER_TILE = 0;
-	static final int TEE_TILE = 1;
-	static final int LINE_TILE = 2;
+	static final int CORNER_TILE = 16;
+	static final int TEE_TILE = 6;
+	static final int LINE_TILE = 12;
 	
 	//array of tiles
 	Tile[][] tiles;
+	Tile extra_tile;
 	
 	//constructor (no args needed)
 	public Board() {
 		tiles = new Tile[cols][rows];
 		this.setPrefHeight(boardSize);
 		this.setPrefWidth(boardSize);
-                
-                int upperLeftX = 0;
-                int upperLeftY = 0;
+
+		// Create movable tile pool:
+        ArrayList<Tile> tilePool = new ArrayList<Tile>();
+        for (int i = 0; i < CORNER_TILE; i++){ tilePool.add(new Tile(this, 0, 0, false, true, true, false, true));}
+        for (int i = 0; i < TEE_TILE; i++){ tilePool.add(new Tile(this, 0, 0, true, true, true, false, true));}
+        for (int i = 0; i < LINE_TILE; i++){ tilePool.add(new Tile(this, 0, 0, true, false, true, false, true));}
+        Random rand = new Random();
+
+        int upperLeftX = 0;
+        int upperLeftY = 0;
 		//all tiles that can move, with all 4 directions 
 		for (int i = 0; i < cols; i++) {
 			for (int j = 0; j < rows; j++) {
-                            
-                                //4 corner tiles
-                                if (i == 0 && j ==0) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, false, false); }
-                                else if (i == 0 && j ==6) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, false, true, true, false); }
-                                else if (i == 6 && j ==0) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, false, false); }
-                                else if (i == 6 && j ==6) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false); }
+                // non-movable tiles
+                if (i == 0 && j ==0) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, false, false); }
+                else if (i == 0 && j ==2) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false); }
+                else if (i == 0 && j ==4) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false); }
+                else if (i == 0 && j ==6) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, false, true, true, false); }
+                else if (i == 2 && j ==0) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false); }
+                else if (i == 2 && j ==2) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false); }
+                else if (i == 2 && j ==4) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false); }
+                else if (i == 2 && j ==6) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false); }
+                else if (i == 4 && j ==0) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false); }
+                else if (i == 4 && j ==2) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false); }
+                else if (i == 4 && j ==4) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false); }
+                else if (i == 4 && j ==6) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false); }
+                else if (i == 6 && j ==0) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, false, false); }
+                else if (i == 6 && j ==2) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false);  }
+                else if (i == 6 && j ==4) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false);  }
+                else if (i == 6 && j ==6) { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false); }
 
-                                //non-corner tiles
-                                else { tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, true); }
+                // movable tiles - pick a random tile from the tilepool
+                else {
+                    tiles[i][j] = tilePool.remove(rand.nextInt(tilePool.size()));
+
+                    // Update position
+                    tiles[i][j].setPosition(upperLeftX, upperLeftY);
+
+                    // Random orientation
+                    tiles[i][j].rotateRight(rand.nextInt(4));
+                }
                                
-                                //increment X component
-                                upperLeftX += squareSize;
+                //increment X component
+                upperLeftX += squareSize;
 			}
-                        //implement Y component
-                        upperLeftY += squareSize;
+            //implement Y component
+            upperLeftY += squareSize;
                         
-                        //reset X component
-                        upperLeftX = 0;
+            //reset X component
+            upperLeftX = 0;
                         
 		}
+		// The only tile left is the extra maze tile
+		extra_tile = tilePool.remove(0);
                 
-                this.setOnMouseClicked(new EventHandler<MouseEvent>()
+        this.setOnMouseClicked(new EventHandler<MouseEvent>()
         {
             @Override
             public void handle(MouseEvent t) {
-                
-     
+
             	tileAt(t.getX(), t.getY()).rotateRight(1);
             	//currentShape = new Shape(canvas, currentType, currentColor, t.getX(), t.getY());
-            	
-            
+
             }
         });
-		
-		//SET IMMOVABLE TILES
-		
-		//4 corner tiles: 
-		//tiles[0][0] = new Tile(false, true, true, false, false);
-		//tiles[0][6] = new Tile(false, false, true, true, false);
-		//tiles[6][0] = new Tile(true, false, false, true, false);
-		//tiles[6][6] = new Tile(true, true, false, false, false);
-		
-		//set random tiles (right now, just all 4 selected)
-		//Can actually be any combo of 2 or 3 directions
-		
+
 	}
         
-        Tile tileAt(double x, double y) {
+    Tile tileAt(double x, double y) {
             
-            int roundX = (int) Math.round(x);
-            int roundY = (int) Math.round(y);
-            int roundSquareSize = (int) Math.round(squareSize);
+        int roundX = (int) Math.round(x);
+        int roundY = (int) Math.round(y);
+        int roundSquareSize = (int) Math.round(squareSize);
             
-            System.out.println("x: " + roundX);
-            System.out.println("y: " + roundY);
-            System.out.println("squaresize: " + roundSquareSize);
+        System.out.println("x: " + roundX);
+        System.out.println("y: " + roundY);
+        System.out.println("squaresize: " + roundSquareSize);
 
-            System.out.println("Yindex: " + roundY % roundSquareSize);
-            System.out.println("Xindex: " + roundX % roundSquareSize);
+        System.out.println("Yindex: " + roundY % roundSquareSize);
+        System.out.println("Xindex: " + roundX % roundSquareSize);
+
+        System.out.println("XTile: " + (roundX - (roundX % roundSquareSize))/ roundSquareSize);
+        System.out.println("YTile: " + (roundY - (roundY % roundSquareSize))/ roundSquareSize);
 
             
-            return tiles[(roundY - (roundY % roundSquareSize))/ roundSquareSize][(roundX - (roundX % roundSquareSize))/ roundSquareSize];
+        return tiles[(roundY - (roundY % roundSquareSize))/ roundSquareSize][(roundX - (roundX % roundSquareSize))/ roundSquareSize];
+    }
+
+    public int[] getPlayerLocation(Player player){
+	    int i = 0;
+	    int j = 0;
+	    int[] location = new int[2];
+	    for(Tile[] trow:tiles){
+	        for(Tile t:trow){
+	            if(t.hasPlayer(player)){
+                    location[0] = i;
+                    location[1] = j;
+                }
+                j++;
+            }
+            j = 0;
+            i++;
         }
+        return location;
+    }
+    private ArrayList<Integer> findReachableTilesFor(Player player) {
+        int[] playerLocation = this.getPlayerLocation(player);
+        ArrayList<Integer> reachableTiles = Path.getReachableTiles(this, playerLocation);
+
+        return reachableTiles;
+    }
+
+    public void addPlayer(Player player, int XTile, int YTile){
+	    tiles[XTile][YTile].setPlayer(player);
+    }
         /*
 	LabSquare shapeAt(int x, int y){
 		return boardName[(y*rows)+x];
@@ -184,8 +234,8 @@ public class Board extends Pane{
     */
 	/**
 	 * 
-	 * @param index (can currently only be 1, 3, 5)
-	 * @param tile to be inserted
+	 * //@param index (can currently only be 1, 3, 5)
+	 * //@param tile to be inserted
 	 */
     /*
 	public void insertTile(int index, Tile newTile) {
@@ -201,7 +251,7 @@ public class Board extends Pane{
 	}
         */
         
-        public int getX_DIM(){
+    public int getX_DIM(){
             return rows;
 	}
 	public int getY_DIM(){

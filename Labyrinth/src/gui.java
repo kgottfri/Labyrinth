@@ -22,6 +22,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -81,7 +84,7 @@ public class gui extends Application {
 
         primaryStage.setTitle("Labyrinth");
         Group root = new Group();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root,1620,labyrinthBoard.getHeight());
 
         BorderPane pane = new BorderPane();
         //pane.setLeft(player1);

@@ -58,14 +58,12 @@ public class gui extends Application {
         int dealInd = 0; //index for dealing
         while (!treasureDeck.isEmpty()) {
             Card cur = treasureDeck.dealCard();
-            cur.Print();
             if (dealInd % 2 == 0) {
                 player1.addCard(cur);
             } else {
                 player2.addCard(cur);
             }
             dealInd++;
-            System.out.println(dealInd);
         }
         System.out.println(player1.removeCard().getValueAsString());
         // Set initial player positions
@@ -597,7 +595,6 @@ public PlayerPane(Player player, int playerNum){
 //            String testString = new String("/treasureCards/A.jpg");
 
         String cardString = new String("/treasureCards/" + card.getValueAsString() + ".jpg");
-        System.out.println(cardString);
         Image image = new Image(cardString);
         ImageView treasureCard = new ImageView(image);
         treasureCard.setFitWidth(110);

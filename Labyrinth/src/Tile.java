@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
 /**
  * 
@@ -22,6 +24,7 @@ public class Tile {
 	
 	//not implemented yet (Z = no treasure)
 	char treasure = 'Z';
+        boolean hasTreasure = false;
 	ArrayList<Player> playersOnTile = new ArrayList<Player>();
         
     private Rectangle[][] shapes = new Rectangle[3][3];
@@ -146,7 +149,24 @@ public class Tile {
 
 		
 	}
-	
+	public void setTileTreasure(char t){
+            this.treasure = t;
+            this.hasTreasure = true;
+            printTileTreasure();
+        }
+        public boolean hasTreasure(){
+            return hasTreasure;
+            
+        }
+        public void printTileTreasure(){
+            if(treasure != 'Z'){
+                Label treasure = new Label(""+this.treasure);
+                treasure.setFont(Font.font("Cambria",21));
+                double shift = .75;
+                treasure.relocate(upperLeftX + 4, upperLeftY + shift);
+                board.getChildren().add(treasure);
+            }
+        }
 	public void rotateRight(int numberOfTimes) {
 		
         if (canMove) {

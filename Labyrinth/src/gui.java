@@ -1,4 +1,3 @@
-import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert;
@@ -13,9 +12,11 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -43,7 +44,7 @@ public class gui extends Application{
 		// Set initial player positions
         labyrinthBoard.addPlayer(player1, new int[]{0, 0});
         labyrinthBoard.addPlayer(player2, new int[]{6, 6});
-
+        //labyrinthBoard.setStyle("-fx-padding: 60px 10px 10px 10px");
         // Initialize game state.
         state = GameState.insertTile;
 
@@ -59,10 +60,12 @@ public class gui extends Application{
 		Scene scene = new Scene(root,1620,labyrinthBoard.getHeight());
 		
 		BorderPane pane=new BorderPane();
-		pane.setLeft(player1);
-		pane.setRight(player2);
-		pane.setCenter(labyrinthBoard);
-		pane.setPadding(new Insets(10,10,10,10));
+		//pane.setLeft(player1);
+		//pane.setRight(player2);
+		pane.setLeft(new PlayerPane(player1,1));
+		pane.setRight(new PlayerPane(player2,2));
+		pane.setCenter(new CustomPane(labyrinthBoard));
+		//pane.setPadding(new Insets(10,10,10,10));
 		pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 		Label stateLabel = new Label(state.toString());
@@ -215,5 +218,89 @@ public class gui extends Application{
 		
 		//LabSquare test = new LabPiece(board.rows/2,1,1,board);
 		//f.show();
+	}
+}
+
+class CustomPane extends StackPane{
+	public CustomPane(Board labyrinthBoard){
+		labyrinthBoard.setPadding(new Insets(90,90,90,90));
+		getChildren().add(labyrinthBoard);
+		setPadding(new Insets(90,90,90,90));
+		
+                InsertButton btn_1_1 = new InsertButton(labyrinthBoard, this, 1, 1, "-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+                InsertButton btn_1_3 = new InsertButton(labyrinthBoard, this, 3, 1, "-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+		InsertButton btn_1_5 = new InsertButton(labyrinthBoard, this, 5, 1, "-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                
+                InsertButton btn_2_1 = new InsertButton(labyrinthBoard, this, 1, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                
+                InsertButton btn_2_3 = new InsertButton(labyrinthBoard, this, 3, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+                InsertButton btn_2_5 = new InsertButton(labyrinthBoard, this, 5, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+                InsertButton btn_3_1 = new InsertButton(labyrinthBoard, this, 1, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+                InsertButton btn_3_3 = new InsertButton(labyrinthBoard, this, 3, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+		InsertButton btn_3_5 = new InsertButton(labyrinthBoard, this, 5, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+                InsertButton btn_4_1 = new InsertButton(labyrinthBoard, this, 1, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+		InsertButton btn_4_3 = new InsertButton(labyrinthBoard, this, 3, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+                InsertButton btn_4_5 = new InsertButton(labyrinthBoard, this, 5, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+		
+		setAlignment(btn_1_1.getButton(), Pos.TOP_LEFT);
+		setAlignment(btn_1_3.getButton(), Pos.TOP_CENTER);
+		setAlignment(btn_1_5.getButton(), Pos.TOP_RIGHT);
+		
+		setMargin(btn_1_1.getButton(),new Insets(-80,0,0,90));
+		setMargin(btn_1_3.getButton(),new Insets(-80,0,0,0));
+		setMargin(btn_1_5.getButton(),new Insets(-80,90,0,0));
+		
+		setAlignment(btn_2_1.getButton(), Pos.BOTTOM_LEFT);
+		setAlignment(btn_2_3.getButton(), Pos.BOTTOM_CENTER);
+		setAlignment(btn_2_5.getButton(), Pos.BOTTOM_RIGHT);
+		
+		setMargin(btn_2_1.getButton(),new Insets(0,0,-50,90));
+		setMargin(btn_2_3.getButton(),new Insets(0,0,-50,0));
+		setMargin(btn_2_5.getButton(),new Insets(0,90,-50,0));
+		
+		setAlignment(btn_3_1.getButton(), Pos.CENTER_LEFT);
+		setAlignment(btn_3_3.getButton(), Pos.CENTER_LEFT);
+		setAlignment(btn_3_5.getButton(), Pos.CENTER_LEFT);
+		
+		setMargin(btn_3_1.getButton(),new Insets(-300,0,0,-80));
+		setMargin(btn_3_3.getButton(),new Insets(-15,0,0,-80));
+		setMargin(btn_3_5.getButton(),new Insets(270,0,0,-80));
+		
+		setAlignment(btn_4_1.getButton(), Pos.CENTER_RIGHT);
+		setAlignment(btn_4_3.getButton(), Pos.CENTER_RIGHT);
+		setAlignment(btn_4_5.getButton(), Pos.CENTER_RIGHT);
+		
+		setMargin(btn_4_1.getButton(),new Insets(-300,-80,0,0));
+		setMargin(btn_4_3.getButton(),new Insets(-15,-80,0,0));
+		setMargin(btn_4_5.getButton(),new Insets(270,-80,0,0));
+	}
+}
+class PlayerPane extends Pane{ 
+    //private Label player2=new Label();
+    
+	public PlayerPane(Player player, int playerNum){
+		getChildren().add(player);
+		Label play=new Label("Player "+playerNum);
+		play.setPadding(new Insets(20,0,50,205));
+		getChildren().add(play);
+		Label curPiece=new Label("Current Piece");
+		curPiece.setPadding(new Insets(40,0,50,190));
+		getChildren().add(curPiece);
+		Label curTreasure=new Label("Current Treasure Card");
+		curTreasure.setPadding(new Insets(220,0,50,165));
+		getChildren().add(curTreasure);
+	    Label compTreasure=new Label("# Of Completed Cards");
+	    compTreasure.setPadding(new Insets(450,0,50,160));
+	    getChildren().add(compTreasure);
 	}
 }

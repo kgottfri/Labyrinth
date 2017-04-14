@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class gui extends Application {
 
@@ -571,22 +573,26 @@ class CustomPane extends StackPane {
 class PlayerPane extends Pane {
     //private Label player2=new Label();
 
-    public PlayerPane(Player player, int playerNum) {
-        getChildren().add(player);
-        Label play = new Label("Player " + playerNum);
-        play.setPadding(new Insets(20, 0, 50, 205));
-        getChildren().add(play);
-        Label curPiece = new Label("Current Piece");
-        curPiece.setPadding(new Insets(40, 0, 50, 190));
-        getChildren().add(curPiece);
-        Label curTreasure = new Label("Current Treasure Card");
-        curTreasure.setPadding(new Insets(220, 0, 50, 165));
-        getChildren().add(curTreasure);
-        Label compTreasure = new Label("# Of Completed Cards");
-        compTreasure.setPadding(new Insets(450, 0, 50, 160));
-        getChildren().add(compTreasure);
-    }
-
+public PlayerPane(Player player, int playerNum){
+		getChildren().add(player);
+		Label play=new Label("Player "+playerNum);
+		play.setPadding(new Insets(20,0,50,175));
+                play.setFont(Font.font("Verdana",FontWeight.BOLD,24));
+		if(playerNum==1)
+			play.setTextFill(Color.BLUE);
+		else
+			play.setTextFill(Color.GREEN);
+		getChildren().add(play);
+		Label curPiece=new Label("Current Piece");
+		curPiece.setPadding(new Insets(55,0,50,190));
+		getChildren().add(curPiece);
+		Label curTreasure=new Label("Current Treasure Card");
+		curTreasure.setPadding(new Insets(220,0,50,165));
+		getChildren().add(curTreasure);
+	    Label compTreasure=new Label("# Of Completed Cards");
+	    compTreasure.setPadding(new Insets(450,0,50,160));
+	    getChildren().add(compTreasure);
+	}
     public void setTreasureImage(Player p, Card card) {
 //            String testString = new String("/treasureCards/A.jpg");
 
@@ -600,3 +606,6 @@ class PlayerPane extends Pane {
         p.getChildren().add(treasureCard);
     }
 }
+    
+
+

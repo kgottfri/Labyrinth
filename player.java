@@ -1,6 +1,13 @@
+import java.util.LinkedList;
 import javafx.scene.layout.*;
 
 public class player extends Pane{
+        protected LinkedList<Card> treasuresHand;
+        public boolean activePlayer = false;
+        protected int score = 0;
+        protected int successfulRequest = 0;
+        protected int totalRequest = 0;
+        protected int treasuresGotten = 0;
 	public static final int Prows = 7;
 	public static final int Pcols = 1;
 	public static final int squareWidth=450;

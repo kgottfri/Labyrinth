@@ -27,6 +27,7 @@ public class Player extends Pane{
     public Player(){
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
+        treasuresHand = new LinkedList<Card>();
     }
     public Player(int playerType){
         player_number = playerType;
@@ -71,8 +72,8 @@ public class Player extends Pane{
      * The removeCard method removes a card object from the LinkedList hand
      * @param c The Card object to be removed from players hand
      */
-    public void removeCard(Card c) {
-        treasuresHand.remove(c);
+    public Card removeCard() {
+        return treasuresHand.pop();
     }
     /**
      * The askforCards method searches hand for a card specified by the opponent

@@ -13,13 +13,16 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import javafx.scene.image.ImageView;
 
 public class gui extends Application{
 	private Board labyrinthBoard;
@@ -31,19 +34,35 @@ public class gui extends Application{
 	private GameState state;
 	private Label statusLabel;
 	private Timeline animation;
+        private Deck treasureDeck;
 	private static final double MILLISEC = 200;
-	
+	PlayerPane leftPane;
+        PlayerPane rightPane;
 	public void start(Stage primaryStage){
-		
+            treasureDeck = new Deck();
+            treasureDeck.shuffle();	
 		labyrinthBoard = new Board();
-		player1 = new Player(1);
-		player2 = new Player(2);
-        currentPlayer = player1;
-
+		player1 = new HumanPlayer(1);
+		player2 = new HumanPlayer(2);
+                leftPane = new PlayerPane(player1,1);
+                rightPane = new PlayerPane(player2,2);
+            currentPlayer = player1;
+            int dealInd =0; //index for dealing
+            while(!treasureDeck.isEmpty()){
+                Card cur = treasureDeck.dealCard();
+                cur.Print();
+                if(dealInd % 2 == 0)
+                    player1.addCard(cur);
+                else
+                    player2.addCard(cur);
+                dealInd++;
+                System.out.println(dealInd);
+            }
+            System.out.println(player1.removeCard().getValueAsString());
 		// Set initial player positions
         labyrinthBoard.addPlayer(player1, new int[]{0, 0});
         labyrinthBoard.addPlayer(player2, new int[]{6, 6});
-
+        //labyrinthBoard.setStyle("-fx-padding: 60px 10px 10px 10px");
         // Initialize game state.
         state = GameState.insertTile;
 
@@ -56,13 +75,17 @@ public class gui extends Application{
 		
 		primaryStage.setTitle("Labyrinth");
 		Group root = new Group();
-		Scene scene = new Scene(root,1620,labyrinthBoard.getHeight());
+		Scene scene = new Scene(root);
 		
 		BorderPane pane=new BorderPane();
-		pane.setLeft(player1);
-		pane.setRight(player2);
-		pane.setCenter(labyrinthBoard);
-		pane.setPadding(new Insets(10,10,10,10));
+		//pane.setLeft(player1);
+		//pane.setRight(player2);
+		pane.setLeft(leftPane);
+		pane.setRight(rightPane);
+		pane.setCenter(new CustomPane(labyrinthBoard));
+                leftPane.setTreasureImage(player1.removeCard());
+                rightPane.setTreasureImage(player2.removeCard());
+		//pane.setPadding(new Insets(10,10,10,10));
 		pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 		Label stateLabel = new Label(state.toString());
@@ -216,4 +239,152 @@ public class gui extends Application{
 		//LabSquare test = new LabPiece(board.rows/2,1,1,board);
 		//f.show();
 	}
+}
+
+class CustomPane extends StackPane{
+	public CustomPane(Board labyrinthBoard){
+		labyrinthBoard.setPadding(new Insets(90,90,90,90));
+		getChildren().add(labyrinthBoard);
+		setPadding(new Insets(90,90,90,90));
+		
+		Button btn_1_1 = new Button();
+		btn_1_1.setMaxWidth(35);
+		btn_1_1.setMaxHeight(60);
+		btn_1_1.setStyle("-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_1_1);
+		
+		Button btn_1_3 = new Button();
+		btn_1_3.setMaxWidth(35);
+		btn_1_3.setMaxHeight(60);
+		btn_1_3.setStyle("-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_1_3);
+		
+		Button btn_1_5 = new Button();
+		btn_1_5.setMaxWidth(35);
+		btn_1_5.setMaxHeight(60);
+		btn_1_5.setStyle("-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_1_5);
+		
+		
+		Button btn_2_1 = new Button();
+		btn_2_1.setMaxWidth(35);
+		btn_2_1.setMaxHeight(60);
+		btn_2_1.setStyle("-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_2_1);
+		
+		Button btn_2_3 = new Button();
+		btn_2_3.setMaxWidth(35);
+		btn_2_3.setMaxHeight(60);
+		btn_2_3.setStyle("-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_2_3);
+		
+		Button btn_2_5 = new Button();
+		btn_2_5.setMaxWidth(35);
+		btn_2_5.setMaxHeight(60);
+		btn_2_5.setStyle("-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_2_5);
+		
+		
+		Button btn_3_1 = new Button();
+		btn_3_1.setMaxWidth(60);
+		btn_3_1.setMaxHeight(35);
+		btn_3_1.setStyle("-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_3_1);
+		
+		Button btn_3_3 = new Button();
+		btn_3_3.setMaxWidth(60);
+		btn_3_3.setMaxHeight(35);
+		btn_3_3.setStyle("-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_3_3);
+		
+		Button btn_3_5 = new Button();
+		btn_3_5.setMaxWidth(60);
+		btn_3_5.setMaxHeight(35);
+		btn_3_5.setStyle("-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_3_5);
+		
+		
+		Button btn_4_1 = new Button();
+		btn_4_1.setMaxWidth(60);
+		btn_4_1.setMaxHeight(35);
+		btn_4_1.setStyle("-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_4_1);
+		
+		Button btn_4_3 = new Button();
+		btn_4_3.setMaxWidth(60);
+		btn_4_3.setMaxHeight(35);
+		btn_4_3.setStyle("-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_4_3);
+		
+		Button btn_4_5 = new Button();
+		btn_4_5.setMaxWidth(60);
+		btn_4_5.setMaxHeight(35);
+		btn_4_5.setStyle("-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		getChildren().add(btn_4_5);
+		
+		
+		setAlignment(btn_1_1, Pos.TOP_LEFT);
+		setAlignment(btn_1_3, Pos.TOP_CENTER);
+		setAlignment(btn_1_5, Pos.TOP_RIGHT);
+		
+		setMargin(btn_1_1,new Insets(-80,0,0,90));
+		setMargin(btn_1_3,new Insets(-80,0,0,0));
+		setMargin(btn_1_5,new Insets(-80,90,0,0));
+		
+		setAlignment(btn_2_1, Pos.BOTTOM_LEFT);
+		setAlignment(btn_2_3, Pos.BOTTOM_CENTER);
+		setAlignment(btn_2_5, Pos.BOTTOM_RIGHT);
+		
+		setMargin(btn_2_1,new Insets(0,0,-50,90));
+		setMargin(btn_2_3,new Insets(0,0,-50,0));
+		setMargin(btn_2_5,new Insets(0,90,-50,0));
+		
+		setAlignment(btn_3_1, Pos.CENTER_LEFT);
+		setAlignment(btn_3_3, Pos.CENTER_LEFT);
+		setAlignment(btn_3_5, Pos.CENTER_LEFT);
+		
+		setMargin(btn_3_1,new Insets(-300,0,0,-80));
+		setMargin(btn_3_3,new Insets(-15,0,0,-80));
+		setMargin(btn_3_5,new Insets(270,0,0,-80));
+		
+		setAlignment(btn_4_1, Pos.CENTER_RIGHT);
+		setAlignment(btn_4_3, Pos.CENTER_RIGHT);
+		setAlignment(btn_4_5, Pos.CENTER_RIGHT);
+		
+		setMargin(btn_4_1,new Insets(-300,-80,0,0));
+		setMargin(btn_4_3,new Insets(-15,-80,0,0));
+		setMargin(btn_4_5,new Insets(270,-80,0,0));
+	}
+}
+class PlayerPane extends Pane{ 
+    //private Label player2=new Label();
+    
+	public PlayerPane(Player player, int playerNum){
+		getChildren().add(player);
+		Label play=new Label("Player "+playerNum);
+		play.setPadding(new Insets(20,0,50,205));
+		getChildren().add(play);
+		Label curPiece=new Label("Current Piece");
+		curPiece.setPadding(new Insets(40,0,50,190));
+		getChildren().add(curPiece);
+		Label curTreasure=new Label("Current Treasure Card");
+		curTreasure.setPadding(new Insets(220,0,50,165));
+		getChildren().add(curTreasure);
+                ImageView treasureCard = new ImageView();
+                treasureCard.setFitWidth(71.428571);
+                treasureCard.setFitHeight(100);
+                getChildren().add(treasureCard);
+                Label compTreasure=new Label("# Of Completed Cards");
+	    compTreasure.setPadding(new Insets(450,0,50,160));
+	    getChildren().add(compTreasure);
+	}
+        
+        public void setTreasureImage(Card card){
+//            String testString = new String("/treasureCards/A.jpg");
+
+            String cardString = new String("/treasureCards/"+card.getValueAsString() + ".jpg");
+            System.out.println(cardString);
+            Image image = new Image(cardString);
+            getChildren().add(new ImageView(image));
+        }
 }

@@ -1,7 +1,6 @@
 
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Random;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -11,11 +10,21 @@ import java.util.Random;
  */
 public class HumanPlayer extends Player {
     
+    public HumanPlayer(int playerType){
+                player_number = playerType;
+        if (playerType == 1){
+            this.color = Color.BLUE;
+        }
+        else
+            this.color = Color.GREEN;
+        
+        this.setPrefHeight(Prows*squareHeight);
+	this.setPrefWidth(Pcols*squareWidth);
+        treasuresHand = new LinkedList<Card>();
+    }
     /**
      *
      */
-    public HumanPlayer(int typePlayer){
-    }
     
     /**
      * The takeTurn method displays users hand and prompts for a card to ask

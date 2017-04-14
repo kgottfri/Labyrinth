@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class gui extends Application{
 	private Board labyrinthBoard;
@@ -291,10 +293,15 @@ class PlayerPane extends Pane{
 	public PlayerPane(Player player, int playerNum){
 		getChildren().add(player);
 		Label play=new Label("Player "+playerNum);
-		play.setPadding(new Insets(20,0,50,205));
+		play.setPadding(new Insets(20,0,50,175));
+                play.setFont(Font.font("Verdana",FontWeight.BOLD,24));
+		if(playerNum==1)
+			play.setTextFill(Color.BLUE);
+		else
+			play.setTextFill(Color.GREEN);
 		getChildren().add(play);
 		Label curPiece=new Label("Current Piece");
-		curPiece.setPadding(new Insets(40,0,50,190));
+		curPiece.setPadding(new Insets(55,0,50,190));
 		getChildren().add(curPiece);
 		Label curTreasure=new Label("Current Treasure Card");
 		curTreasure.setPadding(new Insets(220,0,50,165));

@@ -25,6 +25,7 @@ public class SimpleCom extends Player{
      * @param gm GameManager
      * @param p1 Opponent
      */
+    /*
     public void takeTurn(Player p1){
 		if(treasuresHand.isEmpty())
 		{
@@ -48,7 +49,7 @@ public class SimpleCom extends Player{
 						addCard(opp_hand[i]);
 					}
 				}
-				successfulRequest++;
+				successfulTreasure++;
 				
 			}
 			else{
@@ -59,7 +60,8 @@ public class SimpleCom extends Player{
 				sort();
 			checkForSets();
 		}
+
     }
-    
+ */   
     
 }

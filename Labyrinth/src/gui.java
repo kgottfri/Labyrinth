@@ -65,7 +65,6 @@ public class gui extends Application {
             }
             dealInd++;
         }
-        System.out.println(player1.removeCard().getValueAsString());
         // Set initial player positions
         labyrinthBoard.addPlayer(player1, new int[]{0, 0});
         labyrinthBoard.addPlayer(player2, new int[]{6, 6});
@@ -90,8 +89,8 @@ public class gui extends Application {
         pane.setLeft(leftPane);
         pane.setRight(rightPane);
         pane.setCenter(boardPane);
-        leftPane.setTreasureImage(player1, player1.removeCard());
-        rightPane.setTreasureImage(player2, player2.removeCard());
+        leftPane.setTreasureImage(player1, player1.getCard());
+        rightPane.setTreasureImage(player2, player2.getCard());
         //pane.setPadding(new Insets(10,10,10,10));
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
@@ -325,7 +324,18 @@ public class gui extends Application {
 
                     if (reachable) {
                         labyrinthBoard.removePlayer(currentPlayer);
-                        labyrinthBoard.addPlayer(currentPlayer, tileCoordinates);
+                        if(labyrinthBoard.addPlayer(currentPlayer, tileCoordinates)){
+                            currentPlayer.removeCard();
+                            if(currentPlayer.player_number == 1){
+                                leftPane.setTreasureImage(player1,null);
+                                leftPane.setTreasureImage(player1,player1.getCard());
+                                System.out.println("Success");
+                            }
+                                
+                            else
+                                rightPane.setTreasureImage(player2,player2.getCard());
+                        }
+//                        labyrinthBoard.checkIsTreasure(currentPlayer,tileCoordinates);
                         currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                         state = GameState.insertTile;
                     } else {
@@ -365,7 +375,7 @@ public class gui extends Application {
     private ArrayList<Integer> findReachableTilesFor(Player player) {
         int[] playerLocation = labyrinthBoard.getPlayerLocation(player);
         ArrayList<Integer> reachableTiles = Path.getReachableTiles(labyrinthBoard, playerLocation);
-
+        
         return reachableTiles;
     }
 
@@ -410,6 +420,7 @@ public class gui extends Application {
 //                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+                    
                     state = GameState.insertTile;
 //                    btn_1_1.setText("Insert into 1,1");
                 }

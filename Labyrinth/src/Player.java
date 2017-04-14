@@ -12,9 +12,10 @@ import javafx.scene.paint.Color;
 public class Player extends Pane{
     
     protected LinkedList<Card> treasuresHand;
+    private char currentTreasureCard;
     public boolean activePlayer = false;
     protected int score = 0;
-    protected int successfulRequest = 0;
+    protected char successfulTreasure;
     protected int totalRequest = 0;
     protected int treasuresGotten = 0;
     public static final int Prows = 7;
@@ -60,6 +61,7 @@ public class Player extends Pane{
     public LinkedList<Card> getTreasuresList() {
         return treasuresHand;
     }
+    
     /**
      * The addCard method ands a card object to the LinkedList hand
      * @param c The Card object to be added to the players hand
@@ -68,30 +70,20 @@ public class Player extends Pane{
         if(c != null)
             treasuresHand.add(c);
     }
+    public void removeCard(){
+        treasuresHand.remove();
+    }
      /**
-     * The removeCard method removes a card object from the LinkedList hand
-     * @param c The Card object to be removed from players hand
+     * The getCard method removes a card object from the LinkedList hand
      */
-    public Card removeCard() {
-        return treasuresHand.pop();
+    public Card getCard() {
+        return treasuresHand.peek();
     }
-    /**
-     * The askforCards method searches hand for a card specified by the opponent
-     * @param c The card sought after by opponent
-     * @return cards Array of 0-3 Card objects to be given to opponent
-     */
-    public Card[] askforCards(Card c){
-        Card[] cards = new Card[3];
-        int j = 0;
-        for(int i = treasuresHand.size()-1; i >= 0;i--){
-            if(treasuresHand.get(i).equals(c)){
-                treasuresHand.remove(i);
-                cards[j] = c;
-                j++;
-            }
-        }
-        return cards;
+    public char getTreasure(){
+        
+        return getCard().getValueAsString().charAt(0);
     }
+
     /**
      * The checkForSets method searches through players hand for sets of 4
      * If a set is found, those cards are removed from the hand and the players
@@ -145,8 +137,8 @@ public class Player extends Pane{
      * by the player
      * @return successful_request Number of successful requests made
      */
-    public int getSuccessfulRequests(){
-        return successfulRequest;
+    public char getSuccessfulTreasures(){
+        return successfulTreasure;
     }
   
 }

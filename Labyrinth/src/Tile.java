@@ -154,6 +154,9 @@ public class Tile {
             this.hasTreasure = true;
             printTileTreasure();
         }
+        public char getTreasure(){
+            return treasure;
+        }
         public boolean hasTreasure(){
             return hasTreasure;
             
@@ -161,9 +164,10 @@ public class Tile {
         public void printTileTreasure(){
             if(treasure != 'Z'){
                 Label treasure = new Label(""+this.treasure);
-                treasure.setFont(Font.font("Cambria",21));
-                double shift = .75;
-                treasure.relocate(upperLeftX + 4, upperLeftY + shift);
+                treasure.setFont(Font.font("Lucida Grande",21));
+                treasure.setTextFill(Color.web("#f44242"));
+                double shift = .45;
+                treasure.relocate(upperLeftX + 2.5, upperLeftY - shift);
                 board.getChildren().add(treasure);
             }
         }
@@ -201,11 +205,13 @@ public class Tile {
     public void setPlayer(Player player){
 	    playersOnTile.add(player);
         updateColors();
+        printTileTreasure();
     }
 
     public void removePlayer(Player player){
         playersOnTile.remove(player);
         updateColors();
+        printTileTreasure();
     }
 
     public boolean hasPlayer(Player player){

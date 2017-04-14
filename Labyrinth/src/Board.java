@@ -138,13 +138,23 @@ public class Board extends Pane {
         for (int i = 0; i < 24; i++) {
             Random randX = new Random();
             Random randY = new Random();
-            Tile currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
+            int x = randX.nextInt(rows);
+            int y = randY.nextInt(cols);
+            while((x == 0 && y == 0) || (x==6 && y ==6)){
+                x = randX.nextInt(rows);
+                y = randY.nextInt(cols);
+            }
+            Tile currTile = tiles[x][y];
             while((currTile.hasTreasure()))
             {
                 currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
             }
                 currTile.setTileTreasure((char) (i + 65));
         }
+    }
+    
+    public boolean checkIsTreasure(Player player, int[]locTile){
+        return true;
     }
 
     public int[] getTileCoordinates(double x, double y) {
@@ -183,13 +193,21 @@ public class Board extends Pane {
         return location;
     }
 
-    public void addPlayer(Player player, int[] locTile) {
-        tiles[locTile[0]][locTile[1]].setPlayer(player);
+    public boolean addPlayer(Player player, int[] locTile) {
+        Tile currTile = tiles[locTile[0]][locTile[1]];
+        currTile.setPlayer(player);
+        if(currTile.hasTreasure()){
+            return checkTreasureMatch(player,currTile);
+        }
+        else
+            System.out.println("no treasure here");
+        return false;
     }
-
+    
     public void removePlayer(Player player) {
         int[] tileCoordinates = getPlayerLocation(player);
         tiles[tileCoordinates[0]][tileCoordinates[1]].removePlayer(player);
+        
     }
 
     /*
@@ -197,7 +215,10 @@ public class Board extends Pane {
 		return boardName[(y*rows)+x];
 	}
      */
-
+    public boolean checkTreasureMatch(Player p1, Tile tile){
+        System.out.print(""+p1.getTreasure() + tile.getTreasure());
+        return p1.getTreasure() == tile.getTreasure();
+    }
     public void checkRows() {
 
         int count = 0;

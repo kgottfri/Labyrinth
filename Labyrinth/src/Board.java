@@ -243,27 +243,87 @@ public class Board extends Pane{
     */
 	/**
 	 * 
-	 * //@param index (can currently only be 1, 3, 5)
+	 * @param xIndex - x coordinate of where new tile goes
+         * //@param yIndex - y coordinate of where new tile goes
 	 * //@param tile to be inserted
+
 	 */
 
-	public void insertTileTop(int index) {
+	public void insertTileTop(int xIndex) {
 	
 		//move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
 		//if we need to do soemthing with the table that is pushed off it could be returned by this method
-
-        Tile tempLastTile = new Tile(tiles[rows-1][index]);
-
-		for (int i = rows - 1; i > 0; i--) {
-			tiles[i][index] = new Tile(tiles[i - 1][index]);
-            tiles[i][index].setPosition(tiles[i][index].upperLeftX, tiles[i][index].upperLeftY + squareSize);
+                
+            Tile tempLastTile = new Tile(tiles[(rows - 1)][xIndex]);
+            System.out.println("We made it here");
+            for (int i = rows - 1; i > 0; i--) {
+                tiles[i][xIndex] = new Tile(tiles[i - 1][xIndex]);
+                tiles[i][xIndex].setPosition(tiles[i][xIndex].upperLeftX, tiles[i][xIndex].upperLeftY + squareSize);
 		}
 		
 		//insert new tile
-		tiles[0][index] = new Tile(extra_tile);
-        tiles[0][index].setPosition(tiles[1][index].upperLeftX, 0.0);
+		tiles[0][xIndex] = new Tile(extra_tile);
+                tiles[0][xIndex].setPosition(tiles[1][xIndex].upperLeftX, 0.0);
+                
 		extra_tile = tempLastTile;
 	}
+        
+        public void insertTileBottom(int xIndex) {
+	
+		//move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
+		//if we need to do soemthing with the table that is pushed off it could be returned by this method
+                
+            Tile tempLastTile = new Tile(tiles[(0)][xIndex]);
+
+            for (int i = 0; i < rows - 1; i++) {
+                tiles[i][xIndex] = new Tile(tiles[i + 1][xIndex]);
+                tiles[i][xIndex].setPosition(tiles[i][xIndex].upperLeftX, tiles[i][xIndex].upperLeftY - squareSize);
+		}
+		
+		//insert new tile
+		tiles[rows - 1][xIndex] = new Tile(extra_tile);
+                tiles[rows - 1][xIndex].setPosition(tiles[rows - 2][xIndex].upperLeftX, tiles[rows - 2][xIndex].upperLeftY + squareSize);
+		extra_tile = tempLastTile;
+	}
+        
+        public void insertTileLeft(int yIndex) {
+	
+		//move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
+		//if we need to do soemthing with the table that is pushed off it could be returned by this method
+                
+            Tile tempLastTile = new Tile(tiles[yIndex][rows - 1]);
+
+            for (int i = rows - 1; i > 0; i--) {
+                tiles[yIndex][i] = new Tile(tiles[yIndex][i - 1]);
+                tiles[yIndex][i].setPosition(tiles[yIndex][i].upperLeftX + squareSize, tiles[yIndex][i].upperLeftY);
+		}
+		
+		//insert new tile
+		tiles[yIndex][0] = new Tile(extra_tile);
+                tiles[yIndex][0].setPosition(tiles[yIndex][1].upperLeftX - squareSize, tiles[yIndex][1].upperLeftY);
+		extra_tile = tempLastTile;
+	}
+        
+        public void insertTileRight(int yIndex) {
+	
+		//move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
+		//if we need to do soemthing with the table that is pushed off it could be returned by this method
+                
+            Tile tempLastTile = new Tile(tiles[yIndex][0]);
+
+            for (int i = 0; i < rows - 1; i++) {
+                tiles[yIndex][i] = new Tile(tiles[yIndex][i + 1]);
+                tiles[yIndex][i].setPosition(tiles[yIndex][i].upperLeftX - squareSize, tiles[yIndex][i].upperLeftY);
+		}
+		
+		//insert new tile
+		tiles[yIndex][rows - 1] = new Tile(extra_tile);
+                tiles[yIndex][rows - 1].setPosition(tiles[yIndex][rows - 2].upperLeftX + squareSize, tiles[yIndex][rows - 2].upperLeftY);
+		extra_tile = tempLastTile;
+	}
+
+        
+        
 
         
     public int getX_DIM(){

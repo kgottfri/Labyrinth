@@ -217,7 +217,7 @@ public class Board extends Pane {
      */
     public boolean checkTreasureMatch(Player p1, Tile tile){
         System.out.print(""+p1.getTreasure() + tile.getTreasure());
-        return p1.getTreasure() == tile.getTreasure();
+        return p1.getTreasure().getValueAsString().charAt(0) == tile.getTreasure();
     }
     public void checkRows() {
 

@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 public class Player extends Pane{
     
     protected LinkedList<Card> treasuresHand;
-    private char currentTreasureCard;
+    private Card currentTreasureCard;
     public boolean activePlayer = false;
     protected int score = 0;
     protected char successfulTreasure;
@@ -39,7 +39,7 @@ public class Player extends Pane{
             this.color = Color.GREEN;
         
         this.setPrefHeight(Prows*squareHeight);
-	this.setPrefWidth(Pcols*squareWidth);
+	    this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
     }
 	
@@ -77,11 +77,14 @@ public class Player extends Pane{
      * The getCard method removes a card object from the LinkedList hand
      */
     public Card getCard() {
-        return treasuresHand.peek();
+        return treasuresHand.poll();
     }
-    public char getTreasure(){
-        
-        return getCard().getValueAsString().charAt(0);
+    public Card getTreasure(){
+        return this.currentTreasureCard;
+    }
+
+    public void upturnCard(){
+        this.currentTreasureCard = getCard();
     }
 
     /**

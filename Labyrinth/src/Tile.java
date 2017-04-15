@@ -75,6 +75,7 @@ public class Tile {
         this.left = toClone.left;
         this.canMove = toClone.canMove;
         this.treasure = toClone.treasure;
+        this.hasTreasure = toClone.hasTreasure;
         this.playersOnTile = toClone.playersOnTile;
         this.shapes = toClone.shapes;
         this.step = toClone.step;

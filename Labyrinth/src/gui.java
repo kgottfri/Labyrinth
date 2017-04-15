@@ -65,6 +65,9 @@ public class gui extends Application {
             }
             dealInd++;
         }
+        player1.upturnCard();
+        player2.upturnCard();
+
         // Set initial player positions
         labyrinthBoard.addPlayer(player1, new int[]{0, 0});
         labyrinthBoard.addPlayer(player2, new int[]{6, 6});
@@ -89,8 +92,8 @@ public class gui extends Application {
         pane.setLeft(leftPane);
         pane.setRight(rightPane);
         pane.setCenter(boardPane);
-        leftPane.setTreasureImage(player1, player1.getCard());
-        rightPane.setTreasureImage(player2, player2.getCard());
+        leftPane.setTreasureImage(player1, player1.getTreasure());
+        rightPane.setTreasureImage(player2, player2.getTreasure());
         //pane.setPadding(new Insets(10,10,10,10));
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
@@ -306,9 +309,9 @@ public class gui extends Application {
         btn_4_3.setOnAction(insertRight3);
         btn_4_5.setOnAction(insertRight5);
         root.getChildren().add(pane);
-        
 
-        pane.getCenter().setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+        boardPane.getBoard().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
 
@@ -325,15 +328,14 @@ public class gui extends Application {
                     if (reachable) {
                         labyrinthBoard.removePlayer(currentPlayer);
                         if(labyrinthBoard.addPlayer(currentPlayer, tileCoordinates)){
-                            currentPlayer.removeCard();
+                            currentPlayer.upturnCard();
                             if(currentPlayer.player_number == 1){
-                                leftPane.setTreasureImage(player1,null);
-                                leftPane.setTreasureImage(player1,player1.getCard());
+                                leftPane.setTreasureImage(player1,player1.getTreasure());
                                 System.out.println("Success");
                             }
-                                
                             else
-                                rightPane.setTreasureImage(player2,player2.getCard());
+                                rightPane.setTreasureImage(player2,player2.getTreasure());
+                                System.out.println("Success");
                         }
 //                        labyrinthBoard.checkIsTreasure(currentPlayer,tileCoordinates);
                         currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
@@ -576,6 +578,11 @@ class CustomPane extends StackPane {
         setMargin(btn_4_1, new Insets(-300, -80, 0, 0));
         setMargin(btn_4_3, new Insets(-15, -80, 0, 0));
         setMargin(btn_4_5, new Insets(270, -80, 0, 0));
+    }
+    public Node getBoard(){
+        Node boardNode = getChildren().get(0);
+
+        return boardNode;
     }
 }
 

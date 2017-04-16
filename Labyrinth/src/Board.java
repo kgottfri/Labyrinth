@@ -301,6 +301,7 @@ public class Board extends Pane {
         //move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
         //if we need to do soemthing with the table that is pushed off it could be returned by this method
         Tile tempLastTile = new Tile(tiles[(rows - 1)][xIndex]);
+
         for (int i = rows - 1; i > 0; i--) {
             tiles[i][xIndex] = new Tile(tiles[i - 1][xIndex]);
             tiles[i][xIndex].setPosition(tiles[i][xIndex].upperLeftX, tiles[i][xIndex].upperLeftY + squareSize);
@@ -310,6 +311,13 @@ public class Board extends Pane {
         //insert new tile
         tiles[0][xIndex] = new Tile(extra_tile);
         tiles[0][xIndex].setPosition(tiles[1][xIndex].upperLeftX, 0.0);
+
+        // Move "kicked off" player to new tile if applicable
+        ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
+        for (Player p:currentPlayers) {
+            tiles[0][xIndex].setPlayer(p);
+            tempLastTile.removePlayer(p);
+        }
 
         extra_tile = tempLastTile;
         tiles[0][xIndex].printTileTreasure();
@@ -330,6 +338,14 @@ public class Board extends Pane {
         //insert new tile
         tiles[rows - 1][xIndex] = new Tile(extra_tile);
         tiles[rows - 1][xIndex].setPosition(tiles[rows - 2][xIndex].upperLeftX, tiles[rows - 2][xIndex].upperLeftY + squareSize);
+
+        // Move "kicked off" player to new tile if applicable
+        ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
+        for (Player p:currentPlayers) {
+            tiles[rows - 1][xIndex].setPlayer(p);
+            tempLastTile.removePlayer(p);
+        }
+
         extra_tile = tempLastTile;
         tiles[rows-1][xIndex].printTileTreasure();
     }
@@ -350,10 +366,18 @@ public class Board extends Pane {
         //insert new tile
         tiles[yIndex][0] = new Tile(extra_tile);
         tiles[yIndex][0].setPosition(tiles[yIndex][1].upperLeftX - squareSize, tiles[yIndex][1].upperLeftY);
+
+        // Move "kicked off" player to new tile if applicable
+        ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
+        for (Player p:currentPlayers) {
+            tiles[yIndex][0].setPlayer(p);
+            tempLastTile.removePlayer(p);
+        }
+
         extra_tile = tempLastTile;
         tiles[yIndex][0].printTileTreasure();
         tiles[yIndex][0].printTileTreasure();
-        
+
     }
 
     public void insertTileRight(int yIndex) {
@@ -371,6 +395,14 @@ public class Board extends Pane {
         //insert new tile
         tiles[yIndex][rows - 1] = new Tile(extra_tile);
         tiles[yIndex][rows - 1].setPosition(tiles[yIndex][rows - 2].upperLeftX + squareSize, tiles[yIndex][rows - 2].upperLeftY);
+
+        // Move "kicked off" player to new tile if applicable
+        ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
+        for (Player p:currentPlayers) {
+            tiles[yIndex][rows - 1].setPlayer(p);
+            tempLastTile.removePlayer(p);
+        }
+
         extra_tile = tempLastTile;
         tiles[yIndex][rows-1].printTileTreasure();
     }

@@ -38,6 +38,8 @@ public class gui extends Application {
     private LabGame game;
     private GameState state;
     private Label statusLabel;
+    private int disabledRowColumn;
+    private Direction disabledDirection;
     private Timeline animation;
     private Deck treasureDeck;
     private static final double MILLISEC = 200;
@@ -104,10 +106,16 @@ public class gui extends Application {
             @Override
             public void handle(ActionEvent event) {
                 if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileTop(1);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                    if ((disabledDirection == Direction.down)&&(disabledRowColumn == 1)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else{
+                        labyrinthBoard.insertTileTop(1);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 1;
+                        disabledDirection = Direction.up;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -118,11 +126,18 @@ public class gui extends Application {
         EventHandler<ActionEvent> insertTop3 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileTop(3);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.down)&&(disabledRowColumn == 3)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileTop(3);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 3;
+                        disabledDirection = Direction.up;
+                    }
+
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -130,14 +145,20 @@ public class gui extends Application {
                 }
             }
         };
-                EventHandler<ActionEvent> insertTop5 = new EventHandler<ActionEvent>() {
-                    @Override
+        EventHandler<ActionEvent> insertTop5 = new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileTop(5);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.down)&&(disabledRowColumn == 5)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileTop(5);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 5;
+                        disabledDirection = Direction.up;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -145,14 +166,20 @@ public class gui extends Application {
                 }
             }
         };
-                        EventHandler<ActionEvent> insertLeft1 = new EventHandler<ActionEvent>() {
-                            @Override
+        EventHandler<ActionEvent> insertLeft1 = new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileLeft(1);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.right)&&(disabledRowColumn == 1)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileLeft(1);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 1;
+                        disabledDirection = Direction.left;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -163,11 +190,17 @@ public class gui extends Application {
         EventHandler<ActionEvent> insertLeft3 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileLeft(3);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.right)&&(disabledRowColumn == 3)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileLeft(3);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 3;
+                        disabledDirection = Direction.left;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -175,14 +208,20 @@ public class gui extends Application {
                 }
             }
         };
-                EventHandler<ActionEvent> insertLeft5 = new EventHandler<ActionEvent>() {
-                    @Override
+        EventHandler<ActionEvent> insertLeft5 = new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileLeft(5);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.right)&&(disabledRowColumn == 5)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileLeft(5);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 5;
+                        disabledDirection = Direction.left;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -190,14 +229,20 @@ public class gui extends Application {
                 }
             }
         };
-                        EventHandler<ActionEvent> insertRight1 = new EventHandler<ActionEvent>() {
-                            @Override
+        EventHandler<ActionEvent> insertRight1 = new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileRight(1);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.left)&&(disabledRowColumn == 1)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileRight(1);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 1;
+                        disabledDirection = Direction.right;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -208,11 +253,17 @@ public class gui extends Application {
         EventHandler<ActionEvent> insertRight3 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileRight(3);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.left)&&(disabledRowColumn == 3)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileRight(3);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 3;
+                        disabledDirection = Direction.right;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -220,14 +271,20 @@ public class gui extends Application {
                 }
             }
         };
-                EventHandler<ActionEvent> insertRight5 = new EventHandler<ActionEvent>() {
-                    @Override
+        EventHandler<ActionEvent> insertRight5 = new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileRight(5);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.left)&&(disabledRowColumn == 5)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileRight(5);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 5;
+                        disabledDirection = Direction.right;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -238,11 +295,17 @@ public class gui extends Application {
         EventHandler<ActionEvent> insertBottom1 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileBottom(1);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.up)&&(disabledRowColumn == 1)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileBottom(1);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 1;
+                        disabledDirection = Direction.down;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -253,11 +316,17 @@ public class gui extends Application {
         EventHandler<ActionEvent> insertBottom3 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileBottom(3);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.up)&&(disabledRowColumn == 3)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileBottom(3);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 3;
+                        disabledDirection = Direction.down;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;
@@ -265,14 +334,20 @@ public class gui extends Application {
                 }
             }
         };
-                EventHandler<ActionEvent> insertBottom5 = new EventHandler<ActionEvent>() {
-                    @Override
+        EventHandler<ActionEvent> insertBottom5 = new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent event) {
-                                if (state == GameState.insertTile) {
-                labyrinthBoard.insertTileBottom(5);
-                reachableTiles = findReachableTilesFor(currentPlayer);
-                    state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+                if (state == GameState.insertTile) {
+                    if ((disabledDirection == Direction.up)&&(disabledRowColumn == 5)){
+                        // Prevent the insertion of the extra tile from where it came
+                    }
+                    else {
+                        labyrinthBoard.insertTileBottom(5);
+                        reachableTiles = findReachableTilesFor(currentPlayer);
+                        state = GameState.movePiece;
+                        disabledRowColumn = 5;
+                        disabledDirection = Direction.down;
+                    }
                 } else if (state == GameState.movePiece) {
                     currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                     state = GameState.insertTile;

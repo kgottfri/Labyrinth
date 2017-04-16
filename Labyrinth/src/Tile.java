@@ -24,7 +24,7 @@ public class Tile {
 	
 	//not implemented yet (Z = no treasure)
 	char treasure = 'Z';
-        boolean hasTreasure = false;
+
 	ArrayList<Player> playersOnTile = new ArrayList<Player>();
         
     private Rectangle[][] shapes = new Rectangle[3][3];
@@ -75,7 +75,6 @@ public class Tile {
         this.left = toClone.left;
         this.canMove = toClone.canMove;
         this.treasure = toClone.treasure;
-        this.hasTreasure = toClone.hasTreasure;
         this.playersOnTile = toClone.playersOnTile;
         this.shapes = toClone.shapes;
         this.step = toClone.step;
@@ -152,14 +151,18 @@ public class Tile {
 	}
 	public void setTileTreasure(char t){
             this.treasure = t;
-            this.hasTreasure = true;
             printTileTreasure();
         }
         public char getTreasure(){
             return treasure;
         }
         public boolean hasTreasure(){
-            return hasTreasure;
+            if(treasure != 'Z'){
+                return true;
+            }
+            else{
+                return false;
+            }
             
         }
         public void printTileTreasure(){

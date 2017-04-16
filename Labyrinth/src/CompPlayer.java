@@ -1,19 +1,20 @@
-// CS_205 Go Fish
 
-
-
-import java.util.*;
-
+import java.util.LinkedList;
+import javafx.scene.paint.Color;
 /**
  * SimpleCom class
  * Handles simple computer decisions
  * @author kevingottfried
  */
-public class SimpleCom extends Player{
+public class CompPlayer extends Player{
 
     
-    public SimpleCom() {
-        
+    public CompPlayer() {
+        this.color = Color.GREEN;
+        this.setPrefHeight(Prows*squareHeight);
+	this.setPrefWidth(Pcols*squareWidth);
+        treasuresHand = new LinkedList<Card>();
+        treasuresHand = new LinkedList<Card>(); 
         
     }
     /**

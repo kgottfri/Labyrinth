@@ -40,13 +40,13 @@ public class Board extends Pane {
         // Create movable tile pool:
         ArrayList<Tile> tilePool = new ArrayList<Tile>();
         for (int i = 0; i < CORNER_TILE; i++) {
-            tilePool.add(new Tile(this, 0, 0, false, true, true, false, true));
+            tilePool.add(new Tile(this, 0, 0, false, true, true, false, true,false));
         }
         for (int i = 0; i < TEE_TILE; i++) {
-            tilePool.add(new Tile(this, 0, 0, true, true, true, false, true));
+            tilePool.add(new Tile(this, 0, 0, true, true, true, false, true,false));
         }
         for (int i = 0; i < LINE_TILE; i++) {
-            tilePool.add(new Tile(this, 0, 0, true, false, true, false, true));
+            tilePool.add(new Tile(this, 0, 0, true, false, true, false, true,false));
         }
         Random rand = new Random();
 
@@ -57,37 +57,37 @@ public class Board extends Pane {
             for (int j = 0; j < rows; j++) {
                 // non-movable tiles
                 if (i == 0 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, false, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, false, false,true);
                 } else if (i == 0 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false,false);
                 } else if (i == 0 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false,false);
                 } else if (i == 0 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, false, true, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, false, true, true, false,false);
                 } else if (i == 2 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false,false);
                 } else if (i == 2 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false,false);
                 } else if (i == 2 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false,false);
                 } else if (i == 2 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false,false);
                 } else if (i == 4 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false,false);
                 } else if (i == 4 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false,false);
                 } else if (i == 4 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false,false);
                 } else if (i == 4 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false,false);
                 } else if (i == 6 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, false, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, false, false,false);
                 } else if (i == 6 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false,false);
                 } else if (i == 6 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false,false);
                 } else if (i == 6 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false,true);
                 } // movable tiles - pick a random tile from the tilepool
                 else {
                     tiles[i][j] = tilePool.remove(rand.nextInt(tilePool.size()));
@@ -140,12 +140,15 @@ public class Board extends Pane {
             Random randY = new Random();
             int x = randX.nextInt(rows);
             int y = randY.nextInt(cols);
-            while((x == 0 && y == 0) || (x==6 && y ==6)){
-                x = randX.nextInt(rows);
-                y = randY.nextInt(cols);
-            }
+//            while((x == 0 && y == 0) || (x==6 && y ==6)){
+//                x = randX.nextInt(rows);
+//                y = randY.nextInt(cols);
+//            }
             Tile currTile = tiles[x][y];
-            while((currTile.hasTreasure()))
+//            while(currTile.getIsStart()){
+//                currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
+//            }
+            while((currTile.hasTreasure()) || currTile.getIsStart())
             {
                 currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
             }
@@ -209,7 +212,13 @@ public class Board extends Pane {
         tiles[tileCoordinates[0]][tileCoordinates[1]].removePlayer(player);
         
     }
-
+    /**
+     * 
+     * @param player the player that is reset on the board
+     */
+    public void resetPlayer(Player player){
+        
+    }
     /*
 	LabSquare shapeAt(int x, int y){
 		return boardName[(y*rows)+x];
@@ -355,7 +364,6 @@ public class Board extends Pane {
         //move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
         //if we need to do soemthing with the table that is pushed off it could be returned by this method
         Tile tempLastTile = new Tile(tiles[yIndex][rows - 1]);
-
         for (int i = rows - 1; i > 0; i--) {
             tiles[yIndex][i] = new Tile(tiles[yIndex][i - 1]);
             tiles[yIndex][i].setPosition(tiles[yIndex][i].upperLeftX + squareSize, tiles[yIndex][i].upperLeftY);

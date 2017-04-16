@@ -18,7 +18,7 @@ public class Game {
 		board = new Board();
 		
 		//should generate random type
-		currentTile = new Tile(board, 20, 20, false, true, false, true, true);
+		currentTile = new Tile(board, 20, 20, false, true, false, true, true,false);
 		
 		//create scanner
 		Scanner s = new Scanner(System.in);

@@ -19,7 +19,7 @@ public class Tile {
 	boolean down;
 	boolean left;
         
-	
+	boolean isStartTile;
 	boolean canMove;
 	
 	//not implemented yet (Z = no treasure)
@@ -38,13 +38,13 @@ public class Tile {
     double upperLeftY;
     Board board;
 
-	Tile(Board board, double upperLeftX, double upperLeftY,boolean up, boolean right, boolean down, boolean left, boolean canMove) {
+	Tile(Board board, double upperLeftX, double upperLeftY,boolean up, boolean right, boolean down, boolean left, boolean canMove, boolean startTile) {
 		
             
                         //set colors
                         path = Color.DARKSLATEGREY;
                         background = canMove ? Color.WHITE : Color.LIGHTGREY;
-                        
+                        this.isStartTile = startTile;
                         
                         //add rectangle to board
                         //shape = new Rectangle(upperLeftX, upperLeftY, Board.squareSize, Board.squareSize);
@@ -171,7 +171,7 @@ public class Tile {
                 treasure.setFont(Font.font("Lucida Grande",21));
                 treasure.setTextFill(Color.web("#f44242"));
                 double shift = .45;
-                treasure.relocate(upperLeftX + 2.5, upperLeftY - shift);
+                treasure.relocate(upperLeftX + 2.75, upperLeftY - shift);
                 board.getChildren().add(treasure);
             }
         }
@@ -226,6 +226,10 @@ public class Tile {
             }
         }
         return playerFound;
+    }
+
+    public boolean getIsStart(){
+        return isStartTile;
     }
 	
 	

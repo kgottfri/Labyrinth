@@ -1,3 +1,4 @@
+
 /**
  *
  * @author AlexBeard
@@ -40,13 +41,13 @@ public class Board extends Pane {
         // Create movable tile pool:
         ArrayList<Tile> tilePool = new ArrayList<Tile>();
         for (int i = 0; i < CORNER_TILE; i++) {
-            tilePool.add(new Tile(this, 0, 0, false, true, true, false, true,false));
+            tilePool.add(new Tile(this, 0, 0, false, true, true, false, true, false));
         }
         for (int i = 0; i < TEE_TILE; i++) {
-            tilePool.add(new Tile(this, 0, 0, true, true, true, false, true,false));
+            tilePool.add(new Tile(this, 0, 0, true, true, true, false, true, false));
         }
         for (int i = 0; i < LINE_TILE; i++) {
-            tilePool.add(new Tile(this, 0, 0, true, false, true, false, true,false));
+            tilePool.add(new Tile(this, 0, 0, true, false, true, false, true, false));
         }
         Random rand = new Random();
 
@@ -57,37 +58,37 @@ public class Board extends Pane {
             for (int j = 0; j < rows; j++) {
                 // non-movable tiles
                 if (i == 0 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, false, false,true);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, false, false, true);
                 } else if (i == 0 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false, false);
                 } else if (i == 0 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false, false);
                 } else if (i == 0 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, false, true, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, false, true, true, false, false);
                 } else if (i == 2 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false, false);
                 } else if (i == 2 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false, false);
                 } else if (i == 2 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, false, true, true, true, false, false);
                 } else if (i == 2 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false, false);
                 } else if (i == 4 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, true, false, false, false);
                 } else if (i == 4 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false, false);
                 } else if (i == 4 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false, false);
                 } else if (i == 4 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, true, true, false, false);
                 } else if (i == 6 && j == 0) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, false, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, false, false, false);
                 } else if (i == 6 && j == 2) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false, false);
                 } else if (i == 6 && j == 4) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false,false);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false, false);
                 } else if (i == 6 && j == 6) {
-                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false,true);
+                    tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false, true);
                 } // movable tiles - pick a random tile from the tilepool
                 else {
                     tiles[i][j] = tilePool.remove(rand.nextInt(tilePool.size()));
@@ -148,15 +149,14 @@ public class Board extends Pane {
 //            while(currTile.getIsStart()){
 //                currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
 //            }
-            while((currTile.hasTreasure()) || currTile.getIsStart())
-            {
+            while ((currTile.hasTreasure()) || currTile.getIsStart()) {
                 currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
             }
-                currTile.setTileTreasure((char) (i + 65));
+            currTile.setTileTreasure((char) (i + 65));
         }
     }
-    
-    public boolean checkIsTreasure(Player player, int[]locTile){
+
+    public boolean checkIsTreasure(Player player, int[] locTile) {
         return true;
     }
 
@@ -199,35 +199,44 @@ public class Board extends Pane {
     public boolean addPlayer(Player player, int[] locTile) {
         Tile currTile = tiles[locTile[0]][locTile[1]];
         currTile.setPlayer(player);
-        if(currTile.hasTreasure()){
-            return checkTreasureMatch(player,currTile);
-        }
-        else
+        if (currTile.hasTreasure()) {
+            return checkTreasureMatch(player, currTile);
+        } else {
             System.out.println("no treasure here");
+        }
         return false;
     }
-    
+
+    public void removeTreasure(int[] locTile) {
+        Tile currTile = tiles[locTile[0]][locTile[1]];
+        currTile.removeTreasure();
+        currTile.printTileTreasure();
+    }
+
     public void removePlayer(Player player) {
         int[] tileCoordinates = getPlayerLocation(player);
         tiles[tileCoordinates[0]][tileCoordinates[1]].removePlayer(player);
-        
+
     }
+
     /**
-     * 
+     *
      * @param player the player that is reset on the board
      */
-    public void resetPlayer(Player player){
-        
+    public void resetPlayer(Player player) {
+
     }
+
     /*
 	LabSquare shapeAt(int x, int y){
 		return boardName[(y*rows)+x];
 	}
      */
-    public boolean checkTreasureMatch(Player p1, Tile tile){
-        System.out.print(""+p1.getTreasure() + tile.getTreasure());
+    public boolean checkTreasureMatch(Player p1, Tile tile) {
+        System.out.print("" + p1.getTreasure() + tile.getTreasure());
         return p1.getTreasure().getValueAsString().charAt(0) == tile.getTreasure();
     }
+
     public void checkRows() {
 
         int count = 0;
@@ -304,7 +313,6 @@ public class Board extends Pane {
      * coordinate of where new tile goes //@param tile to be inserted
      *
      */
-
     public void insertTileTop(int xIndex) {
 
         //move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
@@ -323,7 +331,7 @@ public class Board extends Pane {
 
         // Move "kicked off" player to new tile if applicable
         ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
-        for (Player p:currentPlayers) {
+        for (Player p : currentPlayers) {
             tiles[0][xIndex].setPlayer(p);
             tempLastTile.removePlayer(p);
         }
@@ -350,13 +358,13 @@ public class Board extends Pane {
 
         // Move "kicked off" player to new tile if applicable
         ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
-        for (Player p:currentPlayers) {
+        for (Player p : currentPlayers) {
             tiles[rows - 1][xIndex].setPlayer(p);
             tempLastTile.removePlayer(p);
         }
 
         extra_tile = tempLastTile;
-        tiles[rows-1][xIndex].printTileTreasure();
+        tiles[rows - 1][xIndex].printTileTreasure();
     }
 
     public void insertTileLeft(int yIndex) {
@@ -377,7 +385,7 @@ public class Board extends Pane {
 
         // Move "kicked off" player to new tile if applicable
         ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
-        for (Player p:currentPlayers) {
+        for (Player p : currentPlayers) {
             tiles[yIndex][0].setPlayer(p);
             tempLastTile.removePlayer(p);
         }
@@ -406,13 +414,13 @@ public class Board extends Pane {
 
         // Move "kicked off" player to new tile if applicable
         ArrayList<Player> currentPlayers = new ArrayList<>(tempLastTile.playersOnTile);
-        for (Player p:currentPlayers) {
+        for (Player p : currentPlayers) {
             tiles[yIndex][rows - 1].setPlayer(p);
             tempLastTile.removePlayer(p);
         }
 
         extra_tile = tempLastTile;
-        tiles[yIndex][rows-1].printTileTreasure();
+        tiles[yIndex][rows - 1].printTileTreasure();
     }
 
     public int getX_DIM() {

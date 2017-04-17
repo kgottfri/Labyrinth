@@ -77,7 +77,7 @@ public class Player extends Pane{
      * The getCard method removes a card object from the LinkedList hand
      */
     public Card getCard() {
-        return treasuresHand.poll();
+        return treasuresHand.pollFirst();
     }
     public Card getTreasure(){
         return this.currentTreasureCard;
@@ -86,7 +86,12 @@ public class Player extends Pane{
     public void upturnCard(){
         this.currentTreasureCard = getCard();
     }
-
+    public boolean emptyHand(){
+        if (treasuresHand.peek() != null)
+            return false;
+        else
+            return true;
+    }
     /**
      * The checkForSets method searches through players hand for sets of 4
      * If a set is found, those cards are removed from the hand and the players

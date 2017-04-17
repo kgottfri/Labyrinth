@@ -405,10 +405,15 @@ public class gui extends Application {
                             labyrinthBoard.removeTreasure(tileCoordinates);
                             currentPlayer.upturnCard();
                             if (currentPlayer.player_number == 1) {
-                                leftPane.setTreasureImage(player1, player1.getTreasure());
-                                System.out.println("Success");
+                                if(!player1.emptyHand())
+                                    leftPane.setTreasureImage(player1, player1.getTreasure());
+                                else
+                                    endGame(player1);
                             } else {
-                                rightPane.setTreasureImage(player2, player2.getTreasure());
+                                if(!player2.emptyHand())
+                                    rightPane.setTreasureImage(player2, player2.getTreasure());
+                                else
+                                    endGame(player2);
                             }
                             System.out.println("Success");
                         }
@@ -474,7 +479,10 @@ public class gui extends Application {
     private void pause() {
         animation.pause();
     }
+    private void endGame(Player player){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations! Player " + currentPlayer.player_number + " has won!", ButtonType.OK);
 
+    }
     /**
      * The action handler method that is called when an insert button is
      * pressed.

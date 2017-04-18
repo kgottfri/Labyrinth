@@ -359,30 +359,30 @@ public class gui extends Application {
 
         //pane.setTop(btn_1_1);
         ObservableList<Node> buttons = boardPane.getChildren();
-        Button btn_1_1 = (Button) buttons.get(1);
-        Button btn_1_3 = (Button) buttons.get(2);
-        Button btn_1_5 = (Button) buttons.get(3);
-        Button btn_2_1 = (Button) buttons.get(4);
-        Button btn_2_3 = (Button) buttons.get(5);
-        Button btn_2_5 = (Button) buttons.get(6);
-        Button btn_3_1 = (Button) buttons.get(7);
-        Button btn_3_3 = (Button) buttons.get(8);
-        Button btn_3_5 = (Button) buttons.get(9);
-        Button btn_4_1 = (Button) buttons.get(10);
-        Button btn_4_3 = (Button) buttons.get(11);
-        Button btn_4_5 = (Button) buttons.get(12);
-        btn_1_1.setOnAction(insertTop1);
-        btn_1_3.setOnAction(insertTop3);
-        btn_1_5.setOnAction(insertTop5);
-        btn_2_1.setOnAction(insertBottom1);
-        btn_2_3.setOnAction(insertBottom3);
-        btn_2_5.setOnAction(insertBottom5);
-        btn_3_1.setOnAction(insertLeft1);
-        btn_3_3.setOnAction(insertLeft3);
-        btn_3_5.setOnAction(insertLeft5);
-        btn_4_1.setOnAction(insertRight1);
-        btn_4_3.setOnAction(insertRight3);
-        btn_4_5.setOnAction(insertRight5);
+//        Button btn_1_1 = (Button) buttons.get(1);
+//        Button btn_1_3 = (Button) buttons.get(2);
+//        Button btn_1_5 = (Button) buttons.get(3);
+//        Button btn_2_1 = (Button) buttons.get(4);
+//        Button btn_2_3 = (Button) buttons.get(5);
+//        Button btn_2_5 = (Button) buttons.get(6);
+//        Button btn_3_1 = (Button) buttons.get(7);
+//        Button btn_3_3 = (Button) buttons.get(8);
+//        Button btn_3_5 = (Button) buttons.get(9);
+//        Button btn_4_1 = (Button) buttons.get(10);
+//        Button btn_4_3 = (Button) buttons.get(11);
+//        Button btn_4_5 = (Button) buttons.get(12);
+//        btn_1_1.setOnAction(insertTop1);
+//        btn_1_3.setOnAction(insertTop3);
+//        btn_1_5.setOnAction(insertTop5);
+//        btn_2_1.setOnAction(insertBottom1);
+//        btn_2_3.setOnAction(insertBottom3);
+//        btn_2_5.setOnAction(insertBottom5);
+//        btn_3_1.setOnAction(insertLeft1);
+//        btn_3_3.setOnAction(insertLeft3);
+//        btn_3_5.setOnAction(insertLeft5);
+//        btn_4_1.setOnAction(insertRight1);
+//        btn_4_3.setOnAction(insertRight3);
+//        btn_4_5.setOnAction(insertRight5);
         root.getChildren().add(pane);
 
         boardPane.getBoard().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -562,110 +562,165 @@ class CustomPane extends StackPane {
         labyrinthBoard.setPadding(new Insets(90, 90, 90, 90));
         getChildren().add(labyrinthBoard);
         setPadding(new Insets(90, 90, 90, 90));
+InsertButton btn_1_1 = new InsertButton(labyrinthBoard, this, 1, 1, "-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+                InsertButton btn_1_3 = new InsertButton(labyrinthBoard, this, 3, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+		InsertButton btn_1_5 = new InsertButton(labyrinthBoard, this, 5, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                
+                InsertButton btn_2_1 = new InsertButton(labyrinthBoard, this, 1, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                
+                InsertButton btn_2_3 = new InsertButton(labyrinthBoard, this, 3, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-        Button btn_1_1 = new Button();
-        btn_1_1.setMaxWidth(35);
-        btn_1_1.setMaxHeight(60);
-        btn_1_1.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_1_1);
+                InsertButton btn_2_5 = new InsertButton(labyrinthBoard, this, 5, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+                InsertButton btn_3_1 = new InsertButton(labyrinthBoard, this, 1, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-        Button btn_1_3 = new Button();
-        btn_1_3.setMaxWidth(35);
-        btn_1_3.setMaxHeight(60);
-        btn_1_3.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_1_3);
+                InsertButton btn_3_3 = new InsertButton(labyrinthBoard, this, 3, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-        Button btn_1_5 = new Button();
-        btn_1_5.setMaxWidth(35);
-        btn_1_5.setMaxHeight(60);
-        btn_1_5.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_1_5);
+		InsertButton btn_3_5 = new InsertButton(labyrinthBoard, this, 5, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-        Button btn_2_1 = new Button();
-        btn_2_1.setMaxWidth(35);
-        btn_2_1.setMaxHeight(60);
-        btn_2_1.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_2_1);
+                InsertButton btn_4_1 = new InsertButton(labyrinthBoard, this, 1, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-        Button btn_2_3 = new Button();
-        btn_2_3.setMaxWidth(35);
-        btn_2_3.setMaxHeight(60);
-        btn_2_3.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_2_3);
+		InsertButton btn_4_3 = new InsertButton(labyrinthBoard, this, 3, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-        Button btn_2_5 = new Button();
-        btn_2_5.setMaxWidth(35);
-        btn_2_5.setMaxHeight(60);
-        btn_2_5.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_2_5);
+                InsertButton btn_4_5 = new InsertButton(labyrinthBoard, this, 5, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-        Button btn_3_1 = new Button();
-        btn_3_1.setMaxWidth(60);
-        btn_3_1.setMaxHeight(35);
-        btn_3_1.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_3_1);
-
-        Button btn_3_3 = new Button();
-        btn_3_3.setMaxWidth(60);
-        btn_3_3.setMaxHeight(35);
-        btn_3_3.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_3_3);
-
-        Button btn_3_5 = new Button();
-        btn_3_5.setMaxWidth(60);
-        btn_3_5.setMaxHeight(35);
-        btn_3_5.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_3_5);
-
-        Button btn_4_1 = new Button();
-        btn_4_1.setMaxWidth(60);
-        btn_4_1.setMaxHeight(35);
-        btn_4_1.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_4_1);
-
-        Button btn_4_3 = new Button();
-        btn_4_3.setMaxWidth(60);
-        btn_4_3.setMaxHeight(35);
-        btn_4_3.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_4_3);
-
-        Button btn_4_5 = new Button();
-        btn_4_5.setMaxWidth(60);
-        btn_4_5.setMaxHeight(35);
-        btn_4_5.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-        getChildren().add(btn_4_5);
-
-        setAlignment(btn_1_1, Pos.TOP_LEFT);
-        setAlignment(btn_1_3, Pos.TOP_CENTER);
-        setAlignment(btn_1_5, Pos.TOP_RIGHT);
-
-        setMargin(btn_1_1, new Insets(-80, 0, 0, 90));
-        setMargin(btn_1_3, new Insets(-80, 0, 0, 0));
-        setMargin(btn_1_5, new Insets(-80, 90, 0, 0));
-
-        setAlignment(btn_2_1, Pos.BOTTOM_LEFT);
-        setAlignment(btn_2_3, Pos.BOTTOM_CENTER);
-        setAlignment(btn_2_5, Pos.BOTTOM_RIGHT);
-
-        setMargin(btn_2_1, new Insets(0, 0, -50, 90));
-        setMargin(btn_2_3, new Insets(0, 0, -50, 0));
-        setMargin(btn_2_5, new Insets(0, 90, -50, 0));
-
-        setAlignment(btn_3_1, Pos.CENTER_LEFT);
-        setAlignment(btn_3_3, Pos.CENTER_LEFT);
-        setAlignment(btn_3_5, Pos.CENTER_LEFT);
-
-        setMargin(btn_3_1, new Insets(-300, 0, 0, -80));
-        setMargin(btn_3_3, new Insets(-15, 0, 0, -80));
-        setMargin(btn_3_5, new Insets(270, 0, 0, -80));
-
-        setAlignment(btn_4_1, Pos.CENTER_RIGHT);
-        setAlignment(btn_4_3, Pos.CENTER_RIGHT);
-        setAlignment(btn_4_5, Pos.CENTER_RIGHT);
-
-        setMargin(btn_4_1, new Insets(-300, -80, 0, 0));
-        setMargin(btn_4_3, new Insets(-15, -80, 0, 0));
-        setMargin(btn_4_5, new Insets(270, -80, 0, 0));
+		
+		setAlignment(btn_1_1.getButton(), Pos.TOP_LEFT);
+		setAlignment(btn_1_3.getButton(), Pos.TOP_CENTER);
+		setAlignment(btn_1_5.getButton(), Pos.TOP_RIGHT);
+		
+		setMargin(btn_1_1.getButton(),new Insets(-80,0,0,90));
+		setMargin(btn_1_3.getButton(),new Insets(-80,0,0,0));
+		setMargin(btn_1_5.getButton(),new Insets(-80,90,0,0));
+		
+		setAlignment(btn_2_1.getButton(), Pos.BOTTOM_LEFT);
+		setAlignment(btn_2_3.getButton(), Pos.BOTTOM_CENTER);
+		setAlignment(btn_2_5.getButton(), Pos.BOTTOM_RIGHT);
+		
+		setMargin(btn_2_1.getButton(),new Insets(0,0,-50,90));
+		setMargin(btn_2_3.getButton(),new Insets(0,0,-50,0));
+		setMargin(btn_2_5.getButton(),new Insets(0,90,-50,0));
+		
+		setAlignment(btn_3_1.getButton(), Pos.CENTER_LEFT);
+		setAlignment(btn_3_3.getButton(), Pos.CENTER_LEFT);
+		setAlignment(btn_3_5.getButton(), Pos.CENTER_LEFT);
+		
+		setMargin(btn_3_1.getButton(),new Insets(-300,0,0,-80));
+		setMargin(btn_3_3.getButton(),new Insets(-15,0,0,-80));
+		setMargin(btn_3_5.getButton(),new Insets(270,0,0,-80));
+		
+		setAlignment(btn_4_1.getButton(), Pos.CENTER_RIGHT);
+		setAlignment(btn_4_3.getButton(), Pos.CENTER_RIGHT);
+		setAlignment(btn_4_5.getButton(), Pos.CENTER_RIGHT);
+		
+		setMargin(btn_4_1.getButton(),new Insets(-300,-80,0,0));
+		setMargin(btn_4_3.getButton(),new Insets(-15,-80,0,0));
+		setMargin(btn_4_5.getButton(),new Insets(270,-80,0,0));
+//        Button btn_1_1 = new Button();
+//        btn_1_1.setMaxWidth(35);
+//        btn_1_1.setMaxHeight(60);
+//        btn_1_1.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_1_1);
+//
+//        Button btn_1_3 = new Button();
+//        btn_1_3.setMaxWidth(35);
+//        btn_1_3.setMaxHeight(60);
+//        btn_1_3.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_1_3);
+//
+//        Button btn_1_5 = new Button();
+//        btn_1_5.setMaxWidth(35);
+//        btn_1_5.setMaxHeight(60);
+//        btn_1_5.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_1_5);
+//
+//        Button btn_2_1 = new Button();
+//        btn_2_1.setMaxWidth(35);
+//        btn_2_1.setMaxHeight(60);
+//        btn_2_1.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_2_1);
+//
+//        Button btn_2_3 = new Button();
+//        btn_2_3.setMaxWidth(35);
+//        btn_2_3.setMaxHeight(60);
+//        btn_2_3.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_2_3);
+//
+//        Button btn_2_5 = new Button();
+//        btn_2_5.setMaxWidth(35);
+//        btn_2_5.setMaxHeight(60);
+//        btn_2_5.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_2_5);
+//
+//        Button btn_3_1 = new Button();
+//        btn_3_1.setMaxWidth(60);
+//        btn_3_1.setMaxHeight(35);
+//        btn_3_1.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_3_1);
+//
+//        Button btn_3_3 = new Button();
+//        btn_3_3.setMaxWidth(60);
+//        btn_3_3.setMaxHeight(35);
+//        btn_3_3.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_3_3);
+//
+//        Button btn_3_5 = new Button();
+//        btn_3_5.setMaxWidth(60);
+//        btn_3_5.setMaxHeight(35);
+//        btn_3_5.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_3_5);
+//
+//        Button btn_4_1 = new Button();
+//        btn_4_1.setMaxWidth(60);
+//        btn_4_1.setMaxHeight(35);
+//        btn_4_1.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_4_1);
+//
+//        Button btn_4_3 = new Button();
+//        btn_4_3.setMaxWidth(60);
+//        btn_4_3.setMaxHeight(35);
+//        btn_4_3.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_4_3);
+//
+//        Button btn_4_5 = new Button();
+//        btn_4_5.setMaxWidth(60);
+//        btn_4_5.setMaxHeight(35);
+//        btn_4_5.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+//        getChildren().add(btn_4_5);
+//
+//        setAlignment(btn_1_1, Pos.TOP_LEFT);
+//        setAlignment(btn_1_3, Pos.TOP_CENTER);
+//        setAlignment(btn_1_5, Pos.TOP_RIGHT);
+//
+//        setMargin(btn_1_1, new Insets(-80, 0, 0, 90));
+//        setMargin(btn_1_3, new Insets(-80, 0, 0, 0));
+//        setMargin(btn_1_5, new Insets(-80, 90, 0, 0));
+//
+//        setAlignment(btn_2_1, Pos.BOTTOM_LEFT);
+//        setAlignment(btn_2_3, Pos.BOTTOM_CENTER);
+//        setAlignment(btn_2_5, Pos.BOTTOM_RIGHT);
+//
+//        setMargin(btn_2_1, new Insets(0, 0, -50, 90));
+//        setMargin(btn_2_3, new Insets(0, 0, -50, 0));
+//        setMargin(btn_2_5, new Insets(0, 90, -50, 0));
+//
+//        setAlignment(btn_3_1, Pos.CENTER_LEFT);
+//        setAlignment(btn_3_3, Pos.CENTER_LEFT);
+//        setAlignment(btn_3_5, Pos.CENTER_LEFT);
+//
+//        setMargin(btn_3_1, new Insets(-300, 0, 0, -80));
+//        setMargin(btn_3_3, new Insets(-15, 0, 0, -80));
+//        setMargin(btn_3_5, new Insets(270, 0, 0, -80));
+//
+//        setAlignment(btn_4_1, Pos.CENTER_RIGHT);
+//        setAlignment(btn_4_3, Pos.CENTER_RIGHT);
+//        setAlignment(btn_4_5, Pos.CENTER_RIGHT);
+//
+//        setMargin(btn_4_1, new Insets(-300, -80, 0, 0));
+//        setMargin(btn_4_3, new Insets(-15, -80, 0, 0));
+//        setMargin(btn_4_5, new Insets(270, -80, 0, 0));
     }
 
     public Node getBoard() {

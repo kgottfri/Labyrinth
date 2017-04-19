@@ -31,15 +31,15 @@ import javafx.scene.text.FontWeight;
 public class gui extends Application {
 
     protected Board labyrinthBoard;
-    private Player player1;
-    private Player player2;
-    private Player currentPlayer;
-    private ArrayList<Integer> reachableTiles;
+    public Player player1;
+    public Player player2;
+    public Player currentPlayer;
+    public ArrayList<Integer> reachableTiles;
     private LabGame game;
-    private GameState state;
+    public GameState state;
     private Label statusLabel;
-    private int disabledRowColumn;
-    private Direction disabledDirection;
+    public int disabledRowColumn;
+    public Direction disabledDirection;
     private Timeline animation;
     private Deck treasureDeck;
     private static final double MILLISEC = 200;
@@ -55,7 +55,7 @@ public class gui extends Application {
         player2 = new HumanPlayer(2);
         leftPane = new PlayerPane(player1, 1);
         rightPane = new PlayerPane(player2, 2);
-        boardPane = new CustomPane(labyrinthBoard);
+        boardPane = new CustomPane(this, labyrinthBoard);
         currentPlayer = player1;
         int dealInd = 0; //index for dealing
         while (!treasureDeck.isEmpty()) {
@@ -102,260 +102,260 @@ public class gui extends Application {
         Label stateLabel = new Label(state.toString());
         stateLabel.textProperty().bind(new SimpleStringProperty(state.toString()));
         pane.setBottom(stateLabel);
-        EventHandler<ActionEvent> insertTop1 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.down) && (disabledRowColumn == 1)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileTop(1);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 1;
-                        disabledDirection = Direction.up;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertTop3 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.down) && (disabledRowColumn == 3)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileTop(3);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 3;
-                        disabledDirection = Direction.up;
-                    }
-
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertTop5 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.down) && (disabledRowColumn == 5)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileTop(5);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 5;
-                        disabledDirection = Direction.up;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertLeft1 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.right) && (disabledRowColumn == 1)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileLeft(1);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 1;
-                        disabledDirection = Direction.left;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertLeft3 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.right) && (disabledRowColumn == 3)) {
-                        // Prevent the insertion of the extra tile from where it came
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileLeft(3);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 3;
-                        disabledDirection = Direction.left;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertLeft5 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.right) && (disabledRowColumn == 5)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileLeft(5);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 5;
-                        disabledDirection = Direction.left;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertRight1 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.left) && (disabledRowColumn == 1)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileRight(1);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 1;
-                        disabledDirection = Direction.right;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertRight3 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.left) && (disabledRowColumn == 3)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileRight(3);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 3;
-                        disabledDirection = Direction.right;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertRight5 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.left) && (disabledRowColumn == 5)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileRight(5);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 5;
-                        disabledDirection = Direction.right;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertBottom1 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.up) && (disabledRowColumn == 1)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileBottom(1);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 1;
-                        disabledDirection = Direction.down;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertBottom3 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.up) && (disabledRowColumn == 3)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileBottom(3);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 3;
-                        disabledDirection = Direction.down;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
-        EventHandler<ActionEvent> insertBottom5 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (state == GameState.insertTile) {
-                    if ((disabledDirection == Direction.up) && (disabledRowColumn == 5)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-                        alert.showAndWait();
-                    } else {
-                        labyrinthBoard.insertTileBottom(5);
-                        reachableTiles = findReachableTilesFor(currentPlayer);
-                        state = GameState.movePiece;
-                        disabledRowColumn = 5;
-                        disabledDirection = Direction.down;
-                    }
-                } else if (state == GameState.movePiece) {
-                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                    state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-                }
-            }
-        };
+//        EventHandler<ActionEvent> insertTop1 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.down) && (disabledRowColumn == 1)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileTop(1);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 1;
+//                        disabledDirection = Direction.up;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertTop3 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.down) && (disabledRowColumn == 3)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileTop(3);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 3;
+//                        disabledDirection = Direction.up;
+//                    }
+//
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertTop5 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.down) && (disabledRowColumn == 5)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileTop(5);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 5;
+//                        disabledDirection = Direction.up;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertLeft1 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.right) && (disabledRowColumn == 1)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileLeft(1);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 1;
+//                        disabledDirection = Direction.left;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertLeft3 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.right) && (disabledRowColumn == 3)) {
+//                        // Prevent the insertion of the extra tile from where it came
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileLeft(3);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 3;
+//                        disabledDirection = Direction.left;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertLeft5 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.right) && (disabledRowColumn == 5)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileLeft(5);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 5;
+//                        disabledDirection = Direction.left;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertRight1 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.left) && (disabledRowColumn == 1)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileRight(1);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 1;
+//                        disabledDirection = Direction.right;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertRight3 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.left) && (disabledRowColumn == 3)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileRight(3);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 3;
+//                        disabledDirection = Direction.right;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertRight5 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.left) && (disabledRowColumn == 5)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileRight(5);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 5;
+//                        disabledDirection = Direction.right;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertBottom1 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.up) && (disabledRowColumn == 1)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileBottom(1);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 1;
+//                        disabledDirection = Direction.down;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertBottom3 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.up) && (disabledRowColumn == 3)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileBottom(3);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 3;
+//                        disabledDirection = Direction.down;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
+//        EventHandler<ActionEvent> insertBottom5 = new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                if (state == GameState.insertTile) {
+//                    if ((disabledDirection == Direction.up) && (disabledRowColumn == 5)) {
+//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
+//                        alert.showAndWait();
+//                    } else {
+//                        labyrinthBoard.insertTileBottom(5);
+//                        reachableTiles = findReachableTilesFor(currentPlayer);
+//                        state = GameState.movePiece;
+//                        disabledRowColumn = 5;
+//                        disabledDirection = Direction.down;
+//                    }
+//                } else if (state == GameState.movePiece) {
+//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//                    state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//                }
+//            }
+//        };
 
         //pane.setTop(btn_1_1);
         ObservableList<Node> buttons = boardPane.getChildren();
@@ -454,7 +454,7 @@ public class gui extends Application {
 //		});;
     }
 
-    private ArrayList<Integer> findReachableTilesFor(Player player) {
+    public ArrayList<Integer> findReachableTilesFor(Player player) {
         int[] playerLocation = labyrinthBoard.getPlayerLocation(player);
         ArrayList<Integer> reachableTiles = Path.getReachableTiles(labyrinthBoard, playerLocation);
 
@@ -491,30 +491,30 @@ public class gui extends Application {
      * @param index An int that identifies the location on the board that the
      * tile will be inserted
      */
-    private void handler(String insert, int index) {
-        if (state == GameState.insertTile) {
-            switch (insert) {
-                case "Top":
-                    labyrinthBoard.insertTileTop(index);
-                    System.out.println("this");
-                case "Bottom":
-                    labyrinthBoard.insertTileBottom(index);
-                case "Right":
-                    labyrinthBoard.insertTileRight(index);
-                case "Left":
-                    labyrinthBoard.insertTileLeft(index);
-            }
-            reachableTiles = findReachableTilesFor(currentPlayer);
-            state = GameState.movePiece;
-//                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
-        } else if (state == GameState.movePiece) {
-            currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-
-            state = GameState.insertTile;
-//                    btn_1_1.setText("Insert into 1,1");
-        }
-
-    }
+//    private void handler(String insert, int index) {
+//        if (state == GameState.insertTile) {
+//            switch (insert) {
+//                case "Top":
+//                    labyrinthBoard.insertTileTop(index);
+//                    System.out.println("this");
+//                case "Bottom":
+//                    labyrinthBoard.insertTileBottom(index);
+//                case "Right":
+//                    labyrinthBoard.insertTileRight(index);
+//                case "Left":
+//                    labyrinthBoard.insertTileLeft(index);
+//            }
+//            reachableTiles = findReachableTilesFor(currentPlayer);
+//            state = GameState.movePiece;
+////                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
+//        } else if (state == GameState.movePiece) {
+//            currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+//
+//            state = GameState.insertTile;
+////                    btn_1_1.setText("Insert into 1,1");
+//        }
+//
+//    }
 
     private void setUpKeyPresses() {
         labyrinthBoard.setOnKeyPressed(e -> {
@@ -558,33 +558,35 @@ public class gui extends Application {
 
 class CustomPane extends StackPane {
 
-    public CustomPane(Board labyrinthBoard) {
+    public CustomPane(gui gui, Board labyrinthBoard) {
+        
         labyrinthBoard.setPadding(new Insets(90, 90, 90, 90));
         getChildren().add(labyrinthBoard);
         setPadding(new Insets(90, 90, 90, 90));
-InsertButton btn_1_1 = new InsertButton(labyrinthBoard, this, 1, 1, "-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-		
-                InsertButton btn_1_3 = new InsertButton(labyrinthBoard, this, 3, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-		
-		InsertButton btn_1_5 = new InsertButton(labyrinthBoard, this, 5, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
                 
-                InsertButton btn_2_1 = new InsertButton(labyrinthBoard, this, 1, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-                
-                InsertButton btn_2_3 = new InsertButton(labyrinthBoard, this, 3, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-
-                InsertButton btn_2_5 = new InsertButton(labyrinthBoard, this, 5, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_1_1 = new InsertButton(gui, labyrinthBoard, this, 1, 1, "-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 		
-                InsertButton btn_3_1 = new InsertButton(labyrinthBoard, this, 1, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_1_3 = new InsertButton(gui, labyrinthBoard, this, 3, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+		InsertButton btn_1_5 = new InsertButton(gui, labyrinthBoard, this, 5, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                
+                InsertButton btn_2_1 = new InsertButton(gui, labyrinthBoard, this, 1, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                
+                InsertButton btn_2_3 = new InsertButton(gui, labyrinthBoard, this, 3, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_3_3 = new InsertButton(labyrinthBoard, this, 3, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_2_5 = new InsertButton(gui, labyrinthBoard, this, 5, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		
+                InsertButton btn_3_1 = new InsertButton(gui, labyrinthBoard, this, 1, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-		InsertButton btn_3_5 = new InsertButton(labyrinthBoard, this, 5, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_3_3 = new InsertButton(gui, labyrinthBoard, this, 3, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_4_1 = new InsertButton(labyrinthBoard, this, 1, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		InsertButton btn_3_5 = new InsertButton(gui, labyrinthBoard, this, 5, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-		InsertButton btn_4_3 = new InsertButton(labyrinthBoard, this, 3, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_4_1 = new InsertButton(gui, labyrinthBoard, this, 1, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_4_5 = new InsertButton(labyrinthBoard, this, 5, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		InsertButton btn_4_3 = new InsertButton(gui, labyrinthBoard, this, 3, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+
+                InsertButton btn_4_5 = new InsertButton(gui, labyrinthBoard, this, 5, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
 		
 		setAlignment(btn_1_1.getButton(), Pos.TOP_LEFT);

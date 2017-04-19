@@ -568,23 +568,23 @@ InsertButton btn_1_1 = new InsertButton(labyrinthBoard, this, 1, 1, "-fx-backgro
 		
 		InsertButton btn_1_5 = new InsertButton(labyrinthBoard, this, 5, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
                 
-                InsertButton btn_2_1 = new InsertButton(labyrinthBoard, this, 1, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_2_1 = new InsertButton(labyrinthBoard, this, 1, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
                 
-                InsertButton btn_2_3 = new InsertButton(labyrinthBoard, this, 3, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_2_3 = new InsertButton(labyrinthBoard, this, 3, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_2_5 = new InsertButton(labyrinthBoard, this, 5, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_2_5 = new InsertButton(labyrinthBoard, this, 5, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 		
-                InsertButton btn_3_1 = new InsertButton(labyrinthBoard, this, 1, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_3_1 = new InsertButton(labyrinthBoard, this, 1, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_3_3 = new InsertButton(labyrinthBoard, this, 3, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_3_3 = new InsertButton(labyrinthBoard, this, 3, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-		InsertButton btn_3_5 = new InsertButton(labyrinthBoard, this, 5, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		InsertButton btn_3_5 = new InsertButton(labyrinthBoard, this, 5, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_4_1 = new InsertButton(labyrinthBoard, this, 1, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_4_1 = new InsertButton(labyrinthBoard, this, 1, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-		InsertButton btn_4_3 = new InsertButton(labyrinthBoard, this, 3, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+		InsertButton btn_4_3 = new InsertButton(labyrinthBoard, this, 3, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_4_5 = new InsertButton(labyrinthBoard, this, 5, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+                InsertButton btn_4_5 = new InsertButton(labyrinthBoard, this, 5, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
 		
 		setAlignment(btn_1_1.getButton(), Pos.TOP_LEFT);

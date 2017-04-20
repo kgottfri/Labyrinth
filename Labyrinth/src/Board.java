@@ -348,7 +348,7 @@ public class Board extends Pane {
             tiles[0][xIndex].setPlayer(p);
             tempLastTile.removePlayer(p);
         }
-
+        
         extra_tile = tempLastTile;
         tiles[0][xIndex].printTileTreasure();
     }

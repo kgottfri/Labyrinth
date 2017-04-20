@@ -2,6 +2,9 @@
 import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
@@ -62,7 +65,7 @@ public class Tile {
         this.upperLeftY = upperLeftY;
         this.board = board;
 
-        updateColors();
+        updateMultiColors();
 
     }
 
@@ -82,7 +85,56 @@ public class Tile {
         this.upperLeftY = toClone.upperLeftY;
         this.board = toClone.board;
     }
+    protected void updateMultiColors(){
+        
+        for (int i = 0; i < shapes.length; i++) {
+            for (int j = 0; j < shapes[i].length; j++) {
+                shapes[i][j] = new Rectangle(upperLeftX + (j * step), upperLeftY + (i * step), step, step);
+                shapes[i][j].setFill(background);
+                //System.out.println(i + " " + j + " added");
+                board.getChildren().add(shapes[i][j]);
+            }
+        }
+        
+        shapes[1][1].setFill(path);
 
+        for (Player p : playersOnTile) {
+            Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.RED)};
+            LinearGradient lg1 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops);
+//            Rectangle r1 = new Rectangle(0, 0, 100, 100);
+            shapes[1][1].setFill(lg1);
+        }
+        
+        if (up) {
+            shapes[0][1].setFill(path);
+        }
+        if (right) {
+            shapes[1][2].setFill(path);
+        }
+        if (down) {
+            shapes[2][1].setFill(path);
+        }
+        if (left) {
+            shapes[1][0].setFill(path);
+        }
+
+        //set strokes to null
+        for (int i = 0; i < shapes.length; i++) {
+            for (int j = 0; j < shapes[i].length; j++) {
+                shapes[i][j].setStroke(shapes[i][j].getFill());
+
+            }
+        }
+
+        //outer border
+        Rectangle outer = new Rectangle(upperLeftX, upperLeftY, Board.squareSize, Board.squareSize);
+        outer.setFill(null);
+        outer.setStroke(Color.BLACK);
+        outer.setStrokeWidth(3);
+        board.getChildren().add(outer);
+
+        
+    }
     /**
      * Set color - used every time somethign is changed
      *
@@ -233,7 +285,10 @@ public class Tile {
 
     public void setPlayer(Player player) {
         playersOnTile.add(player);
-        updateColors();
+        if (playersOnTile.size() > 1)
+            updateMultiColors();
+        else
+            updateColors();
         printTileTreasure();
     }
 

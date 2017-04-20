@@ -14,7 +14,6 @@ public class CompPlayer extends Player{
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
-        treasuresHand = new LinkedList<Card>(); 
         
     }
     /**

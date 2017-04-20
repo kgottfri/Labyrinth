@@ -136,7 +136,20 @@ public class Board extends Pane {
     }
 
     public void setTreasure(Tile[][] tiles) {
-        for (int i = 0; i < 24; i++) {
+        tiles[0][2].setTileTreasure('A');
+        tiles[0][4].setTileTreasure('B');
+        tiles[2][0].setTileTreasure('C');
+        tiles[2][2].setTileTreasure('D');
+        tiles[2][4].setTileTreasure('E');
+        tiles[2][6].setTileTreasure('F');
+        tiles[4][0].setTileTreasure('G');
+        tiles[4][2].setTileTreasure('H');
+        tiles[4][4].setTileTreasure('I');
+        tiles[4][6].setTileTreasure('J');
+        tiles[6][2].setTileTreasure('K');
+        tiles[6][4].setTileTreasure('L');
+        
+        for (int i = 12; i < 12; i++) {
             Random randX = new Random();
             Random randY = new Random();
             int x = randX.nextInt(rows);

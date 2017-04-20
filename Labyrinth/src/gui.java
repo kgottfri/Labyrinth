@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -216,33 +218,34 @@ computerMode.toFront();
                     }
 
                     if (reachable) {
-                        labyrinthBoard.removePlayer(currentPlayer);
-                        if (labyrinthBoard.addPlayer(currentPlayer, tileCoordinates)) {
-                            labyrinthBoard.removeTreasure(tileCoordinates);
-                            currentPlayer.upturnCard();
-                            if (currentPlayer.player_number == 1) {
-                                if(!player1.emptyHand())
-                                    player1.setTreasureImage(player1, player1.getTreasure());
-                                else
-                                    endGame(player1);
-                            } else {
-                                if(!player2.emptyHand())
-                                    player2.setTreasureImage(player2, player2.getTreasure());
-                                else
-                                    endGame(player2);
-                            }
-                            System.out.println("Success");
-                        }
+                            moveCurrentPlayer(tileCoordinates);
 //                        labyrinthBoard.checkIsTreasure(currentPlayer,tileCoordinates);
-                        currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-                        state = GameState.insertTile;
+                            currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
+                            state = GameState.insertTile;
+                            // If the player is a computer, let the computer take their turn.
+                            if (gameMode==0 && currentPlayer.player_number == 2){
+                                // Insert the extra maze tile randomly
+                                Random randInt = new Random();
+                                int buttonInt = randInt.nextInt(12);
+                                boardPane.buttonsList.get(buttonInt).button.fire();
+                                //simulateButtonPress(buttInt);
+                                for (int reachableTile:reachableTiles){
+                                    int[] tempTileCoordinates = Path.getTileCoordinates(reachableTile, labyrinthBoard.getX_DIM());
+                                    Tile tempTile = labyrinthBoard.tiles[tempTileCoordinates[0]][tempTileCoordinates[1]];
+                                    if (tempTile.treasure == currentPlayer.getTreasure().getValueAsString().toCharArray()[0]){
+                                        moveCurrentPlayer(tempTileCoordinates);
+                                    }
+                                }
+                                currentPlayer = player1;
+                                state = GameState.insertTile;
+                            }
                         
                         if(currentPlayer.equals(player1)){
-                    player2.otherPlayer();
-                }
-                else{
-                    player1.otherPlayer();
-                }
+                            player2.otherPlayer();
+                        }
+                        else{
+                            player1.otherPlayer();
+                        }
                 currentPlayer.resetColor();
                         
                         
@@ -279,6 +282,26 @@ computerMode.toFront();
         ArrayList<Integer> reachableTiles = Path.getReachableTiles(labyrinthBoard, playerLocation);
 
         return reachableTiles;
+    }
+
+    public void moveCurrentPlayer(int[] tileCoordinates){
+        labyrinthBoard.removePlayer(currentPlayer);
+        if (labyrinthBoard.addPlayer(currentPlayer, tileCoordinates)) {
+            labyrinthBoard.removeTreasure(tileCoordinates);
+            currentPlayer.upturnCard();
+            if (currentPlayer.player_number == 1) {
+                if(!player1.emptyHand())
+                    player1.setTreasureImage(player1, player1.getTreasure());
+                else
+                    endGame(player1);
+            } else {
+                if(!player2.emptyHand())
+                    player2.setTreasureImage(player2, player2.getTreasure());
+                else
+                    endGame(player2);
+            }
+            System.out.println("Success");
+        }
     }
 
     private void setUpAnimation() {
@@ -378,35 +401,37 @@ computerMode.toFront();
 
 class CustomPane extends StackPane {
 
+    public ArrayList<InsertButton> buttonsList = new ArrayList<InsertButton>();
     public CustomPane(gui gui, Board labyrinthBoard) {
-        
+
         labyrinthBoard.setPadding(new Insets(90, 90, 90, 90));
         getChildren().add(labyrinthBoard);
         setPadding(new Insets(90, 90, 90, 90));
-                
-                InsertButton btn_1_1 = new InsertButton(gui, labyrinthBoard, this, 1, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-                InsertButton btn_1_3 = new InsertButton(gui, labyrinthBoard, this, 3, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-		
-		InsertButton btn_1_5 = new InsertButton(gui, labyrinthBoard, this, 5, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-                
-                InsertButton btn_2_1 = new InsertButton(gui, labyrinthBoard, this, 1, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-                
-                InsertButton btn_2_3 = new InsertButton(gui, labyrinthBoard, this, 3, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
 
-                InsertButton btn_2_5 = new InsertButton(gui, labyrinthBoard, this, 5, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-		
-                InsertButton btn_3_1 = new InsertButton(gui, labyrinthBoard, this, 1, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-
-                InsertButton btn_3_3 = new InsertButton(gui, labyrinthBoard, this, 3, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-
-		InsertButton btn_3_5 = new InsertButton(gui, labyrinthBoard, this, 5, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-
-                InsertButton btn_4_1 = new InsertButton(gui, labyrinthBoard, this, 1, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-
-		InsertButton btn_4_3 = new InsertButton(gui, labyrinthBoard, this, 3, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-
-                InsertButton btn_4_5 = new InsertButton(gui, labyrinthBoard, this, 5, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-
+        InsertButton btn_1_1 = new InsertButton(gui, labyrinthBoard, this, 1, 1, "-fx-background-image: url('downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_1_1);
+        InsertButton btn_1_3 = new InsertButton(gui, labyrinthBoard, this, 3, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_1_3);
+        InsertButton btn_1_5 = new InsertButton(gui, labyrinthBoard, this, 5, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_1_5);
+        InsertButton btn_2_1 = new InsertButton(gui, labyrinthBoard, this, 1, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_2_1);
+        InsertButton btn_2_3 = new InsertButton(gui, labyrinthBoard, this, 3, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_2_3);
+        InsertButton btn_2_5 = new InsertButton(gui, labyrinthBoard, this, 5, 3, "-fx-background-image: url('upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_2_5);
+        InsertButton btn_3_1 = new InsertButton(gui, labyrinthBoard, this, 1, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_3_1);
+        InsertButton btn_3_3 = new InsertButton(gui, labyrinthBoard, this, 3, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_3_3);
+        InsertButton btn_3_5 = new InsertButton(gui, labyrinthBoard, this, 5, 4, "-fx-background-image: url('rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_3_5);
+        InsertButton btn_4_1 = new InsertButton(gui, labyrinthBoard, this, 1, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_4_1);
+        InsertButton btn_4_3 = new InsertButton(gui, labyrinthBoard, this, 3, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_4_3);
+        InsertButton btn_4_5 = new InsertButton(gui, labyrinthBoard, this, 5, 2, "-fx-background-image: url('leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        buttonsList.add(btn_4_5);
 		
 		setAlignment(btn_1_1.getButton(), Pos.TOP_LEFT);
 		setAlignment(btn_1_3.getButton(), Pos.TOP_CENTER);

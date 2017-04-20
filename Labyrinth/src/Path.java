@@ -63,6 +63,16 @@ public class Path {
         return tileIndex;
     }
 
+    public static int[] getTileCoordinates(int tileIndex, int size){
+        /*
+        Gets the tile coordinates based on its index.
+        */
+        int[] tileCoordinates = new int[2];
+        tileCoordinates[0] = (int)(tileIndex / size);
+        tileCoordinates[1] = tileIndex % size;
+        return tileCoordinates;
+    }
+
     public static boolean canMove(Board board, int[] locCurrentTile, Direction moveDirection){
         /*
         Determines if it is possible to move from provided tile to the adjacent tile in moveDirection.

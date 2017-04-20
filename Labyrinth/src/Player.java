@@ -2,8 +2,14 @@
 
 import java.util.Collections;
 import java.util.LinkedList;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  * Player superclass for both human and computer players
@@ -24,11 +30,14 @@ public class Player extends Pane{
     public static final int squareHeight=100;
     public Color color;
     public int player_number;
+    Label play;
     
     public Player(){
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
+        
+        
     }
     public Player(int playerType){
         player_number = playerType;
@@ -37,10 +46,29 @@ public class Player extends Pane{
         }
         else
             this.color = Color.GREEN;
-        
+        System.out.println(playerType);
         this.setPrefHeight(Prows*squareHeight);
 	    this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
+        play = new Label("Player " + player_number);
+        play.setPadding(new Insets(20, 0, 50, 175));
+        play.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+        if (player_number == 1) {
+            play.setTextFill(Color.BLUE);
+        } else {
+            play.setTextFill(Color.GREEN);
+        }
+        getChildren().add(play);
+        Label curPiece = new Label("Current Piece");
+        curPiece.setPadding(new Insets(55, 0, 50, 190));
+        getChildren().add(curPiece);
+        Label curTreasure = new Label("Current Treasure Card");
+        curTreasure.setPadding(new Insets(220, 0, 50, 165));
+        getChildren().add(curTreasure);
+        Label compTreasure = new Label("# Of Completed Cards");
+        compTreasure.setPadding(new Insets(450, 0, 50, 160));
+        getChildren().add(compTreasure);
+        this.toFront();
     }
 	
     public int getX_DIM(){
@@ -148,7 +176,30 @@ public class Player extends Pane{
     public char getSuccessfulTreasures(){
         return successfulTreasure;
     }
-  
+   
+    public void setTreasureImage(Player p, Card card) {
+//            String testString = new String("/treasureCards/A.jpg");
+
+        String cardString = new String("/treasureCards/" + card.getValueAsString() + ".jpg");
+        Image image = new Image(cardString);
+        ImageView treasureCard = new ImageView(image);
+        treasureCard.setFitWidth(110);
+        treasureCard.setPreserveRatio(true);
+        treasureCard.relocate(180, 260);
+        p.getChildren().add(treasureCard);
+    }
+    
+    public void currentPlayer(){
+        play.setTextFill(null);
+    }
+    public void otherPlayer(){
+        play.setTextFill(Color.GREY);
+        this.setVisible(false);
+    }
+    public void resetColor(){
+        play.setTextFill(color);
+        this.setVisible(true);
+    }
 }
     
     

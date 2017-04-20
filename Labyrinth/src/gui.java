@@ -43,8 +43,6 @@ public class gui extends Application {
     private Timeline animation;
     private Deck treasureDeck;
     private static final double MILLISEC = 200;
-    PlayerPane leftPane;
-    PlayerPane rightPane;
     CustomPane boardPane;
     int gameMode;
 
@@ -108,10 +106,9 @@ public class gui extends Application {
         treasureDeck = new Deck();
         treasureDeck.shuffle();
         labyrinthBoard = new Board();
-        player1 = new HumanPlayer(1);
-        player2 = new HumanPlayer(2);
-        leftPane = new PlayerPane(player1, 1);
-        rightPane = new PlayerPane(player2, 2);
+        player1 = new Player(1);
+        player2 = new Player(2);
+        player2.otherPlayer();
         boardPane = new CustomPane(this, labyrinthBoard);
         currentPlayer = player1;
         int dealInd = 0; //index for dealing
@@ -187,11 +184,11 @@ computerMode.toFront();
 
         //pane.setLeft(player1);
         //pane.setRight(player2);
-        pane.setLeft(leftPane);
-        pane.setRight(rightPane);
+        pane.setLeft(player1);
+        pane.setRight(player2);
         pane.setCenter(boardPane);
-        leftPane.setTreasureImage(player1, player1.getTreasure());
-        rightPane.setTreasureImage(player2, player2.getTreasure());
+        player1.setTreasureImage(player1, player1.getTreasure());
+        player2.setTreasureImage(player2, player2.getTreasure());
         //pane.setPadding(new Insets(10,10,10,10));
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
@@ -204,11 +201,14 @@ computerMode.toFront();
         boardPane.getBoard().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
-
+                
+                //currentPlayer.currentPlayer();
+                
                 boolean reachable = false;
                 if (state == GameState.movePiece) {
                     int[] tileCoordinates = labyrinthBoard.getTileCoordinates(t.getX(), t.getY());
                     int tileIndex = Path.getTileIndex(tileCoordinates, labyrinthBoard.getX_DIM());
+                    //player1.UpdateTurn(currentPlayer);
                     for (int reachableTile : reachableTiles) {
                         if (tileIndex == reachableTile) {
                             reachable = true;
@@ -222,12 +222,12 @@ computerMode.toFront();
                             currentPlayer.upturnCard();
                             if (currentPlayer.player_number == 1) {
                                 if(!player1.emptyHand())
-                                    leftPane.setTreasureImage(player1, player1.getTreasure());
+                                    player1.setTreasureImage(player1, player1.getTreasure());
                                 else
                                     endGame(player1);
                             } else {
                                 if(!player2.emptyHand())
-                                    rightPane.setTreasureImage(player2, player2.getTreasure());
+                                    player2.setTreasureImage(player2, player2.getTreasure());
                                 else
                                     endGame(player2);
                             }
@@ -236,6 +236,17 @@ computerMode.toFront();
 //                        labyrinthBoard.checkIsTreasure(currentPlayer,tileCoordinates);
                         currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                         state = GameState.insertTile;
+                        
+                        if(currentPlayer.equals(player1)){
+                    player2.otherPlayer();
+                }
+                else{
+                    player1.otherPlayer();
+                }
+                currentPlayer.resetColor();
+                        
+                        
+                        
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Player " + currentPlayer.player_number + " can't move to this tile.", ButtonType.OK);
                         alert.showAndWait();
@@ -542,40 +553,3 @@ class CustomPane extends StackPane {
     }
 }
 
-class PlayerPane extends Pane {
-    //private Label player2=new Label();
-
-    public PlayerPane(Player player, int playerNum) {
-        getChildren().add(player);
-        Label play = new Label("Player " + playerNum);
-        play.setPadding(new Insets(20, 0, 50, 175));
-        play.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        if (playerNum == 1) {
-            play.setTextFill(Color.BLUE);
-        } else {
-            play.setTextFill(Color.GREEN);
-        }
-        getChildren().add(play);
-        Label curPiece = new Label("Current Piece");
-        curPiece.setPadding(new Insets(55, 0, 50, 190));
-        getChildren().add(curPiece);
-        Label curTreasure = new Label("Current Treasure Card");
-        curTreasure.setPadding(new Insets(220, 0, 50, 165));
-        getChildren().add(curTreasure);
-        Label compTreasure = new Label("# Of Completed Cards");
-        compTreasure.setPadding(new Insets(450, 0, 50, 160));
-        getChildren().add(compTreasure);
-    }
-
-    public void setTreasureImage(Player p, Card card) {
-//            String testString = new String("/treasureCards/A.jpg");
-
-        String cardString = new String("/treasureCards/" + card.getValueAsString() + ".jpg");
-        Image image = new Image(cardString);
-        ImageView treasureCard = new ImageView(image);
-        treasureCard.setFitWidth(110);
-        treasureCard.setPreserveRatio(true);
-        treasureCard.relocate(180, 260);
-        p.getChildren().add(treasureCard);
-    }
-}

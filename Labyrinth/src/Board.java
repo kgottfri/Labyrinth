@@ -149,7 +149,7 @@ public class Board extends Pane {
         tiles[6][2].setTileTreasure('K');
         tiles[6][4].setTileTreasure('L');
         
-        for (int i = 12; i < 12; i++) {
+        for (int i = 12; i < 24; i++) {
             Random randX = new Random();
             Random randY = new Random();
             int x = randX.nextInt(rows);

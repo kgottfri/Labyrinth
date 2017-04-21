@@ -66,7 +66,7 @@ public class Tile {
         this.upperLeftY = upperLeftY;
         this.board = board;
 
-        updateMultiColors();
+        updateColors();
 
     }
 
@@ -102,7 +102,7 @@ public class Tile {
         shapes[1][1].setFill(path);
         
         // Temp - color center tile the color of the player
-        
+        shapes[1][1].setFill(playersOnTile.get(1).color);
             double[] points = new double[6];
             points[0] = shapes[1][1].getX();
             points[1] = shapes[1][1].getY();
@@ -292,9 +292,11 @@ public class Tile {
 
     public void setPlayer(Player player) {
         playersOnTile.add(player);
-        updateColors();
+//        updateColors();
         if (playersOnTile.size() > 1)
             updateMultiColors();
+        else
+            updateColors();
         printTileTreasure();
     }
 

@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
@@ -95,16 +96,24 @@ public class Tile {
                 board.getChildren().add(shapes[i][j]);
             }
         }
-        
-        shapes[1][1].setFill(path);
 
-        for (Player p : playersOnTile) {
-            Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(1, Color.RED)};
-            LinearGradient lg1 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops);
-//            Rectangle r1 = new Rectangle(0, 0, 100, 100);
-            shapes[1][1].setFill(lg1);
-        }
+        //adjust to reflect up/right/down/left
+        //middle: always set to blue
+        shapes[1][1].setFill(path);
         
+        // Temp - color center tile the color of the player
+        
+            double[] points = new double[6];
+            points[0] = shapes[1][1].getX();
+            points[1] = shapes[1][1].getY();
+            points[2] = shapes[1][1].getX();
+            points[3] = shapes[1][1].getY() + step;
+            points[4] = shapes[1][1].getX() + step;
+            points[5] = shapes[1][1].getY();
+            Polygon triangle = new Polygon(points);
+            triangle.setFill(playersOnTile.get(0).color);
+            board.getChildren().add(triangle);
+
         if (up) {
             shapes[0][1].setFill(path);
         }
@@ -132,8 +141,6 @@ public class Tile {
         outer.setStroke(Color.BLACK);
         outer.setStrokeWidth(3);
         board.getChildren().add(outer);
-
-        
     }
     /**
      * Set color - used every time somethign is changed
@@ -285,10 +292,9 @@ public class Tile {
 
     public void setPlayer(Player player) {
         playersOnTile.add(player);
+        updateColors();
         if (playersOnTile.size() > 1)
             updateMultiColors();
-        else
-            updateColors();
         printTileTreasure();
     }
 

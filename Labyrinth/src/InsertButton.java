@@ -52,19 +52,21 @@ public class InsertButton {
                 if (side == 1) {
                     handleTop();
                 }
-                
+
                 if (side == 2) {
                     handleRight();
                 }
-                
+
                 if (side == 3) {
                     handleBottom();
                 }
-                
+
                 if (side == 4) {
                     handleLeft();
                 }
-    
+
+                // Enable the button that lets the player pass.
+                gui.boardPane.getPassButton().setDisable(false);
             }
 
 
@@ -104,14 +106,11 @@ public class InsertButton {
                     board.insertTileTop(index);
                     gui.reachableTiles = gui.findReachableTilesFor(gui.currentPlayer);
                     gui.state = GameState.movePiece;
+                    gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.up;
                 }
-            } else if (gui.state == GameState.movePiece) {
-                    gui.currentPlayer = gui.currentPlayer.player_number == 1 ? gui.player2 : gui.player1;
-                    gui.state = GameState.insertTile;
-                
-                    }
+            }
     }
     
     private void handleRight() {
@@ -124,14 +123,11 @@ public class InsertButton {
                     board.insertTileRight(index);
                     gui.reachableTiles = gui.findReachableTilesFor(gui.currentPlayer);
                     gui.state = GameState.movePiece;
+                    gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.right;
                 }
-            } else if (gui.state == GameState.movePiece) {
-                    gui.currentPlayer = gui.currentPlayer.player_number == 1 ? gui.player2 : gui.player1;
-                    gui.state = GameState.insertTile;
-                
-                    }
+            }
     }
     
     private void handleBottom() {
@@ -144,14 +140,11 @@ public class InsertButton {
                     board.insertTileBottom(index);
                     gui.reachableTiles = gui.findReachableTilesFor(gui.currentPlayer);
                     gui.state = GameState.movePiece;
+                    gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.down;
                 }
-            } else if (gui.state == GameState.movePiece) {
-                    gui.currentPlayer = gui.currentPlayer.player_number == 1 ? gui.player2 : gui.player1;
-                    gui.state = GameState.insertTile;
-                
-                    }
+            }
     }
     
     private void handleLeft() {
@@ -164,14 +157,11 @@ public class InsertButton {
                     board.insertTileLeft(index);
                     gui.reachableTiles = gui.findReachableTilesFor(gui.currentPlayer);
                     gui.state = GameState.movePiece;
+                    gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.left;
                 }
-            } else if (gui.state == GameState.movePiece) {
-                    gui.currentPlayer = gui.currentPlayer.player_number == 1 ? gui.player2 : gui.player1;
-                    gui.state = GameState.insertTile;
-                
-                    }
+            }
     }
         
     

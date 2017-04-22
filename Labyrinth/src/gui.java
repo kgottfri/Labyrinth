@@ -194,10 +194,6 @@ computerMode.toFront();
         //pane.setPadding(new Insets(10,10,10,10));
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        Label stateLabel = new Label(state.toString());
-        stateLabel.textProperty().bind(new SimpleStringProperty(state.toString()));
-        pane.setBottom(stateLabel);
-
         root.getChildren().add(pane);
 
         boardPane.getBoard().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -228,7 +224,7 @@ computerMode.toFront();
                                 Random randInt = new Random();
                                 int buttonInt = randInt.nextInt(12);
                                 boardPane.buttonsList.get(buttonInt).button.fire();
-                                //simulateButtonPress(buttInt);
+
                                 for (int reachableTile:reachableTiles){
                                     int[] tempTileCoordinates = Path.getTileCoordinates(reachableTile, labyrinthBoard.getX_DIM());
                                     Tile tempTile = labyrinthBoard.tiles[tempTileCoordinates[0]][tempTileCoordinates[1]];
@@ -242,14 +238,16 @@ computerMode.toFront();
                         
                         if(currentPlayer.equals(player1)){
                             player2.otherPlayer();
+                            boardPane.getPassButton().setTextFill(Color.BLUE);
                         }
                         else{
                             player1.otherPlayer();
+                            boardPane.getPassButton().setTextFill(Color.GREEN);
                         }
-                currentPlayer.resetColor();
-                        
-                        
-                        
+                        boardPane.setPassButtonText("Insert Tile");
+                        boardPane.getPassButton().setDisable(true);
+                        currentPlayer.resetColor();
+
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Player " + currentPlayer.player_number + " can't move to this tile.", ButtonType.OK);
                         alert.showAndWait();
@@ -402,6 +400,8 @@ computerMode.toFront();
 class CustomPane extends StackPane {
 
     public ArrayList<InsertButton> buttonsList = new ArrayList<InsertButton>();
+    private Button btn_pass;
+
     public CustomPane(gui gui, Board labyrinthBoard) {
 
         labyrinthBoard.setPadding(new Insets(90, 90, 90, 90));
@@ -432,7 +432,9 @@ class CustomPane extends StackPane {
         buttonsList.add(btn_4_3);
         InsertButton btn_4_5 = new InsertButton(gui, labyrinthBoard, this, 5, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_4_5);
-		
+
+
+
 		setAlignment(btn_1_1.getButton(), Pos.TOP_LEFT);
 		setAlignment(btn_1_3.getButton(), Pos.TOP_CENTER);
 		setAlignment(btn_1_5.getButton(), Pos.TOP_RIGHT);
@@ -464,6 +466,36 @@ class CustomPane extends StackPane {
 		setMargin(btn_4_1.getButton(),new Insets(-300,-80,0,0));
 		setMargin(btn_4_3.getButton(),new Insets(-15,-80,0,0));
 		setMargin(btn_4_5.getButton(),new Insets(270,-80,0,0));
+
+        btn_pass = new Button("Insert Tile");
+        btn_pass.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+        btn_pass.setTextFill(Color.BLUE);
+        btn_pass.setMaxWidth(200);
+        btn_pass.setMaxHeight(25);
+        btn_pass.setDisable(true);
+        setAlignment(btn_pass, Pos.BOTTOM_CENTER);
+        setMargin(btn_pass,new Insets(0,0,-85,0));
+        getChildren().add(btn_pass);
+
+        btn_pass.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+                gui.currentPlayer = gui.currentPlayer.player_number == 1 ? gui.player2 : gui.player1;
+                if(gui.currentPlayer.equals(gui.player1)){
+                    gui.player2.otherPlayer();
+                    btn_pass.setText("Insert Tile");
+                    btn_pass.setTextFill(Color.BLUE);
+                }
+                else{
+                    gui.player1.otherPlayer();
+                    btn_pass.setText("Insert Tile");
+                    btn_pass.setTextFill(Color.GREEN);
+                }
+                btn_pass.setDisable(true);
+                gui.currentPlayer.resetColor();
+                gui.state = GameState.insertTile;
+            }
+        });
 //        Button btn_1_1 = new Button();
 //        btn_1_1.setMaxWidth(35);
 //        btn_1_1.setMaxHeight(60);
@@ -575,6 +607,20 @@ class CustomPane extends StackPane {
         Node boardNode = getChildren().get(0);
 
         return boardNode;
+    }
+
+    public Button getPassButton(){
+        return btn_pass;
+    }
+
+    public void setPassButtonText(String text){
+        if (text == ""){
+            btn_pass.setText("Skip Move Phase");
+        }
+        else{
+            btn_pass.setText(text);
+        }
+
     }
 }
 

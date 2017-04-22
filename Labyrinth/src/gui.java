@@ -1,4 +1,5 @@
 
+import javafx.animation.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert;
@@ -7,8 +8,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +17,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -220,20 +220,8 @@ computerMode.toFront();
                             state = GameState.insertTile;
                             // If the player is a computer, let the computer take their turn.
                             if (gameMode==0 && currentPlayer.player_number == 2){
-                                // Insert the extra maze tile randomly
-                                Random randInt = new Random();
-                                int buttonInt = randInt.nextInt(12);
-                                boardPane.buttonsList.get(buttonInt).button.fire();
-
-                                for (int reachableTile:reachableTiles){
-                                    int[] tempTileCoordinates = Path.getTileCoordinates(reachableTile, labyrinthBoard.getX_DIM());
-                                    Tile tempTile = labyrinthBoard.tiles[tempTileCoordinates[0]][tempTileCoordinates[1]];
-                                    if (tempTile.treasure == currentPlayer.getTreasure().getValueAsString().toCharArray()[0]){
-                                        moveCurrentPlayer(tempTileCoordinates);
-                                    }
-                                }
-                                currentPlayer = player1;
-                                state = GameState.insertTile;
+                                //boardPane.computerWaitPane.setVisible(true);
+                                computerTakeTurn();
                             }
                         
                         if(currentPlayer.equals(player1)){
@@ -302,6 +290,71 @@ computerMode.toFront();
         }
     }
 
+    public void computerTakeTurn(){
+        boardPane.computerWaitPane.setVisible(true);
+        Timeline computerThinking = createComputerTimeline(boardPane.computerWaitPane);
+        computerThinking.setOnFinished(event -> boardPane.computerWaitPane.setVisible(false));
+        computerThinking.play();
+
+        // Insert the extra maze tile randomly
+        Random randInt = new Random();
+        int buttonInt = randInt.nextInt(12);
+        InsertButton chosenButton = boardPane.buttonsList.get(buttonInt);
+
+        // Prevent the computer from re-sinserting the tile illegally
+        if (chosenButton.index == disabledRowColumn && chosenButton.side == disabledDirection){
+            chosenButton = boardPane.buttonsList.get((buttonInt + 1) % 11);
+        }
+        chosenButton.button.fire();
+
+        boolean found = false;
+        for (int reachableTile:reachableTiles){
+            int[] tempTileCoordinates = Path.getTileCoordinates(reachableTile, labyrinthBoard.getX_DIM());
+            Tile tempTile = labyrinthBoard.tiles[tempTileCoordinates[0]][tempTileCoordinates[1]];
+            if (tempTile.treasure == currentPlayer.getTreasure().getValueAsString().toCharArray()[0]){
+                moveCurrentPlayer(tempTileCoordinates);
+                found = true;
+            }
+            if (!found){
+                int randomTile = randInt.nextInt(reachableTiles.size());
+                moveCurrentPlayer(Path.getTileCoordinates(reachableTiles.get(randomTile), labyrinthBoard.getX_DIM()));
+            }
+        }
+        currentPlayer = player1;
+        state = GameState.insertTile;
+    }
+
+    private Timeline createComputerTimeline(Node node) {
+        Timeline computerThink = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(0),
+                        new KeyValue(
+                                node.opacityProperty(),
+                                1,
+                                Interpolator.DISCRETE
+                        )
+                ),
+                new KeyFrame(
+                        Duration.seconds(2),
+                        new KeyValue(
+                                node.opacityProperty(),
+                                1,
+                                Interpolator.DISCRETE
+                        )
+                ),
+                new KeyFrame(
+                        Duration.seconds(0),
+                        new KeyValue(
+                                node.opacityProperty(),
+                                1,
+                                Interpolator.DISCRETE
+                        )
+                )
+        );
+        computerThink.setCycleCount(1);
+
+        return computerThink;
+    }
     private void setUpAnimation() {
         // Create a handler
         EventHandler<ActionEvent> eventHandler = (ActionEvent e) -> {
@@ -401,6 +454,8 @@ class CustomPane extends StackPane {
 
     public ArrayList<InsertButton> buttonsList = new ArrayList<InsertButton>();
     private Button btn_pass;
+    public StackPane computerWaitPane;
+    private Label computerWaitLabel;
 
     public CustomPane(gui gui, Board labyrinthBoard) {
 
@@ -408,29 +463,29 @@ class CustomPane extends StackPane {
         getChildren().add(labyrinthBoard);
         setPadding(new Insets(90, 90, 90, 90));
 
-        InsertButton btn_1_1 = new InsertButton(gui, labyrinthBoard, this, 1, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_1_1 = new InsertButton(gui, labyrinthBoard, this, 1, Direction.down, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_1_1);
-        InsertButton btn_1_3 = new InsertButton(gui, labyrinthBoard, this, 3, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_1_3 = new InsertButton(gui, labyrinthBoard, this, 3, Direction.down, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_1_3);
-        InsertButton btn_1_5 = new InsertButton(gui, labyrinthBoard, this, 5, 1, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_1_5 = new InsertButton(gui, labyrinthBoard, this, 5, Direction.down, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_1_5);
-        InsertButton btn_2_1 = new InsertButton(gui, labyrinthBoard, this, 1, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_2_1 = new InsertButton(gui, labyrinthBoard, this, 1, Direction.up, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_2_1);
-        InsertButton btn_2_3 = new InsertButton(gui, labyrinthBoard, this, 3, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_2_3 = new InsertButton(gui, labyrinthBoard, this, 3, Direction.up, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_2_3);
-        InsertButton btn_2_5 = new InsertButton(gui, labyrinthBoard, this, 5, 3, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_2_5 = new InsertButton(gui, labyrinthBoard, this, 5, Direction.up, "-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_2_5);
-        InsertButton btn_3_1 = new InsertButton(gui, labyrinthBoard, this, 1, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_3_1 = new InsertButton(gui, labyrinthBoard, this, 1, Direction.right, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_3_1);
-        InsertButton btn_3_3 = new InsertButton(gui, labyrinthBoard, this, 3, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_3_3 = new InsertButton(gui, labyrinthBoard, this, 3, Direction.right, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_3_3);
-        InsertButton btn_3_5 = new InsertButton(gui, labyrinthBoard, this, 5, 4, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_3_5 = new InsertButton(gui, labyrinthBoard, this, 5, Direction.right, "-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_3_5);
-        InsertButton btn_4_1 = new InsertButton(gui, labyrinthBoard, this, 1, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_4_1 = new InsertButton(gui, labyrinthBoard, this, 1, Direction.left, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_4_1);
-        InsertButton btn_4_3 = new InsertButton(gui, labyrinthBoard, this, 3, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_4_3 = new InsertButton(gui, labyrinthBoard, this, 3, Direction.left, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_4_3);
-        InsertButton btn_4_5 = new InsertButton(gui, labyrinthBoard, this, 5, 2, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
+        InsertButton btn_4_5 = new InsertButton(gui, labyrinthBoard, this, 5, Direction.left, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_4_5);
 
 
@@ -481,21 +536,37 @@ class CustomPane extends StackPane {
             @Override
             public void handle(ActionEvent t) {
                 gui.currentPlayer = gui.currentPlayer.player_number == 1 ? gui.player2 : gui.player1;
-                if(gui.currentPlayer.equals(gui.player1)){
-                    gui.player2.otherPlayer();
-                    btn_pass.setText("Insert Tile");
-                    btn_pass.setTextFill(Color.BLUE);
+                gui.state = GameState.insertTile;
+                if (gui.gameMode==0 && gui.currentPlayer.player_number == 2){
+                    gui.computerTakeTurn();
                 }
-                else{
-                    gui.player1.otherPlayer();
-                    btn_pass.setText("Insert Tile");
-                    btn_pass.setTextFill(Color.GREEN);
+                else {
+                    if (gui.currentPlayer.equals(gui.player1)) {
+                        gui.player2.otherPlayer();
+                        btn_pass.setTextFill(Color.BLUE);
+                    } else {
+                        gui.player1.otherPlayer();
+                        btn_pass.setTextFill(Color.GREEN);
+                    }
                 }
+                btn_pass.setText("Insert Tile");
                 btn_pass.setDisable(true);
                 gui.currentPlayer.resetColor();
-                gui.state = GameState.insertTile;
             }
         });
+        computerWaitPane = new StackPane();
+        computerWaitPane.setVisible(false);
+        Rectangle computerWaitRect = new Rectangle(0, 0, 300, 100);
+        computerWaitRect.setFill(Color.WHITE);
+        computerWaitRect.setArcHeight(15);
+        computerWaitRect.setArcWidth(15);
+        computerWaitRect.setStroke(Color.GREEN);
+        computerWaitRect.setStrokeWidth(6);
+
+        computerWaitLabel = new Label("Computer Taking Turn...");
+        computerWaitLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        computerWaitPane.getChildren().addAll(computerWaitRect, computerWaitLabel);
+        this.getChildren().add(computerWaitPane);
 //        Button btn_1_1 = new Button();
 //        btn_1_1.setMaxWidth(35);
 //        btn_1_1.setMaxHeight(60);
@@ -621,6 +692,24 @@ class CustomPane extends StackPane {
             btn_pass.setText(text);
         }
 
+    }
+
+    public void displayComputerWait() throws InterruptedException {
+
+        int i = 0;
+        int wait = 5;
+        this.computerWaitLabel.setText("Computer Thinking");
+        while (i < wait) {
+            Thread.sleep(333);
+            incrementWaitLabel();
+            i += 1;
+        }
+        this.computerWaitPane.setVisible(false);
+    }
+    private void incrementWaitLabel(){
+        String currentText = this.computerWaitLabel.getText();
+        currentText += ".";
+        this.computerWaitLabel.setText(currentText);
     }
 }
 

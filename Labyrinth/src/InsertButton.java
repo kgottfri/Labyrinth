@@ -20,13 +20,13 @@ public class InsertButton {
     Button button = new Button();
     
     int index;
-    int side;
+    Direction side;
     gui gui;
     Board board;
     
-    InsertButton(gui gui, Board board, CustomPane pane, int index, int side, String styleString) {
+    InsertButton(gui gui, Board board, CustomPane pane, int index, Direction side, String styleString) {
                 
-        if (side == 1 || side == 3) { 
+        if (side == Direction.up || side == Direction.down) {
             button.setMaxWidth(35);
             button.setMaxHeight(60);
         
@@ -49,19 +49,19 @@ public class InsertButton {
             @Override
             public void handle(ActionEvent t) {
                 //top
-                if (side == 1) {
+                if (side == Direction.down) {
                     handleTop();
                 }
 
-                if (side == 2) {
+                if (side == Direction.left) {
                     handleRight();
                 }
 
-                if (side == 3) {
+                if (side == Direction.up) {
                     handleBottom();
                 }
 
-                if (side == 4) {
+                if (side == Direction.right) {
                     handleLeft();
                 }
 
@@ -98,7 +98,7 @@ public class InsertButton {
     
     private void handleTop() {
             if (gui.state == GameState.insertTile) { 
-                if ((gui.disabledDirection == Direction.down) && (gui.disabledRowColumn == index)) {
+                if ((gui.disabledDirection == side) && (gui.disabledRowColumn == index)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "You cannot undo the last move.", ButtonType.OK);
                     alert.showAndWait();
                 }
@@ -115,7 +115,7 @@ public class InsertButton {
     
     private void handleRight() {
             if (gui.state == GameState.insertTile) { 
-                if ((gui.disabledDirection == Direction.left) && (gui.disabledRowColumn == index)) {
+                if ((gui.disabledDirection == side) && (gui.disabledRowColumn == index)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "You cannot undo the last move.", ButtonType.OK);
                     alert.showAndWait();
                 }
@@ -132,7 +132,7 @@ public class InsertButton {
     
     private void handleBottom() {
             if (gui.state == GameState.insertTile) { 
-                if ((gui.disabledDirection == Direction.up) && (gui.disabledRowColumn == index)) {
+                if ((gui.disabledDirection == side) && (gui.disabledRowColumn == index)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "You cannot undo the last move.", ButtonType.OK);
                     alert.showAndWait();
                 }
@@ -149,7 +149,7 @@ public class InsertButton {
     
     private void handleLeft() {
             if (gui.state == GameState.insertTile) { 
-                if ((gui.disabledDirection == Direction.right) && (gui.disabledRowColumn == index)) {
+                if ((gui.disabledDirection == side) && (gui.disabledRowColumn == index)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "You cannot undo the last move.", ButtonType.OK);
                     alert.showAndWait();
                 }

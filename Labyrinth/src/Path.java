@@ -54,9 +54,6 @@ public class Path {
         If the specified tile is off the grid, return -1.
          */
         int tileIndex = tileLoc[0]*size + tileLoc[1];
-        if (tileIndex == 90){
-            System.out.println("WTF");
-        }
         if (tileIndex < 0){
             tileIndex = -1;
         }

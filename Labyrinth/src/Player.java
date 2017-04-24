@@ -2,18 +2,23 @@
 
 import java.util.Collections;
 import java.util.LinkedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import static javafx.scene.layout.StackPane.setAlignment;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 /**
- * Player superclass for both human and computer players
+ * Player class for both human and computer players
  * @author Kevin Gottfried
  */
 public class Player extends Pane{
@@ -34,6 +39,9 @@ public class Player extends Pane{
     public int player_number;
     Label play;
     Label compTreasureNum;
+    Board board;
+    Board extraBoard;
+    Boolean canRotate = true;
     
     public Player(){
         this.setPrefHeight(Prows*squareHeight);
@@ -42,7 +50,8 @@ public class Player extends Pane{
         
         
     }
-    public Player(int playerType){
+    public Player(int playerType, Board board){
+        this.board = board;
         DropShadow ds = new DropShadow();
         ds.setOffsetY(3.0f);
         ds.setColor(Color.color(0.4f,0.4f,0.4f));
@@ -66,9 +75,58 @@ public class Player extends Pane{
             play.setTextFill(Color.GREEN);
         }
         getChildren().add(play);
-        Label curPiece = new Label("Current Piece");
-        curPiece.setPadding(new Insets(55, 0, 50, 200));
-        getChildren().add(curPiece);
+        Label curPieceLabel = new Label("Current Piece");
+        curPieceLabel.setPadding(new Insets(75, 0, 50, 200));
+        getChildren().add(curPieceLabel);
+        
+        //display extra Tile
+        extraBoard = new Board(board, 205, 105);
+        getChildren().add(extraBoard);
+        
+        
+        
+        Button btn_right = new Button("R");
+        btn_right.setLayoutX(305);
+        btn_right.setLayoutY(120);
+        btn_right.setMaxHeight(20);
+        btn_right.setMaxWidth(20);
+        getChildren().add(btn_right);
+
+        btn_right.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+               // if (canRotate) {
+                System.out.println("right");
+                    board.extra_tile.rotateRight(1);
+                    extraBoard.updateExtraTileBoard();
+                    
+               // }
+                    
+            }
+        });
+        Button btn_left = new Button("L");
+        btn_left.setLayoutX(355);
+        btn_left.setLayoutY(120);
+        btn_left.setMaxHeight(20);
+        btn_left.setMaxWidth(20);
+        getChildren().add(btn_left);
+        btn_left.toFront();
+
+        btn_left.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+               // if (canRotate) {
+                System.out.println("left");
+                    board.extra_tile.rotateRight(3);
+                    extraBoard.updateExtraTileBoard();
+                    
+               // }
+                    
+            }
+        });        
+        
+        
+        
         Label curTreasure = new Label("Current Treasure Card");
         curTreasure.setPadding(new Insets(220, 0, 50, 175));
         getChildren().add(curTreasure);

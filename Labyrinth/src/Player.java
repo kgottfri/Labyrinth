@@ -16,6 +16,7 @@ import static javafx.scene.layout.StackPane.setAlignment;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javax.swing.BorderFactory;
 
 /**
  * Player class for both human and computer players
@@ -76,20 +77,26 @@ public class Player extends Pane{
         }
         getChildren().add(play);
         Label curPieceLabel = new Label("Current Piece");
-        curPieceLabel.setPadding(new Insets(75, 0, 50, 200));
+        //curPieceLabel.setPadding(new Insets(75, 0, 50, 200));
+        curPieceLabel.setLayoutX(200);
+        curPieceLabel.setLayoutY(75);
         getChildren().add(curPieceLabel);
         
         //display extra Tile
-        extraBoard = new Board(board, 205, 105);
+        extraBoard = new Board(board,0,0);
+        extraBoard.toBack();
+        extraBoard.setLayoutX(205);
+        extraBoard.setLayoutY(105);
+        extraBoard.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
+        
         getChildren().add(extraBoard);
         
-        
-        
         Button btn_right = new Button("R");
-        btn_right.setLayoutX(305);
+        btn_right.setLayoutX(355);
         btn_right.setLayoutY(120);
         btn_right.setMaxHeight(20);
         btn_right.setMaxWidth(20);
+        btn_right.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
         getChildren().add(btn_right);
 
         btn_right.setOnAction(new EventHandler<ActionEvent>(){
@@ -105,10 +112,11 @@ public class Player extends Pane{
             }
         });
         Button btn_left = new Button("L");
-        btn_left.setLayoutX(355);
+        btn_left.setLayoutX(305);
         btn_left.setLayoutY(120);
         btn_left.setMaxHeight(20);
         btn_left.setMaxWidth(20);
+        btn_left.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
         getChildren().add(btn_left);
         btn_left.toFront();
 

@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -86,6 +87,23 @@ public class Tile {
         this.upperLeftY = toClone.upperLeftY;
         this.board = toClone.board;
     }
+    
+        public Tile(Tile toClone, Board board) {
+        this.up = toClone.up;
+        this.right = toClone.right;
+        this.down = toClone.down;
+        this.left = toClone.left;
+        this.canMove = toClone.canMove;
+        this.treasure = toClone.treasure;
+        this.playersOnTile = toClone.playersOnTile;
+        this.shapes = toClone.shapes;
+        this.step = toClone.step;
+        this.path = toClone.path;
+        this.background = toClone.background;
+        this.upperLeftX = toClone.upperLeftX;
+        this.upperLeftY = toClone.upperLeftY;
+        this.board = board;
+    }
     protected void updateMultiColors(){
         
         for (int i = 0; i < shapes.length; i++) {
@@ -134,6 +152,9 @@ public class Tile {
 
             }
         }
+        
+        
+    
 
         //outer border
         Rectangle outer = new Rectangle(upperLeftX, upperLeftY, Board.squareSize, Board.squareSize);
@@ -261,7 +282,7 @@ public class Tile {
 
     public void rotateRight(int numberOfTimes) {
 
-        if (canMove) {
+        //if (canMove) {
             if (numberOfTimes > 0) {
 
                 //save old values
@@ -280,8 +301,8 @@ public class Tile {
                 rotateRight(numberOfTimes - 1);
 
             }
-            updateColors();
-        }
+            //updateColors();
+       // }
     }
 
     public void setPosition(double upperLeftX, double upperLeftY) {
@@ -319,5 +340,11 @@ public class Tile {
     public boolean getIsStart() {
         return isStartTile;
     }
+    
+    public Rectangle[][] getTileShapes() {
+        
+        return shapes;
+    }
+
 
 }

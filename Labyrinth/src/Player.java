@@ -23,7 +23,8 @@ public class Player extends Pane{
     protected int score = 0;
     protected char successfulTreasure;
     protected int totalRequest = 0;
-    protected int treasuresGotten = 0;
+    public int treasuresGotten_1 = 0;
+    public int treasuresGotten_2 = 0;
     public static final int Prows = 7;
     public static final int Pcols = 1;
     public static final int squareWidth=450;
@@ -31,6 +32,7 @@ public class Player extends Pane{
     public Color color;
     public int player_number;
     Label play;
+    Label compTreasureNum;
     
     public Player(){
         this.setPrefHeight(Prows*squareHeight);
@@ -51,7 +53,7 @@ public class Player extends Pane{
 	    this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
         play = new Label("Player " + player_number);
-        play.setPadding(new Insets(20, 0, 50, 175));
+        play.setPadding(new Insets(20, 0, 50, 180));
         play.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         if (player_number == 1) {
             play.setTextFill(Color.BLUE);
@@ -60,14 +62,23 @@ public class Player extends Pane{
         }
         getChildren().add(play);
         Label curPiece = new Label("Current Piece");
-        curPiece.setPadding(new Insets(55, 0, 50, 190));
+        curPiece.setPadding(new Insets(55, 0, 50, 200));
         getChildren().add(curPiece);
         Label curTreasure = new Label("Current Treasure Card");
-        curTreasure.setPadding(new Insets(220, 0, 50, 165));
+        curTreasure.setPadding(new Insets(220, 0, 50, 175));
         getChildren().add(curTreasure);
         Label compTreasure = new Label("# Of Completed Cards");
-        compTreasure.setPadding(new Insets(450, 0, 50, 160));
+        compTreasure.setPadding(new Insets(450, 0, 50, 170));
         getChildren().add(compTreasure);
+        compTreasureNum=new Label();
+        if(player_number==1){
+            compTreasureNum.setText(Integer.toString(treasuresGotten_1));
+        }
+        else{
+            compTreasureNum.setText(Integer.toString(treasuresGotten_2));
+        }
+        compTreasureNum.setPadding(new Insets(475,0,50,230));
+        getChildren().add(compTreasureNum);
         this.toFront();
     }
 	

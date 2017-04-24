@@ -273,16 +273,28 @@ computerMode.toFront();
     public void moveCurrentPlayer(int[] tileCoordinates){
         labyrinthBoard.removePlayer(currentPlayer);
         if (labyrinthBoard.addPlayer(currentPlayer, tileCoordinates)) {
+//            if(currentPlayer.player_number==1){
+//                currentPlayer.treasuresGotten+=1;
+//            }
+//            else{
+//                currentPlayer.treasuresGotten+=1;
+//            }
             labyrinthBoard.removeTreasure(tileCoordinates);
             currentPlayer.upturnCard();
             if (currentPlayer.player_number == 1) {
-                if(!player1.emptyHand())
+                if(!player1.emptyHand()){
                     player1.setTreasureImage(player1, player1.getTreasure());
+                    player1.treasuresGotten_1+=1;
+                    player1.compTreasureNum.setText(Integer.toString(player1.treasuresGotten_1));
+                }
                 else
                     endGame(player1);
             } else {
-                if(!player2.emptyHand())
+                if(!player2.emptyHand()){
                     player2.setTreasureImage(player2, player2.getTreasure());
+                    player2.treasuresGotten_2+=1;
+                    player2.compTreasureNum.setText(Integer.toString(player2.treasuresGotten_2));
+                }
                 else
                     endGame(player2);
             }

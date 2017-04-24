@@ -109,6 +109,9 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.up;
+                    
+                    //gui.player1.canRotate = false;
+                    //gui.player2.canRotate = false;
                 }
             }
     }
@@ -126,6 +129,9 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.right;
+                    
+                    //gui.player1.canRotate = false;
+                    //gui.player2.canRotate = false;
                 }
             }
     }
@@ -143,6 +149,9 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.down;
+                    
+                    //gui.player1.canRotate = false;
+                    //gui.player2.canRotate = false;
                 }
             }
     }
@@ -160,6 +169,9 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.left;
+                    
+                    //gui.player1.canRotate = false;
+                    //gui.player2.canRotate = false;
                 }
             }
     }

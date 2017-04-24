@@ -84,7 +84,7 @@ public class Player extends Pane{
         
         //display extra Tile
         extraBoard = new Board(board,0,0);
-        extraBoard.toBack();
+        //extraBoard.toBack();
         extraBoard.setLayoutX(205);
         extraBoard.setLayoutY(105);
         extraBoard.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
@@ -92,8 +92,8 @@ public class Player extends Pane{
         getChildren().add(extraBoard);
         
         Button btn_right = new Button("R");
-        btn_right.setLayoutX(355);
-        btn_right.setLayoutY(120);
+        //btn_right.setLayoutX(305);
+        //btn_right.setLayoutY(120);
         btn_right.setMaxHeight(20);
         btn_right.setMaxWidth(20);
         btn_right.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
@@ -112,13 +112,13 @@ public class Player extends Pane{
             }
         });
         Button btn_left = new Button("L");
-        btn_left.setLayoutX(305);
-        btn_left.setLayoutY(120);
-        btn_left.setMaxHeight(20);
-        btn_left.setMaxWidth(20);
+        //btn_left.setLayoutX(155);
+        //btn_left.setLayoutY(120);
+        btn_left.setPrefHeight(20);
+        btn_left.setPrefWidth(20);
         btn_left.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
-        getChildren().add(btn_left);
-        btn_left.toFront();
+        //getChildren().add(btn_left);
+        //btn_left.toFront();
 
         btn_left.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -154,6 +154,13 @@ public class Player extends Pane{
         compTreasureNum.setPadding(new Insets(480,0,50,230));
         getChildren().add(compTreasureNum);
         this.toFront();
+        HBox hbox= new HBox(100);
+        hbox.getChildren().addAll(btn_left,btn_right);
+        hbox.setLayoutY(105);
+        hbox.setLayoutX(165);
+        hbox.toFront();
+        getChildren().add(hbox);
+        hbox.toFront();
     }
 	
     public int getX_DIM(){

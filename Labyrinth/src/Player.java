@@ -34,7 +34,7 @@ public class Player extends Pane{
     public int treasuresGotten_2 = 0;
     public static final int Prows = 7;
     public static final int Pcols = 1;
-    public static final int squareWidth=450;
+    public static final int squareWidth=300;
     public static final int squareHeight=100;
     public Color color;
     public int player_number;
@@ -67,7 +67,8 @@ public class Player extends Pane{
 	    this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
         play = new Label("Player " + player_number);
-        play.setPadding(new Insets(20, 0, 50, 180));
+        play.setAlignment(Pos.TOP_CENTER);
+        play.setPadding(new Insets(20, 0, 50, 95));
         play.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         play.setEffect(ds);
         if (player_number == 1) {
@@ -78,14 +79,14 @@ public class Player extends Pane{
         getChildren().add(play);
         Label curPieceLabel = new Label("Current Piece");
         //curPieceLabel.setPadding(new Insets(75, 0, 50, 200));
-        curPieceLabel.setLayoutX(200);
+        curPieceLabel.setLayoutX(105);
         curPieceLabel.setLayoutY(75);
         getChildren().add(curPieceLabel);
         
         //display extra Tile
         extraBoard = new Board(board,0,0);
         //extraBoard.toBack();
-        extraBoard.setLayoutX(205);
+        extraBoard.setLayoutX(110);
         extraBoard.setLayoutY(105);
         extraBoard.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
         
@@ -136,10 +137,10 @@ public class Player extends Pane{
         
         
         Label curTreasure = new Label("Current Treasure Card");
-        curTreasure.setPadding(new Insets(220, 0, 50, 175));
+        curTreasure.setPadding(new Insets(220, 0, 50, 90));
         getChildren().add(curTreasure);
         Label compTreasure = new Label("# Of Completed Cards");
-        compTreasure.setPadding(new Insets(450, 0, 50, 170));
+        compTreasure.setPadding(new Insets(450, 0, 50, 85));
         getChildren().add(compTreasure);
         compTreasureNum=new Label();
         if(player_number==1){
@@ -151,13 +152,13 @@ public class Player extends Pane{
             compTreasureNum.setTextFill(Color.GREEN);
         }
         compTreasureNum.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        compTreasureNum.setPadding(new Insets(480,0,50,230));
+        compTreasureNum.setPadding(new Insets(480,0,50,145));
         getChildren().add(compTreasureNum);
         this.toFront();
         HBox hbox= new HBox(100);
         hbox.getChildren().addAll(btn_left,btn_right);
         hbox.setLayoutY(105);
-        hbox.setLayoutX(165);
+        hbox.setLayoutX(70);
         hbox.toFront();
         getChildren().add(hbox);
         hbox.toFront();
@@ -277,7 +278,7 @@ public class Player extends Pane{
         ImageView treasureCard = new ImageView(image);
         treasureCard.setFitWidth(110);
         treasureCard.setPreserveRatio(true);
-        treasureCard.relocate(180, 260);
+        treasureCard.relocate(95, 260);
         p.getChildren().add(treasureCard);
     }
     

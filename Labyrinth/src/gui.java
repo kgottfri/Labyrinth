@@ -142,7 +142,7 @@ public class gui extends Application {
 
         primaryStage.setTitle("Labyrinth");
         Group root = new Group();
-        Scene scene = new Scene(root, 1620, labyrinthBoard.getHeight());
+        Scene scene = new Scene(root, 1300, labyrinthBoard.getHeight());
 
         BorderPane pane = new BorderPane();
         

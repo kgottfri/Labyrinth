@@ -104,6 +104,8 @@ public class Board extends Pane {
 
                     // Random orientation
                     tiles[i][j].rotateRight(rand.nextInt(4));
+
+                    tiles[i][j].updateColors();
                 }
 
                 //increment X component

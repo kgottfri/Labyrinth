@@ -13,6 +13,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Board extends Pane {
+    
+    //only used for extra tile board
+    Board tileBoard;
+    int x;
+    int y;
+    Tile extraTile;
 
     public static final int rows = 7;
     public static final int cols = 7;
@@ -32,7 +38,7 @@ public class Board extends Pane {
     Tile[][] tiles;
     Tile extra_tile;
 
-    //constructor (no args needed)
+    //constructor (no args needed) - standard board
     public Board() {
         tiles = new Tile[cols][rows];
         this.setPrefHeight(boardSize);
@@ -114,6 +120,27 @@ public class Board extends Pane {
         extra_tile = tilePool.remove(0);
         setTreasure(tiles);
 
+    }
+    
+    //constructor for extraTile Board
+    public Board(Board tileBoard, int x, int y) {
+        this.setPrefHeight(squareSize);
+        this.setPrefWidth(squareSize);
+        
+        this.tileBoard= tileBoard;
+        this.x = x;
+        this.y = y;
+                
+        Tile extraTile = new Tile(tileBoard.extra_tile, this);
+        extraTile.setPosition(x, y);
+        
+    }
+    
+    //used only for extra tile board
+    public void updateExtraTileBoard() {
+        
+        extraTile = new Tile(tileBoard.extra_tile, this);
+        extraTile.setPosition(x, y);
     }
 
     Tile tileAt(double x, double y) {
@@ -240,11 +267,7 @@ public class Board extends Pane {
 
     }
 
-    /*
-	LabSquare shapeAt(int x, int y){
-		return boardName[(y*rows)+x];
-	}
-     */
+    
     public boolean checkTreasureMatch(Player p1, Tile tile) {
         System.out.print("" + p1.getTreasure() + tile.getTreasure());
         return p1.getTreasure().getValueAsString().charAt(0) == tile.getTreasure();
@@ -297,29 +320,6 @@ public class Board extends Pane {
         return score;
     }
 
-    /**
-     * prints board w string representation of tiles only needed for command
-     * line testing
-     */
-    /*
-	public void printBoard() {
-		//prints indexes on top of board
-		for (int i = 0; i < BOARD_HEIGHT; i++) {
-			if (i%2 != 0) { System.out.printf("%6s", i + "  "); }
-			else { System.out.printf("%6s", " "); }
-		}
-		System.out.println("\n---------------------------------------------");
-		
-		for (int i = 0; i < BOARD_HEIGHT; i++) {
-			for (int j = 0; j < BOARD_WIDTH; j++) {
-				System.out.printf("%6s", tiles[i][j].stringRepresentation());
-			}
-			System.out.println("\n");
-		}
-		
-		
-	}
-     */
     /**
      *
      * @param xIndex - x coordinate of where new tile goes //@param yIndex - y

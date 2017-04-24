@@ -73,11 +73,14 @@ public class Player extends Pane{
         compTreasureNum=new Label();
         if(player_number==1){
             compTreasureNum.setText(Integer.toString(treasuresGotten_1));
+            compTreasureNum.setTextFill(Color.BLUE);
         }
         else{
             compTreasureNum.setText(Integer.toString(treasuresGotten_2));
+            compTreasureNum.setTextFill(Color.GREEN);
         }
-        compTreasureNum.setPadding(new Insets(475,0,50,230));
+        compTreasureNum.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        compTreasureNum.setPadding(new Insets(480,0,50,230));
         getChildren().add(compTreasureNum);
         this.toFront();
     }

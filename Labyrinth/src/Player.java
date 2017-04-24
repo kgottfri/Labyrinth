@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -42,6 +43,9 @@ public class Player extends Pane{
         
     }
     public Player(int playerType){
+        DropShadow ds = new DropShadow();
+        ds.setOffsetY(3.0f);
+        ds.setColor(Color.color(0.4f,0.4f,0.4f));
         player_number = playerType;
         if (playerType == 1){
             this.color = Color.BLUE;
@@ -55,6 +59,7 @@ public class Player extends Pane{
         play = new Label("Player " + player_number);
         play.setPadding(new Insets(20, 0, 50, 180));
         play.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+        play.setEffect(ds);
         if (player_number == 1) {
             play.setTextFill(Color.BLUE);
         } else {

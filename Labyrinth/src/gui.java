@@ -108,8 +108,8 @@ public class gui extends Application {
         treasureDeck = new Deck();
         treasureDeck.shuffle();
         labyrinthBoard = new Board();
-        player1 = new Player(1);
-        player2 = new Player(2);
+        player1 = new Player(1, labyrinthBoard);
+        player2 = new Player(2, labyrinthBoard);
         player2.otherPlayer();
         boardPane = new CustomPane(this, labyrinthBoard);
         currentPlayer = player1;
@@ -214,6 +214,7 @@ computerMode.toFront();
                     }
 
                     if (reachable) {
+                        System.out.println("yes");
                             moveCurrentPlayer(tileCoordinates);
 //                        labyrinthBoard.checkIsTreasure(currentPlayer,tileCoordinates);
                             currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
@@ -223,6 +224,12 @@ computerMode.toFront();
                                 //boardPane.computerWaitPane.setVisible(true);
                                 computerTakeTurn();
                             }
+                            
+                            //update currentTile
+                            player1.extraBoard.updateExtraTileBoard();
+                            player2.extraBoard.updateExtraTileBoard();
+
+                            System.out.print("extra called");
                         
                         if(currentPlayer.equals(player1)){
                             player2.otherPlayer();
@@ -564,6 +571,11 @@ class CustomPane extends StackPane {
                 btn_pass.setText("Insert Tile");
                 btn_pass.setDisable(true);
                 gui.currentPlayer.resetColor();
+                gui.player1.extraBoard.updateExtraTileBoard();
+                gui.player2.extraBoard.updateExtraTileBoard();
+                
+
+                
             }
         });
         computerWaitPane = new StackPane();

@@ -6,13 +6,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import static javafx.scene.layout.StackPane.setAlignment;
+import static javafx.scene.layout.StackPane.setMargin;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -52,6 +55,9 @@ public class Player extends Pane{
         
     }
     public Player(int playerType, Board board){
+        
+
+        
         this.board = board;
         DropShadow ds = new DropShadow();
         ds.setOffsetY(3.0f);
@@ -81,6 +87,13 @@ public class Player extends Pane{
         curPieceLabel.setLayoutX(105);
         curPieceLabel.setLayoutY(75);
         getChildren().add(curPieceLabel);
+        
+
+        
+        
+        
+        
+
         
         //display extra Tile
         extraBoard = new Board(board,0,0);
@@ -161,6 +174,37 @@ public class Player extends Pane{
         hbox.toFront();
         getChildren().add(hbox);
         hbox.toFront();
+        
+        Button infoButton = new Button("i");
+        infoButton.setMaxHeight(35);
+        infoButton.setMaxWidth(35);
+        infoButton.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        infoButton.setTextFill(color);
+        //infoButton.setLayoutX(250);
+        //infoButton.setLayoutX(10);
+        //infoButton.setLayoutY(10);
+        //setAlignment(infoButton, Pos.CENTER);
+        //setMargin(infoButton,new Insets(-100,100,100,100));
+        //getChildren().add(infoButton);
+        //infoButton.toFront();
+        HBox hbox2 = new HBox();
+        hbox2.getChildren().add(infoButton);
+        hbox2.setLayoutY(10);
+        hbox2.setLayoutX(10);
+        hbox2.toFront();
+        getChildren().add(hbox2);
+        hbox2.toFront();
+        
+            infoButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent t) {
+          
+                System.out.println("Click");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your goal is to reach your current treasure card, and collect all of your 13 treasure cards before your opponent collects all of theirs. Rotate your current piece, insert it, and then move your player on the board. Good luck! ", ButtonType.OK);
+                alert.showAndWait();
+                    
+            }
+        });
     }
 	
     public int getX_DIM(){

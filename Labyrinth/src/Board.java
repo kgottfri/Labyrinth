@@ -143,6 +143,7 @@ public class Board extends Pane {
         
         extraTile = new Tile(tileBoard.extra_tile, this);
         extraTile.setPosition(x, y);
+        extraTile.extraTileTreasure();
     }
 
     Tile tileAt(double x, double y) {

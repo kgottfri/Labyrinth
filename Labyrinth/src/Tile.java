@@ -67,7 +67,10 @@ public class Tile {
         this.upperLeftY = upperLeftY;
         this.board = board;
 
-        updateColors();
+        if (playersOnTile.size() > 1)
+            updateMultiColors();
+        else
+            updateColors();
 
     }
 
@@ -270,11 +273,21 @@ public class Tile {
             treasureLabel.setFont(Font.font("Lucida Grande", 21));
             treasureLabel.setTextFill(Color.web("#f44242"));
             double shift = .45;
-            treasureLabel.relocate(upperLeftX + 2.75, upperLeftY - shift);
+            treasureLabel.relocate(upperLeftX + 2.77, upperLeftY - shift);
             board.getChildren().add(treasureLabel);
         }
     }
-
+    public void extraTileTreasure(){
+              if (hasTreasure()) {
+            treasureLabel = new Label("" + this.treasure);
+            treasureLabel.setFont(Font.font("Lucida Grande", 21));
+            treasureLabel.setTextFill(Color.web("#f44242"));
+            double shift = .45;
+            treasureLabel.relocate(upperLeftX + 2.77, upperLeftY - shift);
+            board.getChildren().add(treasureLabel);
+        }
+    }  
+    
     public void removeTreasure() {
         treasure = 'Z';
         board.getChildren().remove(treasureLabel);
@@ -308,7 +321,10 @@ public class Tile {
     public void setPosition(double upperLeftX, double upperLeftY) {
         this.upperLeftX = upperLeftX;
         this.upperLeftY = upperLeftY;
-        updateColors();
+        if (playersOnTile.size() > 1)
+            updateMultiColors();
+        else
+            updateColors();
     }
 
     public void setPlayer(Player player) {
@@ -323,7 +339,10 @@ public class Tile {
 
     public void removePlayer(Player player) {
         playersOnTile.remove(player);
-        updateColors();
+        if (playersOnTile.size() > 1)
+            updateMultiColors();
+        else
+            updateColors();
         printTileTreasure();
     }
 

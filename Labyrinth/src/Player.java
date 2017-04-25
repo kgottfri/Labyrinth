@@ -62,7 +62,6 @@ public class Player extends Pane{
         }
         else
             this.color = Color.GREEN;
-        System.out.println(playerType);
         this.setPrefHeight(Prows*squareHeight);
 	    this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
@@ -233,26 +232,7 @@ public class Player extends Pane{
         }
         
     }
-    /**
-     * The sort method sorts players hand
-     */
-    public void sort(){
-//        Collections.sort(treasuresHand);
-    }
-    /**
-     * The isHandEmpty method checks whether or not the players hand is empty
-     * @return Either true or false
-     */
-    public boolean isHandEmpty() {
-        if (!treasuresHand.isEmpty()) { return false;} else {
-            return true;
-        }
-    
-    }
-    
-    public void takeTurn(Player p1){
-        
-    }
+
     /**
      * The getScore method returns the players score
      * @return score The players score

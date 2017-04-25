@@ -478,6 +478,20 @@ class CustomPane extends StackPane {
 
     public CustomPane(gui gui, Board labyrinthBoard) {
 
+        /*
+        Button infoButton = new Button("i");
+        infoButton.setMaxHeight(35);
+        infoButton.setMaxWidth(35);
+        infoButton.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        infoButton.setTextFill(Color.BLUE);
+        setAlignment(infoButton, Pos.TOP_LEFT);
+        setMargin(infoButton,new Insets(-80,0,0,-80));
+        getChildren().add(infoButton);
+        //infoButton.toFront();
+        */
+
+        
+        
         labyrinthBoard.setPadding(new Insets(90, 90, 90, 90));
         getChildren().add(labyrinthBoard);
         setPadding(new Insets(90, 90, 90, 90));

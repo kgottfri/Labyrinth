@@ -1,7 +1,5 @@
 
 import javafx.animation.*;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -16,23 +14,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.Node;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-
 public class gui extends Application {
+    /*
+    gui handles all the game initialization functions, information display, event handlers, and dictates the game flow.
+     */
 
+    /*
+    Initialize all objects required to play the game and variables to keep track of the game state.
+     */
     protected Board labyrinthBoard;
     public Player player1;
     public Player player2;
@@ -43,14 +43,18 @@ public class gui extends Application {
     public int disabledRowColumn;
     public Direction disabledDirection;
     private Deck treasureDeck;
+    int gameMode;
 
     CustomPane boardPane;
-    int gameMode;
     Scene scene;
     Stage primaryStage;
 
     public void start(Stage primaryStage) {
-
+        /*
+        This is main entry point into the application.  It is called when the application is launched and
+        sets up two buttons so that the player can choose to play against another human or a computer.  When a mode is
+        chosen, the game is created.
+         */
         Button humanMode = new Button("Human Mode");
         Button computerMode = new Button("Computer Mode");
 
@@ -68,6 +72,9 @@ public class gui extends Application {
 
         primaryStage.show();
 
+        /*
+        Game mode button event handlers
+         */
         computerMode.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -99,20 +106,39 @@ public class gui extends Application {
     }
 
     public void createGame(Stage primaryStage) {
-
+        /*
+        createGame is called after the game mode is chosen.  It sets up the main GUI and initializes the game by
+        creating a game board, a treasure deck, and players.  Listeners are defined so that appropriate actions
+        are taken when a button or tile is selected.
+         */
         this.primaryStage = primaryStage;
         primaryStage.setMaximized(true);
+        primaryStage.setTitle("Labyrinth");
 
-        treasureDeck = new Deck();
-        treasureDeck.shuffle();
+        // Set up game board and player panes.
+        Group root = new Group();
         labyrinthBoard = new Board();
+        Scene scene = new Scene(root, 1300, labyrinthBoard.getHeight());
+        BorderPane pane = new BorderPane();
+
         player1 = new Player(1, labyrinthBoard);
         player1.setStyle("-fx-background-color: lightgrey;");
         player2 = new Player(2, labyrinthBoard);
                 player2.setStyle("-fx-background-color: lightgrey;");
-        player2.otherPlayer();
+        player1.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
+        player2.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
+
         boardPane = new CustomPane(this, labyrinthBoard);
-        currentPlayer = player1;
+
+        pane.setLeft(player1);
+        pane.setRight(player2);
+        pane.setCenter(boardPane);
+        pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        root.getChildren().add(pane);
+
+        // Shuffle and deal cards from the deck of treasure cards.
+        treasureDeck = new Deck();
+        treasureDeck.shuffle();
         int dealInd = 0; //index for dealing
         while (!treasureDeck.isEmpty()) {
             Card cur = treasureDeck.dealCard();
@@ -125,6 +151,8 @@ public class gui extends Application {
         }
         player1.upturnCard();
         player2.upturnCard();
+        player1.setTreasureImage(player1, player1.getTreasure());
+        player2.setTreasureImage(player2, player2.getTreasure());
 
         // Set initial player positions
         labyrinthBoard.addPlayer(player1, new int[]{0, 0});
@@ -133,67 +161,22 @@ public class gui extends Application {
         // Initialize game state.
         state = GameState.insertTile;
 
-        // Find reachable tiles for each player
+        // Player 1 goes first.
+        currentPlayer = player1;
+        player2.otherPlayer();
         reachableTiles = findReachableTilesFor(currentPlayer);
 
-        player1.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
-        player2.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
-
-        primaryStage.setTitle("Labyrinth");
-        Group root = new Group();
-        Scene scene = new Scene(root, 1300, labyrinthBoard.getHeight());
-
-        BorderPane pane = new BorderPane();
-
-        Button humanMode = new Button("Human Mode");
-        Button computerMode = new Button("Computer Mode");
-
-        //arrange buttons on the pane (at start)
-        pane.setCenter(humanMode);
-        pane.setCenter(computerMode);
-
-        humanMode.toFront();
-        computerMode.toFront();
-
-        computerMode.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-
-                gameMode = 0;
-
-                //hide buttons
-                humanMode.toBack();
-                computerMode.toBack();
-            }
-        });
-
-        humanMode.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-
-                gameMode = 1;
-
-                //hide buttons
-                humanMode.toBack();
-                computerMode.toBack();
-            }
-        });
-
-        pane.setLeft(player1);
-        pane.setRight(player2);
-        pane.setCenter(boardPane);
-        player1.setTreasureImage(player1, player1.getTreasure());
-        player2.setTreasureImage(player2, player2.getTreasure());
-        pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        root.getChildren().add(pane);
-
+        // Allow player to move to a tile by clicking on it.
         boardPane.getBoard().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
 
                 boolean reachable = false;
                 if (state == GameState.movePiece) {
+                    /*
+                     Find the tile that was clicked and determine if it is reachable.  All reachable tiles should
+                     already be discovered when a tile is inserted.
+                      */
                     int[] tileCoordinates = labyrinthBoard.getTileCoordinates(t.getX(), t.getY());
                     int tileIndex = Path.getTileIndex(tileCoordinates, labyrinthBoard.getX_DIM());
                     for (int reachableTile : reachableTiles) {
@@ -204,8 +187,11 @@ public class gui extends Application {
 
                     if (reachable) {
                         moveCurrentPlayer(tileCoordinates);
+
+                        // Switch to the next players turn and update state.
                         currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                         state = GameState.insertTile;
+
                         // If the player is a computer, let the computer take their turn.
                         if (gameMode == 0 && currentPlayer.player_number == 2) {
                             computerTakeTurn();
@@ -215,6 +201,7 @@ public class gui extends Application {
                         player1.extraBoard.updateExtraTileBoard();
                         player2.extraBoard.updateExtraTileBoard();
 
+                        // GUI updates required when switching turns.
                         if (currentPlayer.equals(player1)) {
                             player2.otherPlayer();
                             boardPane.getPassButton().setTextFill(Color.BLUE);
@@ -243,6 +230,10 @@ public class gui extends Application {
     }
 
     public ArrayList<Integer> findReachableTilesFor(Player player) {
+        /*
+        findReachableTilesFor returns a list of tile indices representing all the tiles that are reachable from the
+        player's location.
+         */
         int[] playerLocation = labyrinthBoard.getPlayerLocation(player);
         ArrayList<Integer> reachableTiles = Path.getReachableTiles(labyrinthBoard, playerLocation);
 
@@ -250,7 +241,13 @@ public class gui extends Application {
     }
 
     public void moveCurrentPlayer(int[] tileCoordinates) {
+        /*
+        Move player to the new tile specified in tileCoordinates.  If the player lands on the goal treasure, increase
+        the score and turn over the next treasure card.  If there are no more treasures, end the game.
+         */
         labyrinthBoard.removePlayer(currentPlayer);
+
+        // addPlayer returns true if the treasure on the new tile matches the players goal treasure.
         if (labyrinthBoard.addPlayer(currentPlayer, tileCoordinates)) {
 
             labyrinthBoard.removeTreasure(tileCoordinates);
@@ -278,6 +275,13 @@ public class gui extends Application {
     }
 
     public void computerTakeTurn() {
+        /*
+        The computer chooses a random location to insert a tile (unless the chosen location is disabled since it is on
+        the opposite side of the last move).  The computer then tries to move to the tile that contains its goal
+        treasure if it can.  Otherwise it moves to a random reachable tile.
+         */
+
+        // Graphic to indicate that it is the computers turn
         boardPane.computerWaitPane.setVisible(true);
         Timeline computerThinking = createComputerTimeline(boardPane.computerWaitPane);
         computerThinking.setOnFinished(event -> boardPane.computerWaitPane.setVisible(false));
@@ -288,12 +292,13 @@ public class gui extends Application {
         int buttonInt = randInt.nextInt(12);
         InsertButton chosenButton = boardPane.buttonsList.get(buttonInt);
 
-        // Prevent the computer from re-sinserting the tile illegally
+        // Prevent the computer from re-inserting the tile illegally
         if (chosenButton.index == disabledRowColumn && chosenButton.side == disabledDirection) {
             chosenButton = boardPane.buttonsList.get((buttonInt + 1) % 11);
         }
         chosenButton.button.fire();
 
+        // Move to the tile with the goal treasure or a random tile.
         boolean found = false;
         for (int reachableTile : reachableTiles) {
             int[] tempTileCoordinates = Path.getTileCoordinates(reachableTile, labyrinthBoard.getX_DIM());
@@ -307,11 +312,14 @@ public class gui extends Application {
                 moveCurrentPlayer(Path.getTileCoordinates(reachableTiles.get(randomTile), labyrinthBoard.getX_DIM()));
             }
         }
+
+        // Computer is done, now it is player1's turn.
         currentPlayer = player1;
         state = GameState.insertTile;
     }
 
     private Timeline createComputerTimeline(Node node) {
+        // Computer animation
         Timeline computerThink = new Timeline(
                 new KeyFrame(
                         Duration.seconds(0),
@@ -344,6 +352,9 @@ public class gui extends Application {
     }
 
     private void endGame(Player player) {
+        /*
+        Allow the player to quit the game or start a new game once somebody has won.
+         */
         ButtonType quit = new ButtonType("Quit");
         ButtonType restart = new ButtonType("New Game");
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Congratulations! Player " + currentPlayer.player_number + " has won!", quit, restart);
@@ -363,7 +374,10 @@ public class gui extends Application {
 }
 
 class CustomPane extends StackPane {
-
+    /*
+    CustomPane organizes the game board and the tile insertion buttons.  It also displays a graphic for when
+    the computer player is taking its turn.
+     */
     public ArrayList<InsertButton> buttonsList = new ArrayList<InsertButton>();
     private Button btn_pass;
     public StackPane computerWaitPane;
@@ -371,11 +385,11 @@ class CustomPane extends StackPane {
 
     public CustomPane(gui gui, Board labyrinthBoard) {
 
-
         labyrinthBoard.setPadding(new Insets(90, 90, 90, 90));
         getChildren().add(labyrinthBoard);
         setPadding(new Insets(90, 90, 90, 90));
 
+        // Create insertion buttons and add them to a button list (so that the computer player can choose from the list)
         InsertButton btn_1_1 = new InsertButton(gui, labyrinthBoard, this, 1, Direction.down, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_1_1);
         InsertButton btn_1_3 = new InsertButton(gui, labyrinthBoard, this, 3, Direction.down, "-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
@@ -401,6 +415,7 @@ class CustomPane extends StackPane {
         InsertButton btn_4_5 = new InsertButton(gui, labyrinthBoard, this, 5, Direction.left, "-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
         buttonsList.add(btn_4_5);
 
+        // Put the buttons in their proper positions
         setAlignment(btn_1_1.getButton(), Pos.TOP_LEFT);
         setAlignment(btn_1_3.getButton(), Pos.TOP_CENTER);
         setAlignment(btn_1_5.getButton(), Pos.TOP_RIGHT);
@@ -433,6 +448,10 @@ class CustomPane extends StackPane {
         setMargin(btn_4_3.getButton(), new Insets(-15, -80, 0, 0));
         setMargin(btn_4_5.getButton(), new Insets(270, -80, 0, 0));
 
+        /*
+         Create a button to allow the player to pass (not move).  This button is also used to tell the player to first
+         insert a tile.  This is accomplished by disabling the button and changing the label to "Insert Tile".
+          */
         btn_pass = new Button("Insert Tile");
         btn_pass.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
         btn_pass.setTextFill(Color.BLUE);
@@ -467,6 +486,8 @@ class CustomPane extends StackPane {
 
             }
         });
+
+        // Computer Wait graphic (invisible unless the computer is taking its turn)
         computerWaitPane = new StackPane();
         computerWaitPane.setVisible(false);
         Rectangle computerWaitRect = new Rectangle(0, 0, 300, 100);
@@ -480,110 +501,6 @@ class CustomPane extends StackPane {
         computerWaitLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         computerWaitPane.getChildren().addAll(computerWaitRect, computerWaitLabel);
         this.getChildren().add(computerWaitPane);
-//        Button btn_1_1 = new Button();
-//        btn_1_1.setMaxWidth(35);
-//        btn_1_1.setMaxHeight(60);
-//        btn_1_1.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_1_1);
-//
-//        Button btn_1_3 = new Button();
-//        btn_1_3.setMaxWidth(35);
-//        btn_1_3.setMaxHeight(60);
-//        btn_1_3.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_1_3);
-//
-//        Button btn_1_5 = new Button();
-//        btn_1_5.setMaxWidth(35);
-//        btn_1_5.setMaxHeight(60);
-//        btn_1_5.setStyle("-fx-background-image: url('/arrows/downArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_1_5);
-//
-//        Button btn_2_1 = new Button();
-//        btn_2_1.setMaxWidth(35);
-//        btn_2_1.setMaxHeight(60);
-//        btn_2_1.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_2_1);
-//
-//        Button btn_2_3 = new Button();
-//        btn_2_3.setMaxWidth(35);
-//        btn_2_3.setMaxHeight(60);
-//        btn_2_3.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_2_3);
-//
-//        Button btn_2_5 = new Button();
-//        btn_2_5.setMaxWidth(35);
-//        btn_2_5.setMaxHeight(60);
-//        btn_2_5.setStyle("-fx-background-image: url('/arrows/upArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_2_5);
-//
-//        Button btn_3_1 = new Button();
-//        btn_3_1.setMaxWidth(60);
-//        btn_3_1.setMaxHeight(35);
-//        btn_3_1.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_3_1);
-//
-//        Button btn_3_3 = new Button();
-//        btn_3_3.setMaxWidth(60);
-//        btn_3_3.setMaxHeight(35);
-//        btn_3_3.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_3_3);
-//
-//        Button btn_3_5 = new Button();
-//        btn_3_5.setMaxWidth(60);
-//        btn_3_5.setMaxHeight(35);
-//        btn_3_5.setStyle("-fx-background-image: url('/arrows/rightArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_3_5);
-//
-//        Button btn_4_1 = new Button();
-//        btn_4_1.setMaxWidth(60);
-//        btn_4_1.setMaxHeight(35);
-//        btn_4_1.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_4_1);
-//
-//        Button btn_4_3 = new Button();
-//        btn_4_3.setMaxWidth(60);
-//        btn_4_3.setMaxHeight(35);
-//        btn_4_3.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_4_3);
-//
-//        Button btn_4_5 = new Button();
-//        btn_4_5.setMaxWidth(60);
-//        btn_4_5.setMaxHeight(35);
-//        btn_4_5.setStyle("-fx-background-image: url('/arrows/leftArrow.png'); -fx-background-position:center center; -fx-background-size: cover;");
-//        getChildren().add(btn_4_5);
-//
-//        setAlignment(btn_1_1, Pos.TOP_LEFT);
-//        setAlignment(btn_1_3, Pos.TOP_CENTER);
-//        setAlignment(btn_1_5, Pos.TOP_RIGHT);
-//
-//        setMargin(btn_1_1, new Insets(-80, 0, 0, 90));
-//        setMargin(btn_1_3, new Insets(-80, 0, 0, 0));
-//        setMargin(btn_1_5, new Insets(-80, 90, 0, 0));
-//
-//        setAlignment(btn_2_1, Pos.BOTTOM_LEFT);
-//        setAlignment(btn_2_3, Pos.BOTTOM_CENTER);
-//        setAlignment(btn_2_5, Pos.BOTTOM_RIGHT);
-//
-//        setMargin(btn_2_1, new Insets(0, 0, -50, 90));
-//        setMargin(btn_2_3, new Insets(0, 0, -50, 0));
-//        setMargin(btn_2_5, new Insets(0, 90, -50, 0));
-//
-//        setAlignment(btn_3_1, Pos.CENTER_LEFT);
-//        setAlignment(btn_3_3, Pos.CENTER_LEFT);
-//        setAlignment(btn_3_5, Pos.CENTER_LEFT);
-//
-//        setMargin(btn_3_1, new Insets(-300, 0, 0, -80));
-//        setMargin(btn_3_3, new Insets(-15, 0, 0, -80));
-//        setMargin(btn_3_5, new Insets(270, 0, 0, -80));
-//
-//        setAlignment(btn_4_1, Pos.CENTER_RIGHT);
-//        setAlignment(btn_4_3, Pos.CENTER_RIGHT);
-//        setAlignment(btn_4_5, Pos.CENTER_RIGHT);
-//
-//        setMargin(btn_4_1, new Insets(-300, -80, 0, 0));
-//        setMargin(btn_4_3, new Insets(-15, -80, 0, 0));
-//        setMargin(btn_4_5, new Insets(270, -80, 0, 0));
-
     }
 
     public Node getBoard() {
@@ -603,24 +520,5 @@ class CustomPane extends StackPane {
             btn_pass.setText(text);
         }
 
-    }
-
-    public void displayComputerWait() throws InterruptedException {
-
-        int i = 0;
-        int wait = 5;
-        this.computerWaitLabel.setText("Computer Thinking");
-        while (i < wait) {
-            Thread.sleep(333);
-            incrementWaitLabel();
-            i += 1;
-        }
-        this.computerWaitPane.setVisible(false);
-    }
-
-    private void incrementWaitLabel() {
-        String currentText = this.computerWaitLabel.getText();
-        currentText += ".";
-        this.computerWaitLabel.setText(currentText);
     }
 }

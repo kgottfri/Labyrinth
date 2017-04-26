@@ -51,12 +51,6 @@ public class Tile {
         background = canMove ? Color.WHITE : Color.LIGHTGREY;
         this.isStartTile = startTile;
 
-        //add rectangle to board
-        //shape = new Rectangle(upperLeftX, upperLeftY, Board.squareSize, Board.squareSize);
-        //shape.setFill(Color.BLUE);
-        //shape.setStroke(Color.BLACK);
-        //board.getChildren().add(shape);
-        //System.out.println("tile");
         this.up = up;
         this.right = right;
         this.down = down;
@@ -91,7 +85,7 @@ public class Tile {
         this.board = toClone.board;
     }
     
-        public Tile(Tile toClone, Board board) {
+    public Tile(Tile toClone, Board board) {
         this.up = toClone.up;
         this.right = toClone.right;
         this.down = toClone.down;
@@ -113,7 +107,6 @@ public class Tile {
             for (int j = 0; j < shapes[i].length; j++) {
                 shapes[i][j] = new Rectangle(upperLeftX + (j * step), upperLeftY + (i * step), step, step);
                 shapes[i][j].setFill(background);
-                //System.out.println(i + " " + j + " added");
                 board.getChildren().add(shapes[i][j]);
             }
         }
@@ -122,7 +115,7 @@ public class Tile {
         //middle: always set to blue
         shapes[1][1].setFill(path);
         
-        // Temp - color center tile the color of the player
+        // Color center tile the color of the player
         shapes[1][1].setFill(playersOnTile.get(1).color);
             double[] points = new double[6];
             points[0] = shapes[1][1].getX();
@@ -155,9 +148,6 @@ public class Tile {
 
             }
         }
-        
-        
-    
 
         //outer border
         Rectangle outer = new Rectangle(upperLeftX, upperLeftY, Board.squareSize, Board.squareSize);
@@ -167,7 +157,7 @@ public class Tile {
         board.getChildren().add(outer);
     }
     /**
-     * Set color - used every time somethign is changed
+     * Set color - used every time something is changed
      *
      */
     protected void updateColors() {
@@ -176,7 +166,6 @@ public class Tile {
             for (int j = 0; j < shapes[i].length; j++) {
                 shapes[i][j] = new Rectangle(upperLeftX + (j * step), upperLeftY + (i * step), step, step);
                 shapes[i][j].setFill(background);
-                //System.out.println(i + " " + j + " added");
                 board.getChildren().add(shapes[i][j]);
             }
         }
@@ -217,34 +206,6 @@ public class Tile {
         outer.setStroke(Color.BLACK);
         outer.setStrokeWidth(3);
         board.getChildren().add(outer);
-
-    }
-
-    /**
-     *
-     * Only needed for command line testing
-     */
-    public String stringRepresentation() {
-
-        ArrayList<String> s = new ArrayList<String>();
-
-        if (left) {
-            s.add("L");
-        }
-        if (up) {
-            s.add("U");
-        }
-        if (down) {
-            s.add("D");
-        }
-        if (right) {
-            s.add("R");
-        }
-        if (canMove) {
-            s.add("-");
-        }
-
-        return String.join("", s);
 
     }
 
@@ -295,7 +256,6 @@ public class Tile {
 
     public void rotateRight(int numberOfTimes) {
 
-        //if (canMove) {
             if (numberOfTimes > 0) {
 
                 //save old values
@@ -314,8 +274,6 @@ public class Tile {
                 rotateRight(numberOfTimes - 1);
 
             }
-            //updateColors();
-       // }
     }
 
     public void setPosition(double upperLeftX, double upperLeftY) {
@@ -329,7 +287,6 @@ public class Tile {
 
     public void setPlayer(Player player) {
         playersOnTile.add(player);
-//        updateColors();
         if (playersOnTile.size() > 1)
             updateMultiColors();
         else
@@ -359,11 +316,5 @@ public class Tile {
     public boolean getIsStart() {
         return isStartTile;
     }
-    
-    public Rectangle[][] getTileShapes() {
-        
-        return shapes;
-    }
-
 
 }

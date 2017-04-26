@@ -29,10 +29,8 @@ public class Player extends Pane{
     
     protected LinkedList<Card> treasuresHand;
     private Card currentTreasureCard;
-    public boolean activePlayer = false;
     protected int score = 0;
     protected char successfulTreasure;
-    protected int totalRequest = 0;
     public int treasuresGotten_1 = 0;
     public int treasuresGotten_2 = 0;
     public static final int Prows = 7;
@@ -45,19 +43,14 @@ public class Player extends Pane{
     Label compTreasureNum;
     Board board;
     Board extraBoard;
-    Boolean canRotate = true;
     
     public Player(){
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
-        
-        
     }
-    public Player(int playerType, Board board){
-        
 
-        
+    public Player(int playerType, Board board){
         this.board = board;
         DropShadow ds = new DropShadow();
         ds.setOffsetY(3.0f);
@@ -83,21 +76,13 @@ public class Player extends Pane{
         }
         getChildren().add(play);
         Label curPieceLabel = new Label("Current Piece");
-        //curPieceLabel.setPadding(new Insets(75, 0, 50, 200));
         curPieceLabel.setLayoutX(105);
         curPieceLabel.setLayoutY(75);
         getChildren().add(curPieceLabel);
         
 
-        
-        
-        
-        
-
-        
         //display extra Tile
         extraBoard = new Board(board,0,0);
-        //extraBoard.toBack();
         extraBoard.setLayoutX(110);
         extraBoard.setLayoutY(105);
         extraBoard.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
@@ -105,8 +90,6 @@ public class Player extends Pane{
         getChildren().add(extraBoard);
         
         Button btn_right = new Button("R");
-        //btn_right.setLayoutX(305);
-        //btn_right.setLayoutY(120);
         btn_right.setMaxHeight(20);
         btn_right.setMaxWidth(20);
         btn_right.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
@@ -115,39 +98,23 @@ public class Player extends Pane{
         btn_right.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent t) {
-               // if (canRotate) {
-                System.out.println("right");
-                    board.extra_tile.rotateRight(1);
-                    extraBoard.updateExtraTileBoard();
-                    
-               // }
-                    
+                board.extra_tile.rotateRight(1);
+                extraBoard.updateExtraTileBoard();
             }
         });
         Button btn_left = new Button("L");
-        //btn_left.setLayoutX(155);
-        //btn_left.setLayoutY(120);
         btn_left.setPrefHeight(20);
         btn_left.setPrefWidth(20);
         btn_left.setBorder(new Border(new BorderStroke(Color.BLACK, new BorderStrokeStyle(null,null,null,10,0,null),null,null)));
-        //getChildren().add(btn_left);
-        //btn_left.toFront();
 
         btn_left.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent t) {
-               // if (canRotate) {
-                System.out.println("left");
-                    board.extra_tile.rotateRight(3);
-                    extraBoard.updateExtraTileBoard();
-                    
-               // }
-                    
+                board.extra_tile.rotateRight(3);
+                extraBoard.updateExtraTileBoard();
             }
         });        
-        
-        
-        
+
         Label curTreasure = new Label("Current Treasure Card");
         curTreasure.setPadding(new Insets(220, 0, 50, 90));
         getChildren().add(curTreasure);
@@ -180,13 +147,7 @@ public class Player extends Pane{
         infoButton.setMaxWidth(35);
         infoButton.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         infoButton.setTextFill(color);
-        //infoButton.setLayoutX(250);
-        //infoButton.setLayoutX(10);
-        //infoButton.setLayoutY(10);
-        //setAlignment(infoButton, Pos.CENTER);
-        //setMargin(infoButton,new Insets(-100,100,100,100));
-        //getChildren().add(infoButton);
-        //infoButton.toFront();
+
         HBox hbox2 = new HBox();
         hbox2.getChildren().add(infoButton);
         hbox2.setLayoutY(10);
@@ -195,35 +156,15 @@ public class Player extends Pane{
         getChildren().add(hbox2);
         hbox2.toFront();
         
-            infoButton.setOnAction(new EventHandler<ActionEvent>(){
+        infoButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent t) {
           
-                System.out.println("Click");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your goal is to reach your current treasure card, and collect all of your 13 treasure cards before your opponent collects all of theirs. Rotate your current piece, insert it, and then move your player on the board. Good luck! ", ButtonType.OK);
                 alert.showAndWait();
                     
             }
         });
-    }
-	
-    public int getX_DIM(){
-        return Prows;
-    }
-    public int getY_DIM(){
-        return Pcols;
-    }
-    /**
-     * Constructor instantiates new LinkedList of Card objects as hand
-     */
-   
-    /**
-     * The getHand method returns the LinkedList hand containing Card objects
-     * which represent the players current hand
-     * @return LinkedList The players hand
-     */
-    public LinkedList<Card> getTreasuresList() {
-        return treasuresHand;
     }
     
     /**
@@ -234,9 +175,7 @@ public class Player extends Pane{
         if(c != null)
             treasuresHand.add(c);
     }
-    public void removeCard(){
-        treasuresHand.remove();
-    }
+
      /**
      * The getCard method removes a card object from the LinkedList hand
      */
@@ -256,46 +195,8 @@ public class Player extends Pane{
         else
             return true;
     }
-    /**
-     * The checkForSets method searches through players hand for sets of 4
-     * If a set is found, those cards are removed from the hand and the players
-     * score is increased
-     */
-    public void checkForSets() {
-        int count = 0;
-        boolean flag = false;
-        int i = 1;
-        LinkedList<Card> edit_hand = new LinkedList<>();
 
-        if(flag){
-            for (Card c : edit_hand) {
-                for(int k = 0; k < 4;k++){
-                    treasuresHand.remove(c);
-                }  
-            }
-        }
-        
-    }
-
-    /**
-     * The getScore method returns the players score
-     * @return score The players score
-     */
-    public int getScore(){
-        
-        return score;
-    }
-    /**
-     * The getSuccessfulRequests method returns the number successful requests
-     * by the player
-     * @return successful_request Number of successful requests made
-     */
-    public char getSuccessfulTreasures(){
-        return successfulTreasure;
-    }
-   
     public void setTreasureImage(Player p, Card card) {
-//            String testString = new String("/treasureCards/A.jpg");
 
         String cardString = new String("/treasureCards/" + card.getValueAsString() + ".jpg");
         Image image = new Image(cardString);
@@ -305,10 +206,7 @@ public class Player extends Pane{
         treasureCard.relocate(95, 260);
         p.getChildren().add(treasureCard);
     }
-    
-    public void currentPlayer(){
-        play.setTextFill(null);
-    }
+
     public void otherPlayer(){
         play.setTextFill(Color.GREY);
         this.setVisible(false);

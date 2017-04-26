@@ -35,17 +35,11 @@ public class Deck
       top = 0;
 	        int d = 0;
 	        deckSize = 24;
-	         
-	        // p stands for the suit
-	        // i for the card in each suit
-	        // as cards are assigned, if one suit fills up, it moves on to the next one
 	            for(int i=0; i<=23; i++)
 	            {
 	               deck[ct] = new Card((char) (i + 65));
                   ct = ct +1;
 	            }
-	            
-   
    }
    /** 
      * Remove and return the top Card on the Deck
@@ -89,26 +83,11 @@ public class Deck
       return (cardsRemaining() == 0);
    }
 
-   // returns the topcard of the deck
-   public Card getTop()
-	{
-	   System.out.println(deck[top]);
-	   return deck[top];
-	}
-	     
-	// returns the deckSize
-	public int getSize()
-	{
-	   //System.out.println(deckSize);
-	   return deckSize;
-	}
-        
     public static void main(String [] args){
         Deck h = new Deck();
         h.shuffle();
         while(!h.isEmpty()){
            Card cur = h.dealCard();
-           cur.Print();
         }
     }
 }

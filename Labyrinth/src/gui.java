@@ -38,14 +38,12 @@ public class gui extends Application {
     public Player player2;
     public Player currentPlayer;
     public ArrayList<Integer> reachableTiles;
-    private LabGame game;
     public GameState state;
-    private Label statusLabel;
+
     public int disabledRowColumn;
     public Direction disabledDirection;
-    private Timeline animation;
     private Deck treasureDeck;
-    private static final double MILLISEC = 200;
+
     CustomPane boardPane;
     int gameMode;
     Scene scene;
@@ -102,8 +100,6 @@ public class gui extends Application {
 
     public void createGame(Stage primaryStage) {
 
-        //primaryStage.setHeight(700);
-        //primaryStage.setWidth(700);
         this.primaryStage = primaryStage;
         primaryStage.setMaximized(true);
 
@@ -121,10 +117,8 @@ public class gui extends Application {
         while (!treasureDeck.isEmpty()) {
             Card cur = treasureDeck.dealCard();
             if (dealInd % 2 == 0) {
-                cur.Print();
                 player1.addCard(cur);
             } else {
-                cur.Print();
                 player2.addCard(cur);
             }
             dealInd++;
@@ -135,7 +129,7 @@ public class gui extends Application {
         // Set initial player positions
         labyrinthBoard.addPlayer(player1, new int[]{0, 0});
         labyrinthBoard.addPlayer(player2, new int[]{6, 6});
-        //labyrinthBoard.setStyle("-fx-padding: 60px 10px 10px 10px");
+
         // Initialize game state.
         state = GameState.insertTile;
 
@@ -144,7 +138,6 @@ public class gui extends Application {
 
         player1.setBorder(new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
         player2.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(15), new BorderWidths(4))));
-        //player1.setStyle("-fx-padding: 10px 10px 10px 10px");
 
         primaryStage.setTitle("Labyrinth");
         Group root = new Group();
@@ -155,7 +148,7 @@ public class gui extends Application {
         Button humanMode = new Button("Human Mode");
         Button computerMode = new Button("Computer Mode");
 
-//arrange buttons on the pane (at start)
+        //arrange buttons on the pane (at start)
         pane.setCenter(humanMode);
         pane.setCenter(computerMode);
 
@@ -186,14 +179,11 @@ public class gui extends Application {
             }
         });
 
-        //pane.setLeft(player1);
-        //pane.setRight(player2);
         pane.setLeft(player1);
         pane.setRight(player2);
         pane.setCenter(boardPane);
         player1.setTreasureImage(player1, player1.getTreasure());
         player2.setTreasureImage(player2, player2.getTreasure());
-        //pane.setPadding(new Insets(10,10,10,10));
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         root.getChildren().add(pane);
@@ -202,12 +192,10 @@ public class gui extends Application {
             @Override
             public void handle(MouseEvent t) {
 
-                //currentPlayer.currentPlayer();
                 boolean reachable = false;
                 if (state == GameState.movePiece) {
                     int[] tileCoordinates = labyrinthBoard.getTileCoordinates(t.getX(), t.getY());
                     int tileIndex = Path.getTileIndex(tileCoordinates, labyrinthBoard.getX_DIM());
-                    //player1.UpdateTurn(currentPlayer);
                     for (int reachableTile : reachableTiles) {
                         if (tileIndex == reachableTile) {
                             reachable = true;
@@ -216,12 +204,10 @@ public class gui extends Application {
 
                     if (reachable) {
                         moveCurrentPlayer(tileCoordinates);
-//                        labyrinthBoard.checkIsTreasure(currentPlayer,tileCoordinates);
                         currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
                         state = GameState.insertTile;
                         // If the player is a computer, let the computer take their turn.
                         if (gameMode == 0 && currentPlayer.player_number == 2) {
-                            //boardPane.computerWaitPane.setVisible(true);
                             computerTakeTurn();
                         }
 
@@ -229,7 +215,6 @@ public class gui extends Application {
                         player1.extraBoard.updateExtraTileBoard();
                         player2.extraBoard.updateExtraTileBoard();
 
-                        System.out.print("extra called");
                         if (currentPlayer.equals(player1)) {
                             player2.otherPlayer();
                             boardPane.getPassButton().setTextFill(Color.BLUE);
@@ -245,10 +230,6 @@ public class gui extends Application {
                         Alert alert = new Alert(Alert.AlertType.ERROR, "Player " + currentPlayer.player_number + " can't move to this tile.", ButtonType.OK);
                         alert.showAndWait();
                     }
-                    //reachableTiles = findReachableTilesFor(currentPlayer);
-
-                    //labyrinthBoard.tileAt(t.getX(), t.getY()).rotateRight(1);
-                    //currentShape = new Shape(canvas, currentType, currentColor, t.getX(), t.getY());
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "You must insert a tile first.", ButtonType.OK);
                     alert.showAndWait();
@@ -256,10 +237,6 @@ public class gui extends Application {
 
             }
         });
-        //game = new LabGame(this, labyrinthBoard);
-        //setUpAnimation();
-
-        //setUpKeyPresses();
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -275,12 +252,7 @@ public class gui extends Application {
     public void moveCurrentPlayer(int[] tileCoordinates) {
         labyrinthBoard.removePlayer(currentPlayer);
         if (labyrinthBoard.addPlayer(currentPlayer, tileCoordinates)) {
-//            if(currentPlayer.player_number==1){
-//                currentPlayer.treasuresGotten+=1;
-//            }
-//            else{
-//                currentPlayer.treasuresGotten+=1;
-//            }
+
             labyrinthBoard.removeTreasure(tileCoordinates);
 
             if (currentPlayer.player_number == 1) {
@@ -302,7 +274,6 @@ public class gui extends Application {
                     endGame(player2);
                 }
             }
-            System.out.println("Success");
         }
     }
 
@@ -372,25 +343,6 @@ public class gui extends Application {
         return computerThink;
     }
 
-    private void setUpAnimation() {
-        // Create a handler
-        EventHandler<ActionEvent> eventHandler = (ActionEvent e) -> {
-
-            this.pause();
-            game.update();
-            this.resume();
-        };
-        // Create an animation for alternating text
-        animation = new Timeline(new KeyFrame(Duration.millis(MILLISEC), eventHandler));
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.play();
-
-    }
-
-    private void pause() {
-        animation.pause();
-    }
-
     private void endGame(Player player) {
         ButtonType quit = new ButtonType("Quit");
         ButtonType restart = new ButtonType("New Game");
@@ -405,76 +357,8 @@ public class gui extends Application {
         }
     }
 
-    /**
-     * The action handler method that is called when an insert button is
-     * pressed.
-     *
-     * @param insert A string that identifies which insert method to invoke
-     * @param index An int that identifies the location on the board that the
-     * tile will be inserted
-     */
-//    private void handler(String insert, int index) {
-//        if (state == GameState.insertTile) {
-//            switch (insert) {
-//                case "Top":
-//                    labyrinthBoard.insertTileTop(index);
-//                    System.out.println("this");
-//                case "Bottom":
-//                    labyrinthBoard.insertTileBottom(index);
-//                case "Right":
-//                    labyrinthBoard.insertTileRight(index);
-//                case "Left":
-//                    labyrinthBoard.insertTileLeft(index);
-//            }
-//            reachableTiles = findReachableTilesFor(currentPlayer);
-//            state = GameState.movePiece;
-////                    btn_1_1.setText("Player " + currentPlayer.player_number + " pass (Don't Move)");
-//        } else if (state == GameState.movePiece) {
-//            currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-//
-//            state = GameState.insertTile;
-////                    btn_1_1.setText("Insert into 1,1");
-//        }
-//
-//    }
-
-    private void setUpKeyPresses() {
-        labyrinthBoard.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case LEFT:
-                    game.left();
-                    break;
-                case RIGHT:
-                    game.right();
-                    break;
-                case DOWN:
-                    game.rotateLeft();
-                    break;
-                case UP:
-                    game.rotateRight();
-                    break;
-                case SPACE:
-                    game.drop();
-                    break;
-
-            }
-        });
-        labyrinthBoard.requestFocus(); // board is focused to receive key input
-
-    }
-
-    /**
-     * Resumes the animation.
-     */
-    private void resume() {
-        animation.play();
-    }
-
     public static void main(String[] args) {
         Application.launch(args);
-
-        //LabSquare test = new LabPiece(board.rows/2,1,1,board);
-        //f.show();
     }
 }
 
@@ -487,20 +371,7 @@ class CustomPane extends StackPane {
 
     public CustomPane(gui gui, Board labyrinthBoard) {
 
-        /*
-        Button infoButton = new Button("i");
-        infoButton.setMaxHeight(35);
-        infoButton.setMaxWidth(35);
-        infoButton.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        infoButton.setTextFill(Color.BLUE);
-        setAlignment(infoButton, Pos.TOP_LEFT);
-        setMargin(infoButton,new Insets(-80,0,0,-80));
-        getChildren().add(infoButton);
-        //infoButton.toFront();
-        */
 
-        
-        
         labyrinthBoard.setPadding(new Insets(90, 90, 90, 90));
         getChildren().add(labyrinthBoard);
         setPadding(new Insets(90, 90, 90, 90));

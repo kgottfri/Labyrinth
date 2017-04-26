@@ -68,27 +68,6 @@ public class InsertButton {
                 // Enable the button that lets the player pass.
                 gui.boardPane.getPassButton().setDisable(false);
             }
-
-
-//                if (state == GameState.insertTile) {
-//                    if ((disabledDirection == Direction.down) && (disabledRowColumn == 1)) {
-//                        Alert alert = new Alert(Alert.AlertType.ERROR, "You can not undo the last move.", ButtonType.OK);
-//                        alert.showAndWait();
-//                    } else {
-//                        labyrinthBoard.insertTileTop(1);
-//                        reachableTiles = findReachableTilesFor(currentPlayer);
-//                        state = GameState.movePiece;
-//                        disabledRowColumn = 1;
-//                        disabledDirection = Direction.up;
-//                    }
-//                } else if (state == GameState.movePiece) {
-//                    currentPlayer = currentPlayer.player_number == 1 ? player2 : player1;
-//                    state = GameState.insertTile;
-////                    btn_1_1.setText("Insert into 1,1");
-//                }
-               
-
-            
         });
     }
     
@@ -109,9 +88,6 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.up;
-                    
-                    //gui.player1.canRotate = false;
-                    //gui.player2.canRotate = false;
                 }
             }
     }
@@ -129,9 +105,6 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.right;
-                    
-                    //gui.player1.canRotate = false;
-                    //gui.player2.canRotate = false;
                 }
             }
     }
@@ -149,9 +122,6 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.down;
-                    
-                    //gui.player1.canRotate = false;
-                    //gui.player2.canRotate = false;
                 }
             }
     }
@@ -169,9 +139,6 @@ public class InsertButton {
                     gui.boardPane.setPassButtonText("");
                     gui.disabledRowColumn = index;
                     gui.disabledDirection = Direction.left;
-                    
-                    //gui.player1.canRotate = false;
-                    //gui.player2.canRotate = false;
                 }
             }
     }

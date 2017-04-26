@@ -62,7 +62,7 @@ public class Path {
 
     public static int[] getTileCoordinates(int tileIndex, int size){
         /*
-        Gets the tile coordinates based on its index.
+        Gets the tile coordinates based on its index (inverse of getTileIndex).
         */
         int[] tileCoordinates = new int[2];
         tileCoordinates[0] = (int)(tileIndex / size);

@@ -133,8 +133,7 @@ public class gui extends Application{
 
             }
         });
-		//game = new LabGame(this, labyrinthBoard);
-        //setUpAnimation();
+
 
         //setUpKeyPresses();
 		primaryStage.setScene(scene);
@@ -216,9 +215,7 @@ public class gui extends Application{
 		
 	public static void main(String[] args){
 		Application.launch(args);
-		
-		//LabSquare test = new LabPiece(board.rows/2,1,1,board);
-		//f.show();
+
 	}
 }
 

@@ -6,8 +6,6 @@
  *This is an instance of board - stores tile array, sets tiles initial positions
  *
  */
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,10 +22,6 @@ public class Board extends Pane {
     public static final int cols = 7;
     public static final int boardSize = 500;
     public static final double squareSize = boardSize / rows;
-
-    public LabSquare[][] filledSquares = new LabSquare[cols + 1][rows + 1];
-    LabSquare[] boardName;
-    private int score;
 
     //constants
     static final int CORNER_TILE = 16;
@@ -59,6 +53,7 @@ public class Board extends Pane {
 
         int upperLeftX = 0;
         int upperLeftY = 0;
+
         //all tiles that can move, with all 4 directions 
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
@@ -95,7 +90,8 @@ public class Board extends Pane {
                     tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, true, false, true, false, false);
                 } else if (i == 6 && j == 6) {
                     tiles[i][j] = new Tile(this, upperLeftX, upperLeftY, true, false, false, true, false, true);
-                } // movable tiles - pick a random tile from the tilepool
+                }
+                // movable tiles - pick a random tile from the tilepool
                 else {
                     tiles[i][j] = tilePool.remove(rand.nextInt(tilePool.size()));
 
@@ -121,7 +117,6 @@ public class Board extends Pane {
         // The only tile left is the extra maze tile
         extra_tile = tilePool.remove(0);
         setTreasure(tiles);
-
     }
     
     //constructor for extraTile Board
@@ -146,25 +141,6 @@ public class Board extends Pane {
         extraTile.extraTileTreasure();
     }
 
-    Tile tileAt(double x, double y) {
-
-        int roundX = (int) Math.round(x);
-        int roundY = (int) Math.round(y);
-        int roundSquareSize = (int) Math.round(squareSize);
-
-        System.out.println("x: " + roundX);
-        System.out.println("y: " + roundY);
-        System.out.println("squaresize: " + roundSquareSize);
-
-        System.out.println("Yindex: " + roundY % roundSquareSize);
-        System.out.println("Xindex: " + roundX % roundSquareSize);
-
-        System.out.println("XTile: " + (roundX - (roundX % roundSquareSize)) / roundSquareSize);
-        System.out.println("YTile: " + (roundY - (roundY % roundSquareSize)) / roundSquareSize);
-
-        return tiles[(roundY - (roundY % roundSquareSize)) / roundSquareSize][(roundX - (roundX % roundSquareSize)) / roundSquareSize];
-    }
-
     public void setTreasure(Tile[][] tiles) {
         tiles[0][2].setTileTreasure('A');
         tiles[0][4].setTileTreasure('B');
@@ -184,23 +160,14 @@ public class Board extends Pane {
             Random randY = new Random();
             int x = randX.nextInt(rows);
             int y = randY.nextInt(cols);
-//            while((x == 0 && y == 0) || (x==6 && y ==6)){
-//                x = randX.nextInt(rows);
-//                y = randY.nextInt(cols);
-//            }
+
             Tile currTile = tiles[x][y];
-//            while(currTile.getIsStart()){
-//                currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
-//            }
+
             while ((currTile.hasTreasure()) || currTile.getIsStart()) {
                 currTile = tiles[randX.nextInt(rows)][randY.nextInt(cols)];
             }
             currTile.setTileTreasure((char) (i + 65));
         }
-    }
-
-    public boolean checkIsTreasure(Player player, int[] locTile) {
-        return true;
     }
 
     public int[] getTileCoordinates(double x, double y) {
@@ -209,15 +176,6 @@ public class Board extends Pane {
         int roundY = (int) Math.round(y);
         int roundSquareSize = (int) Math.round(squareSize);
 
-        System.out.println("x: " + roundX);
-        System.out.println("y: " + roundY);
-        System.out.println("squaresize: " + roundSquareSize);
-
-        System.out.println("Yindex: " + roundY % roundSquareSize);
-        System.out.println("Xindex: " + roundX % roundSquareSize);
-
-        System.out.println("XTile: " + (roundX - (roundX % roundSquareSize)) / roundSquareSize);
-        System.out.println("YTile: " + (roundY - (roundY % roundSquareSize)) / roundSquareSize);
         return new int[]{(roundY - (roundY % roundSquareSize)) / roundSquareSize, (roundX - (roundX % roundSquareSize)) / roundSquareSize};
     }
 
@@ -244,9 +202,7 @@ public class Board extends Pane {
         currTile.setPlayer(player);
         if (currTile.hasTreasure()) {
             return checkTreasureMatch(player, currTile);
-        } else {
-            System.out.println("no treasure here");
-        }
+        } 
         return false;
     }
 
@@ -262,65 +218,8 @@ public class Board extends Pane {
 
     }
 
-    /**
-     *
-     * @param player the player that is reset on the board
-     */
-    public void resetPlayer(Player player) {
-
-    }
-
-    
     public boolean checkTreasureMatch(Player p1, Tile tile) {
-        System.out.print("" + p1.getTreasure() + tile.getTreasure());
         return p1.getTreasure().getValueAsString().charAt(0) == tile.getTreasure();
-    }
-
-    public void checkRows() {
-
-        int count = 0;
-        for (int row = 0; row < filledSquares.length; row++) {
-            count = 0;
-
-            for (int col = 0; col < filledSquares[row].length; col++) {
-
-                if (filledSquares[row][col] == null) {
-                    count++;
-                }
-            }
-
-            if (count == 0) {
-                RemoveRows(row, filledSquares);
-                score += 1;
-
-            }
-
-        }
-    }
-
-    public void RemoveRows(int row, LabSquare[][] squares) {
-        for (int i = 0; i < rows; i++) {
-            squares[row][i].removeFromDrawing();
-            squares[row][i] = null;
-
-        }
-
-        for (int j = row; j > 0; j--) {
-
-            for (int k = 0; k < squares[j - 1].length; k++) {
-                if (squares[j][k] == null && squares[j - 1][k] != null) {
-
-                    squares[j - 1][k].moveToLabLocation(k, j);
-                    squares[j][k] = squares[j - 1][k];
-                    squares[j - 1][k] = null;
-                }
-            }
-        }
-
-    }
-
-    public int getScore() {
-        return score;
     }
 
     /**
@@ -332,7 +231,6 @@ public class Board extends Pane {
     public void insertTileTop(int xIndex) {
 
         //move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
-        //if we need to do soemthing with the table that is pushed off it could be returned by this method
         Tile tempLastTile = new Tile(tiles[(rows - 1)][xIndex]);
 
         for (int i = rows - 1; i > 0; i--) {
@@ -359,7 +257,6 @@ public class Board extends Pane {
     public void insertTileBottom(int xIndex) {
 
         //move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
-        //if we need to do soemthing with the table that is pushed off it could be returned by this method
         Tile tempLastTile = new Tile(tiles[(0)][xIndex]);
 
         for (int i = 0; i < rows - 1; i++) {
@@ -386,7 +283,6 @@ public class Board extends Pane {
     public void insertTileLeft(int yIndex) {
 
         //move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
-        //if we need to do soemthing with the table that is pushed off it could be returned by this method
         Tile tempLastTile = new Tile(tiles[yIndex][rows - 1]);
         for (int i = rows - 1; i > 0; i--) {
             tiles[yIndex][i] = new Tile(tiles[yIndex][i - 1]);
@@ -415,7 +311,6 @@ public class Board extends Pane {
     public void insertTileRight(int yIndex) {
 
         //move all tiles down 1 (tile at bottom is replaced - essentially "pushed off edge")
-        //if we need to do soemthing with the table that is pushed off it could be returned by this method
         Tile tempLastTile = new Tile(tiles[yIndex][0]);
 
         for (int i = 0; i < rows - 1; i++) {
@@ -447,12 +342,5 @@ public class Board extends Pane {
         return cols;
     }
 
-    public void addSquare(LabSquare square) {
-        filledSquares[square.getY()][square.getX()] = square;
-    }
-
-    public boolean checkLocation(int sqY, int sqX) {
-        return filledSquares[sqY][sqX] == null;
-    }
 
 }

@@ -9,11 +9,15 @@ import java.util.Queue;
  */
 public class Path {
 
+    /**
+    * Determines which game board tiles are reachable from the provided tile.
+    *  The tile location is provided as integer array: [row, column]
+    * @param board being checked
+    * @param locTile coordinates of tile currently on
+    * @return arraylist of reachable tiles
+    */
     public static ArrayList<Integer> getReachableTiles(Board board, int[] locTile){
-        /*
-        Determines which game board tiles are reachable from the provided tile.
-        The tile location is provided as integer array: [row, column]
-         */
+
 
         boolean[] move = new boolean[4];
         int BOARDSIZE = board.tiles.length;  // Assume square board
@@ -37,10 +41,13 @@ public class Path {
         return reachableTiles;
     }
 
+    /**
+     * Initialize an empty adjacency list with nNodes.
+     * @param nNodes
+     * @return adj list
+     */
     private static ArrayList<LinkedList<Integer>> createAdjList(int nNodes){
-        /*
-        Initialize an empty adjacency list with nNodes.
-         */
+
         ArrayList<LinkedList<Integer>> adjList = new ArrayList<LinkedList<Integer>>();
         for (int i = 0; i < nNodes; i++){
             adjList.add(new LinkedList<Integer>());
@@ -48,6 +55,14 @@ public class Path {
         return adjList;
     }
 
+    /**
+    * 
+    *  Flattens the grid so that the first row is 0...size-1, the second is size...size+size-1, etc.
+    *  If the specified tile is off the grid, return -1.
+    * @param tileLoc
+    * @param size
+    * @return tileIndex
+    */
     public static int getTileIndex(int[] tileLoc, int size){
         /*
         Flattens the grid so that the first row is 0...size-1, the second is size...size+size-1, etc.
@@ -60,20 +75,29 @@ public class Path {
         return tileIndex;
     }
 
+    /**
+    *Gets the tile coordinates based on its index (inverse of getTileIndex).
+    * @param tileIndex
+    * @param size
+    * @return 
+    */
     public static int[] getTileCoordinates(int tileIndex, int size){
-        /*
-        Gets the tile coordinates based on its index (inverse of getTileIndex).
-        */
+
         int[] tileCoordinates = new int[2];
         tileCoordinates[0] = (int)(tileIndex / size);
         tileCoordinates[1] = tileIndex % size;
         return tileCoordinates;
     }
 
+    /**
+     * Determines if it is possible to move from provided tile to the adjacent tile in moveDirection.
+     * @param board
+     * @param locCurrentTile
+     * @param moveDirection
+     * @return true if can move in direction - false if else
+     */
     public static boolean canMove(Board board, int[] locCurrentTile, Direction moveDirection){
-        /*
-        Determines if it is possible to move from provided tile to the adjacent tile in moveDirection.
-         */
+   
         boolean canMoveDirection = false;
         int board_size = board.tiles.length;
         Tile moveToTile;
@@ -133,6 +157,16 @@ public class Path {
         return canMoveDirection;
     }
 
+    /**
+     * 
+     *  Updates the input adjacency list so that the tile at 'tileLoc' is connected to the tiles adjacent to it
+     *  if it is possible to move from the current tile to the adjacent tile.  It is possible to move from the 'tileLoc'
+     *  tile to an adjacent tile if the corresponding direction of the adjacent tile is marked true in 'move'.
+     * @param adjList
+     * @param tileLoc
+     * @param move
+     * @param size 
+     */
     public static void addNode(ArrayList<LinkedList<Integer>> adjList, int[] tileLoc, boolean[] move, int size){
         /*
         Updates the input adjacency list so that the tile at 'tileLoc' is connected to the tiles adjacent to it
@@ -159,10 +193,15 @@ public class Path {
         }
     }
 
+    /**
+     * Breadth First Search - returns list of nodes that are reachable from the start node.
+     *
+     * @param adjList
+     * @param startNode
+     * @return 
+     */
     public static ArrayList<Integer> breadthFirstSearch(ArrayList<LinkedList<Integer>> adjList, int startNode){
-        /*
-        Breadth First Search - returns list of nodes that are reachable from the start node.
-         */
+
         ArrayList<Integer> reachableNodes = new ArrayList<>();
         int nNodes = adjList.size();
         boolean[] discovered = new boolean[nNodes];

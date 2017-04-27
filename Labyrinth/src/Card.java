@@ -1,8 +1,8 @@
-// CS_205 Go Fish
 /**
  * Kevin Gottfried
- * Card class implements relatable
- * Demonstrates creating a card and methods used to relate cards.
+ * Card class 
+ * Objects that are used as treasure cards for the labyrinth implementation.
+ * Cards have a letter to represent each card.
  */
 import java.util.*;
 

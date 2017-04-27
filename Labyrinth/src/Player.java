@@ -1,4 +1,3 @@
-// CS_205 Labyrinth
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -22,7 +21,8 @@ import javafx.scene.text.FontWeight;
 import javax.swing.BorderFactory;
 
 /**
- * Player class for both human and computer players
+ * Player class
+ * Represents all the information that is stored in the player pane on the gui
  * @author Kevin Gottfried
  */
 public class Player extends Pane{
@@ -33,7 +33,7 @@ public class Player extends Pane{
     protected char successfulTreasure;
     public int treasuresGotten_1 = 0;
     public int treasuresGotten_2 = 0;
-    public static final int Prows = 7;
+    public static final int Prows = 7;  
     public static final int Pcols = 1;
     public static final int squareWidth=300;
     public static final int squareHeight=100;
@@ -41,15 +41,25 @@ public class Player extends Pane{
     public int player_number;
     Label play;
     Label compTreasureNum;
-    Board board;
+    Board board;  // an instance of the gui board
     Board extraBoard;
     
+    /**
+    *Constructor creates a new player with a hand of treasure cards
+    */
     public Player(){
         this.setPrefHeight(Prows*squareHeight);
 	this.setPrefWidth(Pcols*squareWidth);
         treasuresHand = new LinkedList<Card>();
     }
-
+    
+    /**
+    * Constructor takes a player type and an instance of a the GUI board
+    * Constructs a player pane to display all of the player's information on the GUI
+    * Create and display the first initial tile in the player pane
+    * @param playerType an integer to distinguish player 1 vs player 2
+    * @param board an instance of the GUI board to add the player pane to
+    */
     public Player(int playerType, Board board){
         this.board = board;
         DropShadow ds = new DropShadow();
@@ -168,7 +178,7 @@ public class Player extends Pane{
     }
     
     /**
-     * The addCard method ands a card object to the LinkedList hand
+     * The addCard method adds a card object to the LinkedList hand
      * @param c The Card object to be added to the players hand
      */
     public void addCard(Card c) {
@@ -176,19 +186,34 @@ public class Player extends Pane{
             treasuresHand.add(c);
     }
 
-     /**
-     * The getCard method removes a card object from the LinkedList hand
+    /**
+     * Used for updating the current treasure card
+     * returns the top card of the hand 
+     * @return Card
      */
     public Card getCard() {
         return treasuresHand.pollFirst();
     }
+    /**
+     * Returns the current treasure card  
+     * @return Card
+     */
     public Card getTreasure(){
         return this.currentTreasureCard;
     }
-
+    
+    /**
+     * "Flips" over a card from the player's hand to be displayed as the current treasure card.
+     */
     public void upturnCard(){
         this.currentTreasureCard = getCard();
     }
+    
+    /**
+     * EmptyHand method determines if the hand of treasure cards is empty
+     * Return true if empty
+     * @return boolean
+     */
     public boolean emptyHand(){
         if (treasuresHand.peek() != null)
             return false;
@@ -196,6 +221,12 @@ public class Player extends Pane{
             return true;
     }
 
+    /**
+     * setTreasureImage method takes two parameters and will display the current treasure card
+     * in the desired player pane
+     * @param p Player p is the desired player and pane to display the treasure card
+     * @param card Card card is the treasure card to be displayed.
+     */
     public void setTreasureImage(Player p, Card card) {
 
         String cardString = new String("/treasureCards/" + card.getValueAsString() + ".jpg");
@@ -207,10 +238,19 @@ public class Player extends Pane{
         p.getChildren().add(treasureCard);
     }
 
+    /**
+     * otherPlayer method hides the player pane while the
+     * other player is taking their turn
+     */
     public void otherPlayer(){
         play.setTextFill(Color.GREY);
         this.setVisible(false);
     }
+    
+    /**
+     * resetColor method makes the player pane visible 
+     * counters the otherPlayer method
+     */
     public void resetColor(){
         play.setTextFill(color);
         this.setVisible(true);

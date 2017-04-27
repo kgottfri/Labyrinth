@@ -1,6 +1,7 @@
 /**
    Kevin Gottfried
    Deck class creates a new potDeck that is used to create to half-decks.
+   *This deck consists of 24 treasure cards to be dealt to each player.
 */
 import java.util.Random;
 public class Deck 
@@ -82,7 +83,7 @@ public class Deck
    {
       return (cardsRemaining() == 0);
    }
-
+   // test an implementation of shuffling and dealing a deck
     public static void main(String [] args){
         Deck h = new Deck();
         h.shuffle();
